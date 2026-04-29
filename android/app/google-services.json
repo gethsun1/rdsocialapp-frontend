@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "659874334588",
+    "project_id": "rdsocial-a01d2",
+    "storage_bucket": "rdsocial-a01d2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:659874334588:android:3318f156de077e22ddc6f9",
+        "android_client_info": {
+          "package_name": "com.rbsocial"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "659874334588-m4mpcj9rq2mn8tiv0mj2ibj8jnmstshs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rbsocial",
+            "certificate_hash": "1553159f4801fbb1c81b5b910301165112146120"
+          }
+        },
+        {
+          "client_id": "659874334588-juo6pp6lp1to8hh5jmshd8p2fmhm6vda.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCns2pR9d7hXPOmZF_Wdi1lX0Ze2G-XVE8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "659874334588-juo6pp6lp1to8hh5jmshd8p2fmhm6vda.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "659874334588-r08md14lcgb40f19obfocnqlh84ioktl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.rb.apptesting"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

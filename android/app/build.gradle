@@ -1,0 +1,91 @@
+
+plugins {
+    id "com.android.application"
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+    id("com.google.devtools.ksp") version "2.1.0-1.0.29"
+}
+
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+}
+
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode') ?: '1'
+def flutterVersionName = localProperties.getProperty('flutter.versionName') ?: '1.0'
+
+android {
+    namespace "com.rbsocial"
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+        coreLibraryDesugaringEnabled true
+    }
+
+
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    defaultConfig {
+        applicationId "com.rbsocial"
+        minSdkVersion 24
+        targetSdkVersion 34
+        compileSdk 35
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
+        ndkVersion "28.2.13676358"
+
+            externalNativeBuild {
+             cmake {
+                // Correct syntax for most Flutter Gradle versions
+                cppFlags "-frtti", "-fexceptions"
+                arguments "-DANDROID_STL=c++_shared"
+            }
+        }
+    }
+
+    signingConfigs {
+        debug {
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.debug
+            // Keep disabled for now: R8/resource shrinking can strip plugin wiring
+            // used by federated Pigeon channels (e.g. google_sign_in_android).
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    androidResources {
+        noCompress 'tflite'
+    }
+}
+
+flutter {
+    source '../..'
+}
+
+dependencies {
+    implementation 'com.google.firebase:firebase-messaging:25.0.0'
+    implementation 'androidx.annotation:annotation:1.9.1'
+    implementation 'com.google.android.exoplayer:exoplayer:2.19.1'
+    implementation 'com.google.android.gms:play-services-ads:24.5.0'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
+}

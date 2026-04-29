@@ -1,0 +1,80 @@
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.6.1'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.23"
+        classpath 'com.google.gms:google-services:4.4.3'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:3.0.5'
+    }
+}
+
+allprojects {
+    configurations.configureEach {
+        exclude group:"io.agora.rtc", module:"full-screen-sharing"
+        resolutionStrategy {
+            // Keep AndroidX artifacts compatible with AGP 8.6.1 / compileSdk 35.
+            force 'androidx.core:core:1.15.0'
+            force 'androidx.core:core-ktx:1.15.0'
+            force 'androidx.activity:activity:1.10.1'
+            force 'androidx.activity:activity-ktx:1.10.1'
+            force 'androidx.browser:browser:1.8.0'
+        }
+    }
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+// NEW: Add Java toolchain configuration
+subprojects {
+    plugins.withType(JavaBasePlugin).configureEach {
+        java {
+            toolchain {
+                languageVersion.set(JavaLanguageVersion.of(17))
+                vendor.set(JvmVendorSpec.ADOPTIUM)
+            }
+        }
+    }
+
+    afterEvaluate { project ->
+        project.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+            kotlinOptions {
+                jvmTarget = '17'
+            }
+        }
+
+        if (project.plugins.hasPlugin('com.android.library') || project.plugins.hasPlugin('com.android.application')) {
+            project.android {
+                compileSdk 35
+                compileOptions {
+                    sourceCompatibility JavaVersion.VERSION_17
+                    targetCompatibility JavaVersion.VERSION_17
+                }
+            }
+        }
+    }
+}
+
+// REMOVE duplicate Kotlin configuration
+// (Delete this block since it's now handled in subprojects)
+// tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+//     kotlinOptions {
+//         jvmTarget = '17'
+//     }
+// }
+
+rootProject.buildDir = '../build'
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+subprojects {
+    project.evaluationDependsOn(':app')
+}
+
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}

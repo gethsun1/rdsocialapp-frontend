@@ -1,0 +1,106 @@
+RD Privacy Policy
+Effective Date: 21/02/2026
+
+This Privacy Policy describes how RD ("we", "us", or "our") collects, uses, and discloses your personal information when you use our mobile application and related services (collectively, the "App"). RD is a comprehensive social platform that combines features similar to Instagram, X (formerly Twitter), and Telegram, along with live podcasting and TV streaming capabilities.
+
+Our company is based in Kenya, and we are committed to protecting your privacy in accordance with the Kenyan Data Protection Act, 2019.
+
+1. Information We Collect
+
+1.1 Information You Provide Directly
+- Account Information: When you register for RD, we collect information such as your name, username, email address, phone number, password, and profile picture.
+- Profile Content: Information you add to your profile, including bio, website links, and other personal details.
+- User Content: Photos, videos, text posts, comments, live broadcasts, podcast episodes, and other content you create, upload, or share through the App.
+- Communications: Messages you send and receive through our messaging features, including direct messages, group chats, and channel communications.
+- Payment Information: If you make purchases or subscribe to premium features, we collect payment processing information (handled by third-party payment processors).
+
+1.2 Information Collected Automatically
+- Usage Data: Your interactions with the App, including content viewed, features used, time spent, and engagement metrics.
+- Device Information: IP address, device type, operating system, browser type, mobile network information, and unique device identifiers.
+- Location Information: General location data based on IP address or, with your permission, precise geolocation from your mobile device.
+- Cookies and Similar Technologies: We use cookies and similar tracking technologies to enhance your experience and collect usage data.
+
+1.3 Information from Third Parties
+If you choose to link your RD account with other social media platforms, we may receive information from those platforms in accordance with your privacy settings there.
+
+2. How We Use Your Information
+We use your personal information to:
+- Provide and Maintain Services: Operate the App, deliver content, facilitate social interactions, enable messaging, and provide live podcasting and TV streaming features.
+- Personalize Your Experience: Customize content, recommendations, and advertisements based on your interests and usage patterns.
+- Communication: Send you service-related notices, respond to your inquiries, and provide customer support.
+- Content Moderation: Review content for compliance with our community guidelines and terms of service.
+- Analytics and Improvements: Analyze usage trends, monitor App performance, and develop new features and improvements.
+- Advertising: Deliver relevant advertisements and measure their effectiveness (with your consent where required).
+- Security and Fraud Prevention: Detect, investigate, and prevent security incidents, fraudulent activity, and violations of our terms.
+- Legal Compliance: Comply with applicable laws, legal processes, and regulatory requirements in Kenya.
+
+3. Legal Basis for Processing
+Under the Kenyan Data Protection Act, 2019, we process your personal data on the following grounds:
+- Consent
+- Contract Performance
+- Legal Obligation
+- Legitimate Interests
+
+4. Sharing and Disclosure of Information
+We may share your personal information:
+- With Other Users: According to your privacy settings.
+- With Service Providers: For cloud hosting, analytics, payment processing, customer support, and content delivery.
+- During Business Transfers: Merger, acquisition, reorganization, or sale of assets.
+- For Legal Requirements: Court orders, subpoenas, regulatory obligations, law enforcement cooperation, and ODPC requirements.
+- With Your Consent: Where you explicitly authorize sharing.
+
+We do not sell your personal data to third parties.
+
+5. Data Security
+We implement appropriate technical and organizational security measures, including:
+- Encryption of data in transit and at rest
+- Access controls and authentication procedures
+- Regular security assessments and monitoring
+- Secure data storage infrastructure
+
+No method of transmission or storage is 100% secure; absolute security cannot be guaranteed.
+
+6. Data Retention
+We retain personal data only as long as necessary for the purposes described in this policy, legal/accounting/reporting obligations, and risk-based retention analysis. When data is no longer required, we securely delete or anonymize it, unless longer retention is required by law.
+
+7. Your Rights Under Kenyan Law
+Under the Kenyan Data Protection Act, 2019, you have the right to:
+- Access
+- Rectification
+- Deletion (Right to be Forgotten)
+- Restriction of Processing
+- Data Portability
+- Object to Processing
+- Withdraw Consent
+
+To exercise your rights, contact us using the details below.
+
+8. Children's Privacy
+Our App is not intended for children under 18. We do not knowingly collect personal data from children under 18 without parental consent. If we become aware of such collection without required consent, we will take steps to delete that data.
+
+9. International Data Transfers
+We primarily store and process your data within Kenya. Where international transfers are necessary, we use safeguards such as:
+- Transfers to jurisdictions with adequate protection recognized by the Kenyan Data Commissioner
+- Standard contractual clauses or approved transfer mechanisms
+- Supplementary safeguards where required
+
+10. Live Podcast and TV Features
+These features may involve additional data collection, including:
+- Viewing and listening preferences
+- Live chat comments and interactions
+- Broadcast recordings (for creators)
+- Audience metrics and engagement data
+
+If you create live content on RD, broadcasts may be recorded, stored, and shared. You are responsible for obtaining all required consents from featured individuals.
+
+11. Changes to This Privacy Policy
+We may update this policy from time to time. Material changes will be communicated through the App or other reasonable channels (including email). Continued use of the App after updates constitutes acceptance of the revised policy.
+
+12. Contact Us
+Data Protection Officer
+RD Company
+Nairobi, Kenya
+Email: privacy@rdapp.co.ke
+Phone: +254 717556879
+
+You may also lodge a complaint with the Office of the Data Protection Commissioner (ODPC) in Kenya if you believe your rights have been violated.
