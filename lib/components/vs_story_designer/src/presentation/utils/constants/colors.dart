@@ -4,7 +4,7 @@ const defaultColors = [
   Colors.white,
   Colors.black,
   Colors.red,
-  Colors.pink,
+  Colors.orange,
   Colors.purple,
   Colors.deepPurple,
   Colors.indigo,

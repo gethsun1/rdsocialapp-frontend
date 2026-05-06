@@ -197,6 +197,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ">=1.0.4"
+  flutter_launcher_icons: ^0.14.4
 
 dependency_overrides:
   google_maps_flutter_android: 2.18.1
@@ -205,6 +206,12 @@ dependency_overrides:
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/rd_logo_new.jpeg"
+  adaptive_icon_background: "#01041C"
+  adaptive_icon_foreground: "assets/rd_logo_new.jpeg"
 # The following section is specific to Flutter.
 flutter:
 

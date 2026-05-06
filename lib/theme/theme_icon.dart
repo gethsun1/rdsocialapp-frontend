@@ -132,6 +132,9 @@ enum ThemeIcon {
   bannedAccount,
   competition,
   pin,
+  repost,
+  insights,
+  archive,
   noData,
 }
 
@@ -937,6 +940,24 @@ class ThemeIconWidget extends StatelessWidget {
       case ThemeIcon.pin:
         return Icon(
           Icons.push_pin,
+          size: size ?? 20,
+          color: color ?? AppColorConstants.iconColor,
+        );
+      case ThemeIcon.repost:
+        return Icon(
+          Icons.repeat,
+          size: size ?? 20,
+          color: color ?? AppColorConstants.iconColor,
+        );
+      case ThemeIcon.insights:
+        return Icon(
+          Icons.insights,
+          size: size ?? 20,
+          color: color ?? AppColorConstants.iconColor,
+        );
+      case ThemeIcon.archive:
+        return Icon(
+          Icons.archive_outlined,
           size: size ?? 20,
           color: color ?? AppColorConstants.iconColor,
         );

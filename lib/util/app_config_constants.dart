@@ -10,14 +10,15 @@ class AppConfigConstants {
   static String appName = 'RD';
 
   static String currentVersion = '2.3';
-  static const liveAppLink = 'https://rdapp.co.ke/';
+  static const liveAppLink = 'https://rdsocialapp.co.ke/';
 
   static String appTagline = 'Connect, converse, and stream live';
   static const googleMapApiKey = 'AIzaSyA4vcqErGvq5NRbvhvq8JKSp0VFpNBBPjE';
 
-  static const restApiBaseUrl = 'https://api.rdapp.co.ke/app/api/web/v1/';
+  static const restApiBaseUrl = 'https://api.rdsocialapp.co.ke/';
 
-  static const socketApiBaseUrl = "https://api.rdapp.co.ke:4000/";
+  // Keep explicit :443 for better socket client compatibility on some devices.
+  static const socketApiBaseUrl = "https://api.rdsocialapp.co.ke:443";
 
   // Firebase-only mode: use Firebase auth providers and avoid backend auth APIs.
   static const useFirebaseOnlyMode = true;
@@ -40,6 +41,11 @@ class AppConfigConstants {
   // Change this to match backend allow-list if needed (e.g. `google`).
   static const firebaseBackendSocialType = 'firebase';
 
+  // Legacy bridge fallback (`social_type=google`) for older backends that
+  // don't accept `social_type=firebase` yet. Keep disabled for strict
+  // single-backend contract on current Django VPS.
+  static const allowLegacyGoogleSocialTypeFallback = false;
+
   // Firebase Web OAuth client ID (client_type: 3) required by GoogleSignIn
   // to reliably fetch tokens for Firebase credential exchange.
   static const firebaseWebClientId =
@@ -51,6 +57,10 @@ class AppConfigConstants {
   // Local fallback for builds where backend settings are not yet configured.
   static const fallbackAgoraAppId = '510ff736f6b74b0a8efeb9ac38372932';
 
+  // White-label deployments: keep disabled unless you explicitly want app-blocking
+  // force updates based on backend version values.
+  static const enforceForceUpdateGate = false;
+
   // enable encryption -- DO NOT CHANGE THIS
   static const int enableEncryption = 1;
 
@@ -58,7 +68,7 @@ class AppConfigConstants {
   static const int chatVersion = 1;
 
   // is demo app
-  static const bool isDemoApp = true;
+  static const bool isDemoApp = false;
 
   // parameters for delete chat
   static const secondsInADay = 86400;
@@ -72,9 +82,9 @@ class DesignConstants {
 }
 
 class AppColorConstants {
-  static Color rdPrimary = HexColor.fromHex('E64EA6');
-  static Color rdSecondary = HexColor.fromHex('508DC1');
-  static Color rdAccent = HexColor.fromHex('9CBEC1');
+  static Color rdPrimary = HexColor.fromHex('003366');
+  static Color rdSecondary = HexColor.fromHex('FF9900');
+  static Color rdAccent = HexColor.fromHex('FF9900');
   static Color rdDark = HexColor.fromHex('01041C');
 
   static Color themeColor = settingsController.setting.value == null
