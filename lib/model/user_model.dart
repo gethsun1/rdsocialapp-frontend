@@ -2,6 +2,8 @@ import 'package:foap/helper/date_extension.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/model/setting_model.dart';
 import 'package:foap/model/subscription_plan.dart';
+import 'package:foap/util/username_validator.dart';
+import 'package:intl/intl.dart';
 import 'chat_room_model.dart';
 
 class UserModel {
@@ -13,6 +15,7 @@ class UserModel {
   String? email = '';
   String? picture;
   String? coverImage;
+  DateTime? createdAt;
 
   String? bio = '';
   String? phone = '';
@@ -86,29 +89,127 @@ class UserModel {
   List<SubscriptionPlan> subscriptionPlans = [];
   SubscribedStatus subscribedStatus = SubscribedStatus.notSubscribed;
 
-
   UserModel();
+
+  bool get requiresSignupProfileSetup {
+    final normalizedUsername = UsernameValidator.normalize(userName);
+    final hasProfileImage = (picture ?? '').trim().isNotEmpty;
+    final hasCoverImage = (coverImage ?? '').trim().isNotEmpty;
+    final hasDateOfBirth = (dob ?? '').trim().isNotEmpty;
+
+    return normalizedUsername.isEmpty ||
+        !UsernameValidator.isValid(normalizedUsername) ||
+        !hasProfileImage ||
+        !hasCoverImage ||
+        !hasDateOfBirth;
+  }
+
+  static String? _readString(dynamic json, List<String> keys) {
+    if (json is! Map) return null;
+    for (final key in keys) {
+      final value = json[key];
+      if (value == null) continue;
+      final normalized = value.toString().trim();
+      if (normalized.isNotEmpty && normalized.toLowerCase() != 'null') {
+        return normalized;
+      }
+    }
+    return null;
+  }
+
+  static int _readInt(dynamic json, List<String> keys, {int fallback = 0}) {
+    if (json is! Map) return fallback;
+    for (final key in keys) {
+      final value = json[key];
+      if (value == null) continue;
+      if (value is int) return value;
+      if (value is double) return value.toInt();
+      final parsed = int.tryParse(value.toString());
+      if (parsed != null) return parsed;
+    }
+    return fallback;
+  }
+
+  static bool _readBool(dynamic json, List<String> keys,
+      {bool fallback = false}) {
+    if (json is! Map) return fallback;
+    for (final key in keys) {
+      final value = json[key];
+      if (value == null) continue;
+      if (value is bool) return value;
+      if (value is num) return value == 1;
+
+      final normalized = value.toString().trim().toLowerCase();
+      if (['1', 'true', 'yes'].contains(normalized)) return true;
+      if (['0', 'false', 'no'].contains(normalized)) return false;
+    }
+    return fallback;
+  }
+
+  static DateTime? _readDateTime(dynamic json, List<String> keys) {
+    if (json is! Map) return null;
+    for (final key in keys) {
+      final value = json[key];
+      if (value == null) continue;
+
+      if (value is num) {
+        final timestamp = value.toInt();
+        final milliseconds =
+            timestamp > 1000000000000 ? timestamp : timestamp * 1000;
+        return DateTime.fromMillisecondsSinceEpoch(milliseconds).toLocal();
+      }
+
+      final text = value.toString().trim();
+      final numeric = num.tryParse(text);
+      if (numeric != null) {
+        return _readDateTime({key: numeric}, [key]);
+      }
+
+      final parsed = DateTime.tryParse(text);
+      if (parsed != null) {
+        return parsed.toLocal();
+      }
+    }
+    return null;
+  }
 
   factory UserModel.fromJson(dynamic json) {
     UserModel model = UserModel();
-    model.id = json['id'];
+    if (json is! Map) {
+      return model;
+    }
+
+    model.id = _readInt(json, ['id', 'user_id', 'userId']);
     model.name = json['name'];
-    model.role = json['role'] == 3 ? UserRole.user : UserRole.admin;
+    model.role = _readInt(json, ['role'], fallback: 3) == 3
+        ? UserRole.user
+        : UserRole.admin;
     model.userName = json['username'] == null
         ? ''
         : json['username'].toString().toLowerCase();
     // model.category = json['category'] ?? 'Other';
 
     model.email = json['email'];
-    model.picture = json['picture'] ?? json['campaginImage'];
-    model.coverImage = json['coverImageUrl'];
+    model.picture = _readString(json, [
+      'picture',
+      'avatar_url',
+      'avatarUrl',
+      'profile_image_url',
+      'profileImageUrl',
+      'campaginImage'
+    ]);
+    model.coverImage = _readString(
+        json, ['coverImageUrl', 'cover_image_url', 'cover_image', 'coverUrl']);
 
-    model.bio = json['bio'];
+    model.createdAt = _readDateTime(json,
+        ['created_at', 'createdAt', 'date_joined', 'dateJoined', 'joined_at']);
+    model.bio =
+        _readString(json, ['bio', 'about', 'about_me', 'aboutMe']) ?? '';
     model.followingStatus = json['isFollowing'] == 0
         ? FollowingStatus.notFollowing
         : json['isFollowing'] == 1
-        ? FollowingStatus.following
-        : FollowingStatus.requested;
+            ? FollowingStatus.following
+            : FollowingStatus.requested;
     model.isFollower = json['isFollower'] == 1;
 
     model.latitude = json['latitude'];
@@ -122,8 +223,8 @@ class UserModel {
     model.genderType = model.gender == '1'
         ? GenderType.male
         : model.gender == '2'
-        ? GenderType.female
-        : GenderType.other;
+            ? GenderType.female
+            : GenderType.other;
 
     model.totalPost = json['totalActivePost'] ?? json['totalPost'] ?? 0;
     model.totalReels = json['totalReel'] ?? 0;
@@ -142,7 +243,8 @@ class UserModel {
 
     model.chatLastTimeOnline = json['chat_last_time_online'];
     model.accountCreatedWith = json['account_created_with'] ?? 1;
-    model.isVerified = json['is_verified'] == 1;
+    model.isVerified =
+        _readBool(json, ['is_verified', 'isVerified', 'verified']);
     model.chatDeleteTime =
         json['chat_delete_period'] ?? AppConfigConstants.secondsInADay;
 
@@ -160,7 +262,8 @@ class UserModel {
         ? GiftSummary.fromJson(json['giftSummary'])
         : null;
 
-    model.dob = json['dob'] ?? '';
+    model.dob =
+        json['date_of_birth'] ?? json['dateOfBirth'] ?? json['dob'] ?? '';
     model.height = json['height'] ?? '121.0';
     model.color = json['color'] ?? '';
     model.religion = json['religion'] ?? '';
@@ -177,46 +280,55 @@ class UserModel {
 
     model.interests = json['interest'] != null
         ? List<InterestModel>.from(
-        json['interest'].map((x) => InterestModel.fromJson(x)))
+            json['interest'].map((x) => InterestModel.fromJson(x)))
         : null;
     model.languages = json['language'] != null
         ? List<LanguageModel>.from(
-        json['language'].map((x) => LanguageModel.fromJson(x)))
+            json['language'].map((x) => LanguageModel.fromJson(x)))
         : null;
 
-    model.profileCategoryTypeId = json['profile_category_type'] ?? 0;
-    model.profileCategoryTypeName = json['profileCategoryName'] ?? 'Other';
+    model.profileCategoryTypeId = _readInt(json, [
+      'profile_category_type',
+      'profile_category_type_id',
+      'profileCategoryTypeId'
+    ]);
+    model.profileCategoryTypeName = _readString(json, [
+          'profileCategoryName',
+          'profile_category_type_name',
+          'profile_category_name',
+          'categoryName'
+        ]) ??
+        'Other';
 
     model.userSetting = json['userSetting'] != null
         ? List<UserSetting>.from(
-        json['userSetting'].map((x) => UserSetting.fromJson(x)))
+            json['userSetting'].map((x) => UserSetting.fromJson(x)))
         : null;
     model.features = json["featureList"] == null
         ? []
         : (json["featureList"] as List)
-        .map((e) => FeatureModel.fromJson(e))
-        .toList();
+            .map((e) => FeatureModel.fromJson(e))
+            .toList();
     return model;
-
   }
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "username": userName,
-    "email": email,
-    "picture": picture,
-    "bio": bio,
-    "phone": phone,
-    "country": country,
-    "country_code": countryCode,
-    "city": city,
-    "sex": gender,
-    "totalPost": totalPost,
-    "available_coin": coins,
-    "is_reported": isReported,
-    "paypal_id": paypalId,
-    "available_balance": balance
-  };
+        "id": id,
+        "username": userName,
+        "email": email,
+        "picture": picture,
+        "bio": bio,
+        "phone": phone,
+        "country": country,
+        "country_code": countryCode,
+        "city": city,
+        "sex": gender,
+        "totalPost": totalPost,
+        "available_coin": coins,
+        "is_reported": isReported,
+        "paypal_id": paypalId,
+        "available_balance": balance
+      };
 
   static UserModel placeholderUser() {
     UserModel model = UserModel();
@@ -266,7 +378,7 @@ class UserModel {
     }
 
     DateTime dateTime =
-    DateTime.fromMillisecondsSinceEpoch(chatLastTimeOnline! * 1000).toUtc();
+        DateTime.fromMillisecondsSinceEpoch(chatLastTimeOnline! * 1000).toUtc();
     // return '${lastSeenString.tr} ${timeago.format(dateTime)}';
     return '${lastSeenString.tr} ${dateTime.getTimeAgo}';
   }
@@ -283,6 +395,11 @@ class UserModel {
 
   bool get canUseDating {
     return gender != null && dob != null && picture != null;
+  }
+
+  String get joinedMonthYear {
+    if (createdAt == null) return '';
+    return DateFormat('MMMM yyyy').format(createdAt!);
   }
 
   ChatRoomMember get toChatRoomMember {

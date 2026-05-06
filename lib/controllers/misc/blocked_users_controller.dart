@@ -16,34 +16,43 @@ class BlockedUsersController extends GetxController {
     canLoadMoreBlockedUser = true;
   }
 
-  void getBlockedUsers() {
+  void getBlockedUsers() async {
     if (canLoadMoreBlockedUser) {
       isLoading = true;
+      update();
 
-      UsersApi.getBlockedUsers(
+      final success = await UsersApi.getBlockedUsers(
           page: blockedUserPage,
           resultCallback: (result, metadata) {
-            isLoading = false;
-            EasyLoading.dismiss();
             usersList.addAll(result);
-            usersList.unique((e)=> e.id);
+            usersList.unique((e) => e.id);
 
             blockedUserPage += 1;
             canLoadMoreBlockedUser = result.length >= metadata.perPage;
-
-            update();
           });
+
+      isLoading = false;
+      if (success) {
+        usersList.refresh();
+      }
+      update();
     }
   }
 
-  void unBlockUser(int userId) {
+  void unBlockUser(int userId) async {
     isLoading = true;
-    UsersApi.unBlockUser(
+    update();
+
+    final success = await UsersApi.unBlockUser(
         userId: userId,
         resultCallback: () {
-          isLoading = false;
           usersList.removeWhere((element) => element.id == userId);
-          update();
         });
+
+    isLoading = false;
+    if (success) {
+      usersList.refresh();
+    }
+    update();
   }
 }

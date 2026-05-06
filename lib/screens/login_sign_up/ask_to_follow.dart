@@ -2,6 +2,7 @@ import 'package:foap/screens/login_sign_up/splash_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../helper/imports/common_import.dart';
+import '../../util/shared_prefs.dart';
 
 class AskToFollow extends StatelessWidget {
   const AskToFollow({super.key});
@@ -43,72 +44,87 @@ class AskToFollow extends StatelessWidget {
           ),
         ),
         child: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(height: 24),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(26),
-                child: Image.asset(
-                  'assets/rd_logo_v2.jpeg',
-                  height: 120,
-                  width: 120,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const SizedBox(height: 24),
-              Text(
-                'RD your creative home',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.spaceGrotesk(
-                  fontSize: 34,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: -0.5,
-                  color: AppColorConstants.mainTextColor,
-                ),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                'where culture, community, and opportunity connect',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.manrope(
-                  fontSize: 17,
-                  height: 1.45,
-                  fontWeight: FontWeight.w500,
-                  color:
-                      AppColorConstants.mainTextColor.withValues(alpha: 0.82),
-                ),
-              ).hp(8),
-              const SizedBox(height: 30),
-              Container(
-                decoration: BoxDecoration(
-                  color: AppColorConstants.cardColor.withValues(alpha: 0.28),
-                  borderRadius: BorderRadius.circular(22),
-                  border: Border.all(
-                    color: AppColorConstants.themeColor.withValues(alpha: 0.2),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                  child: IntrinsicHeight(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const SizedBox(height: 24),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(26),
+                          child: Image.asset(
+                            'assets/rd_logo_new.jpeg',
+                            height: 120,
+                            width: 120,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                        Text(
+                          'RD your creative home',
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.spaceGrotesk(
+                            fontSize: 34,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: -0.5,
+                            color: AppColorConstants.mainTextColor,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          'where culture, community, and opportunity connect',
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.manrope(
+                            fontSize: 17,
+                            height: 1.45,
+                            fontWeight: FontWeight.w500,
+                            color: AppColorConstants.mainTextColor
+                                .withValues(alpha: 0.82),
+                          ),
+                        ).hp(8),
+                        const SizedBox(height: 30),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: AppColorConstants.cardColor
+                                .withValues(alpha: 0.28),
+                            borderRadius: BorderRadius.circular(22),
+                            border: Border.all(
+                              color: AppColorConstants.themeColor
+                                  .withValues(alpha: 0.2),
+                            ),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 18),
+                          child: Column(
+                            children: _rdPillars
+                                .map((item) => _PillarTile(
+                                      title: item['title']!,
+                                      subtitle: item['subtitle']!,
+                                    ))
+                                .toList(),
+                          ),
+                        ),
+                        const Spacer(),
+                        const SizedBox(height: 24),
+                        AppThemeButton(
+                          text: nextString.tr,
+                          onPress: () {
+                            SharedPrefs().setTutorialSeen();
+                            Get.offAll(() => const SplashScreen());
+                          },
+                        ).hP25,
+                        const SizedBox(height: 24),
+                      ],
+                    ).hp(DesignConstants.horizontalPadding),
                   ),
                 ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
-                child: Column(
-                  children: _rdPillars
-                      .map((item) => _PillarTile(
-                            title: item['title']!,
-                            subtitle: item['subtitle']!,
-                          ))
-                      .toList(),
-                ),
-              ),
-              const Spacer(),
-              AppThemeButton(
-                text: nextString.tr,
-                onPress: () {
-                  Get.offAll(() => const SplashScreen());
-                },
-              ).hP25,
-              const SizedBox(height: 24),
-            ],
-          ).hp(DesignConstants.horizontalPadding),
+              );
+            },
+          ),
         ),
       ),
     );

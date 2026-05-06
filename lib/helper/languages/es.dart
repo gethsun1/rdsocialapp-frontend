@@ -1,4 +1,4 @@
-class Spanish{
+class Spanish {
   static var data = {
     "Help": "Ayuda",
     "Back": "Atrás",
@@ -56,15 +56,19 @@ class Spanish{
     "No...": "No...",
     "Yes...": "Sí...",
     "Next": "Próximo",
-    "Please grant the required permission from settings to access this feature.": "Otorgue el permiso requerido desde la configuración para acceder a esta función.",
+    "Please grant the required permission from settings to access this feature.":
+        "Otorgue el permiso requerido desde la configuración para acceder a esta función.",
     "No data found": "No se encontraron datos",
     "Watch Ads": "Ver anuncios",
-    "By watching Ads, you get to earn coins_value Coin per advert you watch. Click the button to start earning! ": "Al ver anuncios, obtienes monedas coins_value por cada anuncio que miras.  ",
+    "By watching Ads, you get to earn coins_value Coin per advert you watch. Click the button to start earning! ":
+        "Al ver anuncios, obtienes monedas coins_value por cada anuncio que miras.  ",
     "No product is available": "No hay producto disponible",
-    "Some error occurred while performing purchase, please try again later.": "Se produjo algún error al realizar la compra, inténtelo nuevamente más tarde.",
+    "Some error occurred while performing purchase, please try again later.":
+        "Se produjo algún error al realizar la compra, inténtelo nuevamente más tarde.",
     "Store is not available.": "La tienda no está disponible.",
     "Cancelled by user": "Cancelado por el usuario",
-    "By signing up, you are acknowledging that you have read, understood and accept our": "Al registrarte estás reconociendo que has leído, comprendido y aceptado nuestras",
+    "By signing up, you are acknowledging that you have read, understood and accept our":
+        "Al registrarte estás reconociendo que has leído, comprendido y aceptado nuestras",
     "Terms of Service": "Términos de servicio",
     "Welcome": "Bienvenido",
     "Profile": "Perfil",
@@ -83,12 +87,17 @@ class Spanish{
     "Email or username": "Correo electrónico o nombre de usuario",
     "Login another account": "Iniciar sesión en otra cuenta",
     "Forgot Password?": "¿Has olvidado tu contraseña?",
-    "Your password has been changed successfully": "Su contraseña ha sido cambiada exitosamente",
+    "Your password has been changed successfully":
+        "Su contraseña ha sido cambiada exitosamente",
     "Resend OTP": "Reenviar OTP",
-    "Please enter the one time password sent to your email to verify your account and change your password": "Ingrese la contraseña única enviada a su correo electrónico para verificar su cuenta y cambiar su contraseña.",
-    "Let’s help you get back your account": "Te ayudamos a recuperar tu cuenta.",
-    "Please enter the one time password sent to your phone number to verify your phone number": "Ingrese la contraseña única enviada a su número de teléfono para verificar su número de teléfono",
-    "Let’s help you to change phone number": "Te ayudamos a cambiar el número de teléfono.",
+    "Please enter the one time password sent to your email to verify your account and change your password":
+        "Ingrese la contraseña única enviada a su correo electrónico para verificar su cuenta y cambiar su contraseña.",
+    "Let’s help you get back your account":
+        "Te ayudamos a recuperar tu cuenta.",
+    "Please enter the one time password sent to your phone number to verify your phone number":
+        "Ingrese la contraseña única enviada a su número de teléfono para verificar su número de teléfono",
+    "Let’s help you to change phone number":
+        "Te ayudamos a cambiar el número de teléfono.",
     "If you didn’t receive code,": "Si no recibió el código,",
     "Send": "Enviar",
     "Sent": "Enviado",
@@ -126,14 +135,17 @@ class Spanish{
     "Please enter confirm password": "Por favor ingrese confirmar contraseña",
     "Passwords do not match": "Las contraseñas no coinciden",
     "Please enter user name": "Por favor ingrese el nombre de usuario",
-    "Please enter valid user name": "Por favor ingrese un nombre de usuario válido",
+    "Please enter valid user name":
+        "Por favor ingrese un nombre de usuario válido",
     "Enter new password": "Ingrese una nueva contraseña",
     "Enter confirm password": "Ingrese confirmar contraseña",
     "Enter old password": "Ingrese la contraseña anterior",
     "Please enter you password": "Por favor ingrese su contraseña",
     "Your password is too short": "Tu contraseña es demasiado corta",
-    "Your password is acceptable but not strong": "Su contraseña es aceptable pero no segura",
-    "Your password must contain letter and number": "Su contraseña debe contener letra y número.",
+    "Your password is acceptable but not strong":
+        "Su contraseña es aceptable pero no segura",
+    "Your password must contain letter and number":
+        "Su contraseña debe contener letra y número.",
     "Your password is great": "Tu contraseña es genial.",
     "Joined users": "Usuarios unidos",
     "OR": "O",
@@ -142,9 +154,12 @@ class Spanish{
     "New Password": "Nueva contraseña",
     "Confirm Password": "confirmar Contraseña",
     "Categories": "Categorías",
-    "Such kind of messages are not allowed": "Este tipo de mensajes no están permitidos.",
-    "There is some problem, Please try again later": "Hay algún problema. Vuelve a intentarlo más tarde.",
-    "Sorry, but the content you're attempting to upload is not permitted according to our policies.": "Lo sentimos, pero el contenido que intentas cargar no está permitido según nuestras políticas.",
+    "Such kind of messages are not allowed":
+        "Este tipo de mensajes no están permitidos.",
+    "There is some problem, Please try again later":
+        "Hay algún problema. Vuelve a intentarlo más tarde.",
+    "Sorry, but the content you're attempting to upload is not permitted according to our policies.":
+        "Lo sentimos, pero el contenido que intentas cargar no está permitido según nuestras políticas.",
     "Camera": "Cámara",
     "Photo": "Foto",
     "Sent a Photo": "Envió una foto",
@@ -186,7 +201,8 @@ class Spanish{
     "Search users": "Buscar usuarios",
     "Log Out": "Finalizar la sesión",
     "Change Password": "Cambiar la contraseña",
-    "Are you sure, you want to logout?": "¿Está seguro de que desea cerrar sesión?",
+    "Are you sure, you want to logout?":
+        "¿Está seguro de que desea cerrar sesión?",
     "Change Location": "Cambiar ubicación",
     "Location": "Ubicación",
     "Sent a Location": "Envió una ubicación",
@@ -194,14 +210,17 @@ class Spanish{
     "New password": "Nueva contraseña",
     "Confirm password": "Confirmar Contraseña",
     "Reset password": "Restablecer contraseña",
-    "Please enter valid email address": "Por favor ingrese una dirección de correo electrónico válida",
-    "Please enter valid phone number": "Por favor ingresa un número de teléfono válido",
+    "Please enter valid email address":
+        "Por favor ingrese una dirección de correo electrónico válida",
+    "Please enter valid phone number":
+        "Por favor ingresa un número de teléfono válido",
     "Please upload image": "Por favor sube imagen",
     "Joined": "Unido",
     "Join": "Unirse",
     "Fee": "Tarifa",
     "User name is updated": "El nombre de usuario está actualizado.",
-    "User profile category type is updated": "El tipo de categoría de perfil de usuario se actualiza",
+    "User profile category type is updated":
+        "El tipo de categoría de perfil de usuario se actualiza",
     "Phone number": "Número de teléfono",
     "Change Phone number": "Cambiar número de teléfono",
     "Update": "Actualizar",
@@ -283,7 +302,8 @@ class Spanish{
     "Reconnecting...": "Reconectando...",
     "typing...": "mecanografía...",
     "Post deleted": "Publicación eliminada",
-    "No post updates found": "No se encontraron actualizaciones de publicaciones",
+    "No post updates found":
+        "No se encontraron actualizaciones de publicaciones",
     "No video updates found": "No se encontraron actualizaciones de vídeo",
     "No user found": "No se encontró ningún usuario",
     "No hashtag found": "No se encontró ningún hashtag",
@@ -306,12 +326,15 @@ class Spanish{
     "Invite user": "Invitar usuario",
     "Invite friends": "invitar amigos",
     "See All": "Ver todo",
-    "Already invited {{user_name}} in live and waiting for confirmation": "Ya invitado {{user_name}} en vivo y esperando confirmación",
+    "Already invited {{user_name}} in live and waiting for confirmation":
+        "Ya invitado {{user_name}} en vivo y esperando confirmación",
     "Waiting to accept": "esperando a aceptar",
     "Invitation declined": "Invitación rechazada",
-    "Your invitation for battle is declined by {{user_name}}": "Tu invitación a la batalla ha sido rechazada por {{user_name}}",
+    "Your invitation for battle is declined by {{user_name}}":
+        "Tu invitación a la batalla ha sido rechazada por {{user_name}}",
     "No response": "Sin respuesta",
-    "No response from {{user_name}} on live battle request": "No hay respuesta de {{user_name}} a petición de batalla en vivo",
+    "No response from {{user_name}} on live battle request":
+        "No hay respuesta de {{user_name}} a petición de batalla en vivo",
     "Clubs": "Clubs",
     "Top Clubs": "Mejores clubes",
     "Create club": "Crear club",
@@ -336,17 +359,23 @@ class Spanish{
     "Send Messages": "Enviar mensajes",
     "All Participants": "Todos los participantes",
     "Only Admins": "Sólo administradores",
-    "Follow some user to start chat": "Sigue a algún usuario para iniciar el chat",
+    "Follow some user to start chat":
+        "Sigue a algún usuario para iniciar el chat",
     "No chat found": "No se encontró ningún chat",
-    "Make some audio/video call with friends": "Haz alguna llamada de audio/video con amigos",
+    "Make some audio/video call with friends":
+        "Haz alguna llamada de audio/video con amigos",
     "No call found": "No se encontró ninguna llamada",
     "No Story found": "No se encontró ninguna historia",
-    "Post some stories to create highlights": "Publica algunas historias para crear momentos destacados.",
+    "Post some stories to create highlights":
+        "Publica algunas historias para crear momentos destacados.",
     "No Notification found": "No se encontró ninguna notificación",
     "Delete account": "Eliminar cuenta",
-    "Are you sure to delete account, Once account is deleted your all data will be deleted": "¿Está seguro de eliminar la cuenta? Una vez que se elimine la cuenta, se eliminarán todos sus datos.",
-    "Please allow access to camera and microphone to start video call": "Permita el acceso a la cámara y al micrófono para iniciar la videollamada.",
-    "Please allow access to microphone to start audio call": "Permita el acceso al micrófono para iniciar la llamada de audio.",
+    "Are you sure to delete account, Once account is deleted your all data will be deleted":
+        "¿Está seguro de eliminar la cuenta? Una vez que se elimine la cuenta, se eliminarán todos sus datos.",
+    "Please allow access to camera and microphone to start video call":
+        "Permita el acceso a la cámara y al micrófono para iniciar la videollamada.",
+    "Please allow access to microphone to start audio call":
+        "Permita el acceso al micrófono para iniciar la llamada de audio.",
     "Star": "Estrella",
     "UnStar": "UnStar",
     "Starred messages": "Mensajes destacados",
@@ -366,9 +395,12 @@ class Spanish{
     "Unlock app with Touch ID": "Desbloquear aplicación con Touch ID",
     "Use Face ID": "Usar identificación facial",
     "Use Touch ID": "Usar identificación táctil",
-    "Unlock you app with touch id / face id": "Desbloquea tu aplicación con Touch ID/Face ID",
-    "Please authenticate to use biometric login into app": "Autentíquese para utilizar el inicio de sesión biométrico en la aplicación",
-    "Please authenticate to remove biometric login into app": "Autentíquese para eliminar el inicio de sesión biométrico en la aplicación",
+    "Unlock you app with touch id / face id":
+        "Desbloquea tu aplicación con Touch ID/Face ID",
+    "Please authenticate to use biometric login into app":
+        "Autentíquese para utilizar el inicio de sesión biométrico en la aplicación",
+    "Please authenticate to remove biometric login into app":
+        "Autentíquese para eliminar el inicio de sesión biométrico en la aplicación",
     "Edit Post": "Editar publicación",
     "Delete Post": "Eliminar publicación",
     "Posting...": "Destino...",
@@ -376,23 +408,27 @@ class Spanish{
     "Retry": "Rever",
     "Discard": "Desechar",
     "Please enter group name": "Por favor ingrese el nombre del grupo",
-    "Please select some users to create group": "Por favor seleccione algunos usuarios para crear un grupo",
+    "Please select some users to create group":
+        "Por favor seleccione algunos usuarios para crear un grupo",
     "Group name": "Nombre del grupo",
     "Admin": "Administración",
     "You are Admin": "Eres administrador",
     "Leave group": "Dejar grupo",
     "Delete group": "Eliminar grupo",
-    "Only admins can send message": "Sólo los administradores pueden enviar mensajes",
+    "Only admins can send message":
+        "Sólo los administradores pueden enviar mensajes",
     "is added to group": "se agrega al grupo",
     "is removed from group": "es eliminado del grupo",
     "is removed from admins": "se elimina de los administradores",
     "left the group": "dejó el grupo",
     "is now admin": "ahora es administrador",
     "Time to update app": "Es hora de actualizar la aplicación",
-    "You are using older version of app, You need to update the app to continue": "Estás utilizando una versión anterior de la aplicación. Debes actualizar la aplicación para continuar.",
+    "You are using older version of app, You need to update the app to continue":
+        "Estás utilizando una versión anterior de la aplicación. Debes actualizar la aplicación para continuar.",
     "Copy": "Copiar",
-    "Stranger chat": "charla con extraños",
-    "Have fun by chatting with random peoples": "Diviértete chateando con personas al azar.",
+    "Incognito chat": "Chat incógnito",
+    "Have fun by chatting with random peoples":
+        "Diviértete chateando con personas al azar.",
     "Tvs": "televisores",
     "Checking connection..": "Comprobando conexión..",
     "Going live": "En vivo",
@@ -412,7 +448,8 @@ class Spanish{
     "Gifts received": "Regalos recibidos",
     "Gifts sent": "Regalos enviados",
     "Join competitions and earn money": "Únete a concursos y gana dinero",
-    "A place for people of common interest": "Un lugar para personas de interés común.",
+    "A place for people of common interest":
+        "Un lugar para personas de interés común.",
     "Live Users": "Usuarios en vivo",
     "Reel": "Carrete",
     "Reels": "Bobinas",
@@ -420,29 +457,36 @@ class Spanish{
     "Original audio": "audio original",
     "Use": "Usar",
     "View Gift": "Ver regalo",
-    "Anyone can see this club and join the club": "Cualquiera puede ver este club y unirse al club.",
-    "Only requested member or joined member can see it": "Sólo el miembro solicitado o el miembro unido puede verlo",
+    "Anyone can see this club and join the club":
+        "Cualquiera puede ver este club y unirse al club.",
+    "Only requested member or joined member can see it":
+        "Sólo el miembro solicitado o el miembro unido puede verlo",
     "Communication": "Comunicación",
     "Chat group": "grupo de chat",
-    "Create chat group for discussion with club users": "Crear un grupo de chat para discutir con los usuarios del club.",
+    "Create chat group for discussion with club users":
+        "Crear un grupo de chat para discutir con los usuarios del club.",
     "Basic info": "Información básica",
     "Club name": "nombre del club",
     "Add Cover Photo": "Agregar foto de portada",
-    "Give people an idea of what your group is about with a photo": "Dale a la gente una idea de qué se trata tu grupo con una foto.",
+    "Give people an idea of what your group is about with a photo":
+        "Dale a la gente una idea de qué se trata tu grupo con una foto.",
     "Cover photo": "Foto de portada",
     "Leave club": "dejar el club",
     "Remove": "Eliminar",
     "Please enter club name": "Por favor ingrese el nombre del club",
-    "Please enter club description": "Por favor ingrese la descripción del club",
+    "Please enter club description":
+        "Por favor ingrese la descripción del club",
     "Please select club image": "Por favor seleccione la imagen del club",
     "On request": "A solicitud",
-    "Interested users can request to join, admin can approve the request": "Los usuarios interesados ​​pueden solicitar unirse, el administrador puede aprobar la solicitud",
+    "Interested users can request to join, admin can approve the request":
+        "Los usuarios interesados ​​pueden solicitar unirse, el administrador puede aprobar la solicitud",
     "Watch Ads to earn coins": "Mira anuncios para ganar monedas",
     "You need": "necesitas",
     "To join this competition": "Para unirte a esta competencia",
     "Files": "Archivos",
     "File": "Archivo",
-    "Finding a perfect user to chat": "Encontrar un usuario perfecto para chatear",
+    "Finding a perfect user to chat":
+        "Encontrar un usuario perfecto para chatear",
     "Allow": "Permitir",
     "Share location": "Compartir ubicación",
     "More from": "Más de",
@@ -452,9 +496,11 @@ class Spanish{
     "Live chat": "chat en vivo",
     "Subscribe channel to view": "Suscríbete al canal para ver",
     "Subscribe using": "Suscríbete usando",
-    "You are subscribed to this channel now": "Estás suscrito a este canal ahora.",
+    "You are subscribed to this channel now":
+        "Estás suscrito a este canal ahora.",
     "Redeem": "Canjear",
-    "Minimum withdrawal limit is {{cash}}\$": "El límite mínimo de retiro es {{cash}}\$",
+    "Minimum withdrawal limit is {{cash}}\$":
+        "El límite mínimo de retiro es {{cash}}\$",
     "Posted": "Al corriente",
     "Live History": "Historia en vivo",
     "Started at": "Comenzó en",
@@ -465,12 +511,15 @@ class Spanish{
     "Verified on": "Verificado en",
     "Request sent on": "Solicitud enviada el",
     "We are reviewing your profile": "Estamos revisando tu perfil",
-    "Verified accounts have blue checkmark next to their names to show that we have confirmed you are a real person": "Las cuentas verificadas tienen una marca de verificación azul junto a sus nombres para mostrar que hemos confirmado que eres una persona real.",
+    "Verified accounts have blue checkmark next to their names to show that we have confirmed you are a real person":
+        "Las cuentas verificadas tienen una marca de verificación azul junto a sus nombres para mostrar que hemos confirmado que eres una persona real.",
     "Document type": "Tipo de documento",
     "Upload document": "Subir documento",
-    "Please select a document type": "Por favor seleccione un tipo de documento",
+    "Please select a document type":
+        "Por favor seleccione un tipo de documento",
     "Please upload identity proof": "Por favor cargue prueba de identidad",
-    "Profile verification request is sent, you will be updated soon": "Se envía la solicitud de verificación de perfil, se actualizará pronto",
+    "Profile verification request is sent, you will be updated soon":
+        "Se envía la solicitud de verificación de perfil, se actualizará pronto",
     "Status": "Estado",
     "In processing": "En procesamiento",
     "Cancelled": "Cancelado",
@@ -480,7 +529,8 @@ class Spanish{
     "Pan card": "tarjeta panorámica",
     "Other": "Otro",
     "Message to reviewer": "Mensaje al revisor",
-    "Upload both front and back side of document": "Cargue el anverso y el reverso del documento",
+    "Upload both front and back side of document":
+        "Cargue el anverso y el reverso del documento",
     "You can upload maximum 2 images": "Puedes subir máximo 2 imágenes.",
     "Payment and coins": "Pago y monedas",
     "Change Language": "Cambiar idioma",
@@ -541,8 +591,10 @@ class Spanish{
     "Save E-Ticket": "Guardar billete electrónico",
     "Ticket Saved": "Boleto guardado",
     "Confirmed": "Confirmado",
-    "Placing order, please wait...": "Realizando el pedido, por favor espere...",
-    "Do not close or refresh the app until the process is completed": "No cierre ni actualice la aplicación hasta que se complete el proceso.",
+    "Placing order, please wait...":
+        "Realizando el pedido, por favor espere...",
+    "Do not close or refresh the app until the process is completed":
+        "No cierre ni actualice la aplicación hasta que se complete el proceso.",
     "Book more": "Reserva más",
     "Your transaction is completed": "Su transacción está completa",
     "Error in booking..": "Error al reservar..",
@@ -557,7 +609,8 @@ class Spanish{
     "Upcoming": "Próximo",
     "Free": "Gratis",
     "Public group": "grupo publico",
-    "Anyone can view this group and can join this group, You can remove any member in future": "Cualquiera puede ver este grupo y unirse a él. Puedes eliminar a cualquier miembro en el futuro.",
+    "Anyone can view this group and can join this group, You can remove any member in future":
+        "Cualquiera puede ver este grupo y unirse a él. Puedes eliminar a cualquier miembro en el futuro.",
     "Join requests": "Solicitudes de unión",
     "Join invitations": "Unirse a invitaciones",
     "Invites": "invita",
@@ -584,42 +637,55 @@ class Spanish{
     "Month": "Mes",
     "Year": "Año",
     "No dating profiles found": "No se encontraron perfiles de citas.",
-    "Change your preferences and explore more": "Cambia tus preferencias y explora más",
+    "Change your preferences and explore more":
+        "Cambia tus preferencias y explora más",
     "No matching profiles found": "No se encontraron perfiles coincidentes",
-    "Explore more dating profiles and get matched": "Explora más perfiles de citas y haz que te emparejen",
+    "Explore more dating profiles and get matched":
+        "Explora más perfiles de citas y haz que te emparejen",
     "No profiles found": "No se encontraron perfiles",
     "Explore more dating profiles": "Explora más perfiles de citas",
     "Set location": "Establecer ubicación",
     "Set your location services": "Configura tus servicios de ubicación",
-    "We use your location to show you potential matches in your area": "Usamos su ubicación para mostrarle posibles coincidencias en su área",
+    "We use your location to show you potential matches in your area":
+        "Usamos su ubicación para mostrarle posibles coincidencias en su área",
     "Allow notifications": "Permitir notificaciones",
-    "We'll let you know when you get new matches and messages": "Te avisaremos cuando recibas nuevas coincidencias y mensajes.",
+    "We'll let you know when you get new matches and messages":
+        "Te avisaremos cuando recibas nuevas coincidencias y mensajes.",
     "Not now": "Ahora no",
     "Add name": "Agregar nombre",
     "What's your first name?": "¿Cuál es tu nombre?",
     "Add photos": "Agregar fotos",
-    "Profile with more good photos are getting more matches, so add your best photos": "Los perfiles con más buenas fotos obtienen más coincidencias, así que agrega tus mejores fotos.",
+    "Profile with more good photos are getting more matches, so add your best photos":
+        "Los perfiles con más buenas fotos obtienen más coincidencias, así que agrega tus mejores fotos.",
     "When's your birthday?": "¿Cuándo es tu cumpleaños?",
-    "Be accurate to specify this to get genuine matches": "Sea preciso al especificar esto para obtener coincidencias genuinas.",
+    "Be accurate to specify this to get genuine matches":
+        "Sea preciso al especificar esto para obtener coincidencias genuinas.",
     "Mention your gender": "Menciona tu género",
     "Who would you like to date?": "¿Con quién te gustaría salir?",
-    "You can choose more than one answer and change any time": "Puedes elegir más de una respuesta y cambiarla en cualquier momento.",
+    "You can choose more than one answer and change any time":
+        "Puedes elegir más de una respuesta y cambiarla en cualquier momento.",
     "We need to know more about you.": "Necesitamos saber más sobre usted.",
     "Add Interests.": "Agregar intereses.",
     "Add your interests and habits": "Añade tus intereses y hábitos",
     "Add Professional Details.": "Agregue detalles profesionales.",
     "Enable Dating": "Habilitar citas",
-    "You need to enable dating profile and have to provide your profile information to start dating peoples": "Debe habilitar el perfil de citas y proporcionar la información de su perfil para comenzar a salir con personas.",
-    "Follow friends to send post.": "Sigue a tus amigos para enviar publicaciones.",
+    "You need to enable dating profile and have to provide your profile information to start dating peoples":
+        "Debe habilitar el perfil de citas y proporcionar la información de su perfil para comenzar a salir con personas.",
+    "Follow friends to send post.":
+        "Sigue a tus amigos para enviar publicaciones.",
     "Choose profile category type": "Elija el tipo de categoría de perfil",
-    "Category will help people find accounts like yours. You can change this": "La categoría ayudará a las personas a encontrar cuentas como la suya. ",
-    "We will search user in your specified category": "Buscaremos usuarios en su categoría especificada.",
+    "Category will help people find accounts like yours. You can change this":
+        "La categoría ayudará a las personas a encontrar cuentas como la suya. ",
+    "We will search user in your specified category":
+        "Buscaremos usuarios en su categoría especificada.",
     "Favourite": "Favorito",
     "Subscribed": "suscrito",
     "Install this cool app from": "Instala esta genial aplicación desde",
     "Account is deleted successfully": "La cuenta se eliminó exitosamente",
-    "Are you sure to report this post?": "¿Estás seguro de reportar esta publicación?",
-    "Are you sure to block this user?": "¿Estás seguro de bloquear a este usuario?",
+    "Are you sure to report this post?":
+        "¿Estás seguro de reportar esta publicación?",
+    "Are you sure to block this user?":
+        "¿Estás seguro de bloquear a este usuario?",
     "Male": "Masculino",
     "Female": "Femenino",
     "Not specified": "No especificado",
@@ -633,8 +699,10 @@ class Spanish{
     "Select": "Seleccionar",
     "Dislike": "Aversión",
     "Do you smoke?": "¿Fuma usted?",
-    "Are you sure, you want to leave group?": "¿Estás seguro de que quieres abandonar el grupo?",
-    "Are you sure, you want to delete group?": "¿Estás seguro de que deseas eliminar el grupo?",
+    "Are you sure, you want to leave group?":
+        "¿Estás seguro de que quieres abandonar el grupo?",
+    "Are you sure, you want to delete group?":
+        "¿Estás seguro de que deseas eliminar el grupo?",
     "Today": "Hoy",
     "This week": "Esta semana",
     "This month": "este mes",
@@ -684,7 +752,8 @@ class Spanish{
     "Boost Post": "Publicación de impulso",
     "Goal": "Meta",
     "Select a goal": "Selecciona un objetivo",
-    "What results would you like from this ad?": "¿Qué resultados le gustaría obtener de este anuncio?",
+    "What results would you like from this ad?":
+        "¿Qué resultados le gustaría obtener de este anuncio?",
     "More profile visits": "Más visitas al perfil",
     "More website visits": "Más visitas al sitio web",
     "More messages": "Más mensajes",
@@ -696,9 +765,11 @@ class Spanish{
     "Audience": "Audiencia",
     "Define your audience": "Defina su audiencia",
     "Automatic": "Automático",
-    "Targets people similar to your followers": "Se dirige a personas similares a tus seguidores",
+    "Targets people similar to your followers":
+        "Se dirige a personas similares a tus seguidores",
     "Create your own": "Crea el tuyo",
-    "Manually enter your targeting options": "Ingrese manualmente sus opciones de orientación",
+    "Manually enter your targeting options":
+        "Ingrese manualmente sus opciones de orientación",
     "Create audience": "Crear audiencia",
     "Edit audience": "Editar audiencia",
     "Audience name": "Nombre de la audiencia",
@@ -709,8 +780,10 @@ class Spanish{
     "Local": "Local",
     "Your current location": "Tu ubicación actual",
     "Radius": "Radio",
-    "We suggest adding a broad range of locations to cover the largest surrounding areas, including countries, countries/regions, and towns/cities.": "Sugerimos agregar una amplia gama de ubicaciones para cubrir las áreas circundantes más grandes, incluidos países, países/regiones y pueblos/ciudades.",
-    "We suggest adding a broad range of interests to cover the largest audience.": "Sugerimos agregar una amplia gama de intereses para cubrir la audiencia más amplia.",
+    "We suggest adding a broad range of locations to cover the largest surrounding areas, including countries, countries/regions, and towns/cities.":
+        "Sugerimos agregar una amplia gama de ubicaciones para cubrir las áreas circundantes más grandes, incluidos países, países/regiones y pueblos/ciudades.",
+    "We suggest adding a broad range of interests to cover the largest audience.":
+        "Sugerimos agregar una amplia gama de intereses para cubrir la audiencia más amplia.",
     "Profile Preferences": "Preferencias de perfil",
     "Budget and duration": "Presupuesto y duración",
     "Total spend": "Gasto total",
@@ -727,8 +800,10 @@ class Spanish{
     "Contact Us": "Contáctenos",
     "Book Now": "Reserva ahora",
     "Please enter an audience name": "Por favor ingresa un nombre de audiencia",
-    "Please enter the location of the target audience": "Por favor ingrese la ubicación del público objetivo",
-    "Please enter the audience's interests": "Por favor ingrese los intereses de la audiencia",
+    "Please enter the location of the target audience":
+        "Por favor ingrese la ubicación del público objetivo",
+    "Please enter the audience's interests":
+        "Por favor ingrese los intereses de la audiencia",
     "Please select gender and age": "Por favor seleccione sexo y edad",
     "Thanks": "Gracias",
     "Sponsored": "Patrocinado",
@@ -770,26 +845,31 @@ class Spanish{
     "Please select experience.": "Por favor seleccione experiencia.",
     "Please enter education.": "Por favor ingresa educación.",
     "Please enter cover letter.": "Por favor ingrese la carta de presentación.",
-    "Your have applied for this job successfully": "Has solicitado este trabajo con éxito",
+    "Your have applied for this job successfully":
+        "Has solicitado este trabajo con éxito",
     "Tap to edit": "Toca para editar",
     "Shared in": "Compartido en",
     "Comment is deleted successfully": "El comentario se eliminó exitosamente.",
-    "Comment is reported successfully": "El comentario se reportó exitosamente.",
+    "Comment is reported successfully":
+        "El comentario se reportó exitosamente.",
     "Replying to": "Respondiendo a",
     "more replies": "más respuestas",
     "You reacted to their story": "Reaccionaste a su historia.",
     "You replied to their story": "Respondiste a su historia.",
     "Follow requests": "Seguir solicitudes",
-    "Accept reject the pending Follow requests": "Aceptar rechazar las solicitudes pendientes de Seguir",
+    "Accept reject the pending Follow requests":
+        "Aceptar rechazar las solicitudes pendientes de Seguir",
     "started following you": "Empecé a seguirte",
     "sent you follow request": "te envié la solicitud de seguimiento",
     "commented on your post": "comentó en tu publicación",
     "liked your post": "Me gustó tu publicación",
     "Admin Added new competition": "Administrador Añadido nuevo concurso",
     "Replied on your support request": "Respondió a su solicitud de soporte",
-    "Congratulations, Your verification request has been approved.": "Felicitaciones, su solicitud de verificación ha sido aprobada.",
+    "Congratulations, Your verification request has been approved.":
+        "Felicitaciones, su solicitud de verificación ha sido aprobada.",
     "Share online status": "Compartir estado en línea",
-    "If you don't share your last seen and online, you won’t be able to see other people's last seen and online status also": "Si no comparte su última visita y su estado en línea, tampoco podrá ver la última vez que fue vista ni su estado en línea.",
+    "If you don't share your last seen and online, you won’t be able to see other people's last seen and online status also":
+        "Si no comparte su última visita y su estado en línea, tampoco podrá ver la última vez que fue vista ni su estado en línea.",
     "Copy link": "Copiar enlace",
     "Created by SinghCoders": "Creado por SinghCoders",
     "Banned users": "Usuarios prohibidos",
@@ -801,14 +881,16 @@ class Spanish{
     "Remove from moderator": "Quitar del moderador",
     "Ban for 60 minute": "Prohibición por 60 minutos",
     "Permanent ban": "Prohibición permanente",
-    "You are not allowed to join this live": "No tienes permitido unirte a este directo.",
+    "You are not allowed to join this live":
+        "No tienes permitido unirte a este directo.",
     "is a moderator now": "es moderador ahora",
     "is removed from moderators": "es eliminado de los moderadores",
     "Copied": "Copiado",
     "Add location": "Agregar ubicación",
     "added a new event :": "añadido un nuevo evento:",
     "added a new competition :": "Agregó una nueva competencia:",
-    "added a new fund raising campaign :": "Agregó una nueva campaña de recaudación de fondos:",
+    "added a new fund raising campaign :":
+        "Agregó una nueva campaña de recaudación de fondos:",
     "added a new job opening :": "agregó una nueva oferta de trabajo:",
     "added a new offer :": "agregó una nueva oferta:",
     "added a new product for sale :": "añadido un nuevo producto a la venta:",
@@ -843,7 +925,8 @@ class Spanish{
     "Subscribe": "Suscribir",
     "Are you sure to subscribe": "¿Estás seguro de suscribirte?",
     "For subscribers only": "Sólo para suscriptores",
-    "Subscribe {{userName}} to view this content": "Suscribir {{userName}} para ver este contenido",
+    "Subscribe {{userName}} to view this content":
+        "Suscribir {{userName}} para ver este contenido",
     "My subscribers": "Mis suscriptores",
     "My subscriptions": "Mis suscripciones",
     "Subscribed you": "Te suscribiste",
@@ -854,12 +937,16 @@ class Spanish{
     "Collaborations": "Colaboraciones",
     "Collaboration request": "Solicitud de colaboración",
     "No collaborator found": "No se encontró ningún colaborador",
-    "Search some user to add as collaborator": "Buscar algún usuario para agregar como colaborador",
-    "Maximum 5 collaborators can be added in a post": "Se pueden agregar máximo 5 colaboradores en una publicación",
-    "Invited you to collaborate on post": "Te invitó a colaborar en la publicación.",
+    "Search some user to add as collaborator":
+        "Buscar algún usuario para agregar como colaborador",
+    "Maximum 5 collaborators can be added in a post":
+        "Se pueden agregar máximo 5 colaboradores en una publicación",
+    "Invited you to collaborate on post":
+        "Te invitó a colaborar en la publicación.",
     "Withdraw collaboration": "Retirar colaboración",
     "Account is private": "La cuenta es privada.",
-    "Follow this account to view posts": "Sigue esta cuenta para ver publicaciones",
+    "Follow this account to view posts":
+        "Sigue esta cuenta para ver publicaciones",
     "Add account": "Agregar cuenta",
     "Switch account": "Cambiar de cuenta"
   };

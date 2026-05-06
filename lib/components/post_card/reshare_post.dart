@@ -5,8 +5,9 @@ import '../../model/post_model.dart';
 
 class ReSharePost extends StatefulWidget {
   final PostModel post;
+  final VoidCallback? repostCompleted;
 
-  const ReSharePost({super.key, required this.post});
+  const ReSharePost({super.key, required this.post, this.repostCompleted});
 
   @override
   ReSharePostState createState() => ReSharePostState();
@@ -62,7 +63,8 @@ class ReSharePostState extends State<ReSharePost> {
                               postId: widget.post.id,
                               comment: commentInputField.text,
                               enableComments:
-                                  postCardController.enableComments.value);
+                                  postCardController.enableComments.value,
+                              successHandler: widget.repostCompleted);
                           Get.back();
                         }),
                   ],

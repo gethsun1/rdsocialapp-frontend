@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/screens/login_sign_up/auth_tab.dart';
+import 'package:foap/util/shared_prefs.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class TutorialScreen extends StatefulWidget {
@@ -152,6 +153,7 @@ class TutorialScreenState extends State<TutorialScreen> {
   Padding addActionBtn() {
     return AppThemeButton(
       onPress: () {
+        SharedPrefs().setTutorialSeen();
         Get.to(() => const AuthTab());
       },
       text: signInString.tr,

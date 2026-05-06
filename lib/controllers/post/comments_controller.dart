@@ -68,8 +68,8 @@ class CommentsController extends GetxController {
           CommentModel mainComment =
               comments.where((e) => e.id == parentId).first;
           mainComment.currentPageForReplies = metadata.currentPage + 1;
-          mainComment.pendingReplies = metadata.totalCount -
-              (metadata.currentPage * metadata.perPage);
+          mainComment.pendingReplies =
+              metadata.totalCount - (metadata.currentPage * metadata.perPage);
           mainComment.replies.addAll(result);
           update();
         });
@@ -92,13 +92,13 @@ class CommentsController extends GetxController {
             comments.add(newComment);
           } else {
             newComment.level = 2;
-            CommentModel mainComment = comments
-                .where((e) => e.id == replyingComment.value!.id)
-                .first;
+            CommentModel mainComment =
+                comments.where((e) => e.id == replyingComment.value!.id).first;
             mainComment.replies.add(newComment);
           }
 
           replyingComment.value = null;
+          commentPosted();
           update();
         });
   }
@@ -109,15 +109,13 @@ class CommentsController extends GetxController {
     } else {
       CommentModel mainComment =
           comments.where((e) => e.id == comment.parentId).first;
-      mainComment.replies
-          .removeWhere((element) => element.id == comment.id);
+      mainComment.replies.removeWhere((element) => element.id == comment.id);
     }
 
     update();
     PostApi.deleteComment(
         resultCallback: () {
-          AppUtil.showToast(
-              message: commentIsDeletedString, isSuccess: true);
+          AppUtil.showToast(message: commentIsDeletedString, isSuccess: true);
         },
         commentId: comment.id);
   }
@@ -125,8 +123,7 @@ class CommentsController extends GetxController {
   void reportComment({required int commentId}) {
     PostApi.reportComment(
         resultCallback: () {
-          AppUtil.showToast(
-              message: commentIsReportedString, isSuccess: true);
+          AppUtil.showToast(message: commentIsReportedString, isSuccess: true);
         },
         commentId: commentId);
   }
@@ -155,6 +152,7 @@ class CommentsController extends GetxController {
           comments.add(CommentModel.fromNewMessage(
               type, _userProfileManager.user.value!,
               filePath: uploadedImageData.last, id: id));
+          commentPosted();
           update();
         });
   }
@@ -168,9 +166,9 @@ class CommentsController extends GetxController {
         Uint8List mainFileData = await media.file!.compress();
 
         //media
-        File file = await File(
-                '${tempDir.path}/${media.id!.replaceAll('/', '')}.png')
-            .create();
+        File file =
+            await File('${tempDir.path}/${media.id!.replaceAll('/', '')}.png')
+                .create();
         file.writeAsBytesSync(mainFileData);
 
         await MiscApi.uploadFile(file.path,

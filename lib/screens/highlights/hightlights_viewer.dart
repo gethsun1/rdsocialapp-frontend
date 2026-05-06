@@ -43,17 +43,17 @@ class _HighlightViewerState extends State<HighlightViewer> {
           //         .picture // give your profile url
           //     ),
           storyItems: [
-            for (HighlightMediaModel media in widget.highlight.medias.reversed)
+            for (HighlightMediaModel media in widget.highlight.medias)
               media.story.isVideoPost() == true
                   ? StoryItem(
-                      url: media.story.video!,
+                      url: media.story.video ?? '',
                       type: StoryItemType.video,
                       viewers: [],
                       duration: media.story.videoDuration != null
                           ? media.story.videoDuration! ~/ 1000
                           : null)
                   : StoryItem(
-                      url: media.story.image!,
+                      url: media.story.image ?? '',
                       type: StoryItemType.image,
                       viewers: [],
                     )

@@ -27,7 +27,7 @@ class NotificationTile extends StatelessWidget {
     return Container(
       color: notification.readStatus
           ? Colors.transparent
-          : AppColorConstants.themeColor.withOpacity(0.1),
+          : AppColorConstants.themeColor.withValues(alpha: 0.1),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -87,7 +87,7 @@ class NotificationTile extends StatelessWidget {
                     imageUrl: notification.post!.gallery.first.thumbnail)
                 .round(20),
         ],
-      ).p(DesignConstants.horizontalPadding/2),
+      ).p(DesignConstants.horizontalPadding / 2),
     );
   }
 

@@ -196,7 +196,8 @@ class ChatDetailController extends GetxController {
     }
   }
 
-  Future<void> getRoomDetail(int roomId, Function(ChatRoomModel) callback) async {
+  Future<void> getRoomDetail(
+      int roomId, Function(ChatRoomModel) callback) async {
     ChatRoomModel? chatRoom = await getIt<DBManager>().getRoomById(roomId);
 
     if (chatRoom == null) {
@@ -1244,7 +1245,7 @@ class ChatDetailController extends GetxController {
 
     String reactedOnStory = jsonEncode(story.toJson()).encrypted();
 
-    print('reactedOnStory ${story.toJson()}');
+    debugPrint('reactedOnStory ${story.toJson()}');
 
     if (encryptedTextMessage.removeAllWhitespace.trim().isNotEmpty) {
       String localMessageId = randomId();
@@ -1413,7 +1414,11 @@ class ChatDetailController extends GetxController {
         } else if (media.mediaType == GalleryMediaType.video) {
           await MiscApi.uploadFile(thumbnailFile!.path,
               mediaType: GalleryMediaType.photo,
-              type: UploadMediaType.chat, resultCallback: (filename, filepath) {
+              type: UploadMediaType.chat,
+              extraFields: {
+                'room_id': chatRoom.value!.id.toString(),
+                'room': chatRoom.value!.id.toString(),
+              }, resultCallback: (filename, filepath) {
             videoThumbnailPath = filepath;
           });
         } else if (media.mediaType == GalleryMediaType.audio) {
@@ -1450,7 +1455,11 @@ class ChatDetailController extends GetxController {
 
         await MiscApi.uploadFile(mainFile.path,
             mediaType: media.mediaType!,
-            type: UploadMediaType.chat, resultCallback: (filename, filepath) {
+            type: UploadMediaType.chat,
+            extraFields: {
+              'room_id': chatRoom.value!.id.toString(),
+              'room': chatRoom.value!.id.toString(),
+            }, resultCallback: (filename, filepath) {
           String mainFileUploadedPath = filepath;
 
           // await mainFile.delete();
@@ -1529,7 +1538,8 @@ class ChatDetailController extends GetxController {
 
 //*************** updates from socket *******************//
 
-  Future<void> messagedDeleted({required int messageId, required int roomId}) async {
+  Future<void> messagedDeleted(
+      {required int messageId, required int roomId}) async {
     //update message in local cache
     if (chatRoom.value?.id == roomId) {
       messages.value = messages.map((element) {
@@ -1656,7 +1666,8 @@ class ChatDetailController extends GetxController {
     // }
   }
 
-  void userAvailabilityStatusChange({required int userId, required bool isOnline}) {
+  void userAvailabilityStatusChange(
+      {required int userId, required bool isOnline}) {
     if (chatRoom.value != null) {
       if (chatRoom.value?.isGroupChat == false) {
         chatRoom.value!.roomMembers = chatRoom.value!.roomMembers.map((member) {

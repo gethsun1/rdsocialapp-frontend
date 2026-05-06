@@ -29,6 +29,7 @@ class AppStoryController extends GetxController {
 
   RxBool showEmoticons = false.obs;
   RxString replyText = ''.obs;
+  bool _isPublishingStory = false;
 
   void clearStoryViewers() {
     storyViewers.clear();
@@ -86,12 +87,23 @@ class AppStoryController extends GetxController {
   }
 
   void uploadAllMedia({required List<Media> items}) async {
-    var responses =
-        await Future.wait([for (Media media in items) uploadMedia(media)])
-            .whenComplete(() {});
-    print('publishAction 1');
+    if (_isPublishingStory || items.isEmpty) return;
 
-    publishAction(galleryItems: responses);
+    _isPublishingStory = true;
+    try {
+      var responses =
+          await Future.wait([for (Media media in items) uploadMedia(media)])
+              .whenComplete(() {});
+
+      final validResponses =
+          responses.where((item) => item.isNotEmpty).toList();
+      if (validResponses.isEmpty) return;
+
+      await publishAction(galleryItems: validResponses);
+    } finally {
+      _isPublishingStory = false;
+      EasyLoading.dismiss();
+    }
   }
 
   Future<Map<String, String>> uploadMedia(Media media) async {
@@ -106,9 +118,9 @@ class AppStoryController extends GetxController {
     if (media.mediaType == GalleryMediaType.photo) {
       Uint8List mainFileData = await media.file!.compress();
       //image media
-      mainFile = await File(
-              '${tempDir.path}/${media.id!.replaceAll('/', '')}.png')
-          .create();
+      mainFile =
+          await File('${tempDir.path}/${media.id!.replaceAll('/', '')}.png')
+              .create();
       mainFile.writeAsBytesSync(mainFileData);
     } else {
       EasyLoading.show(status: loadingString.tr);
@@ -123,6 +135,11 @@ class AppStoryController extends GetxController {
       final videoInfo = FlutterVideoInfo();
       var info = await videoInfo.getVideoInfo(media.file!.path);
       videoDuration = info!.duration!.toInt();
+
+      if (media.thumbnail == null) {
+        completer.complete({});
+        return completer.future;
+      }
 
       File videoThumbnail = await File(
               '${tempDir.path}/${media.id!.replaceAll('/', '')}_thumbnail.png')
@@ -142,39 +159,33 @@ class AppStoryController extends GetxController {
     EasyLoading.show(status: loadingString.tr);
 
     await MiscApi.uploadFile(mainFile.path,
-        mediaType: media.mediaType!,
-        type: UploadMediaType.storyOrHighlights,
+        mediaType: media.mediaType!, type: UploadMediaType.storyOrHighlights,
         resultCallback: (fileName, filePath) async {
-      print('sdhjsevfehj');
       String mainFileUploadedPath = fileName;
       await mainFile.delete();
       gallery = {
-        // 'image': media.mediaType == 1 ? mainFileUploadedPath : '',
         'image': media.mediaType == GalleryMediaType.photo
             ? mainFileUploadedPath
-            : videoThumbnailPath!,
-        'video': media.mediaType == GalleryMediaType.photo
-            ? ''
-            : mainFileUploadedPath,
+            : videoThumbnailPath ?? '',
         'video_time': videoDuration.toString(),
         'type': media.mediaType == GalleryMediaType.photo ? '2' : '3',
         'description': '',
         'background_color': '',
       };
+      if (media.mediaType != GalleryMediaType.photo) {
+        gallery['video'] = mainFileUploadedPath;
+      }
       completer.complete(gallery);
     });
 
-    print('return block');
     return completer.future;
   }
 
-  void publishAction({
+  Future<void> publishAction({
     required List<Map<String, String>> galleryItems,
-  }) {
-    print('publishAction 2');
-
+  }) async {
     HomeController homeController = Get.find();
-    StoryApi.postStory(
+    await StoryApi.postStory(
         gallery: galleryItems,
         successHandler: () {
           homeController.getStories();

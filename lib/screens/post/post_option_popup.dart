@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/services.dart';
 import 'package:flutter_video_info/flutter_video_info.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
@@ -174,26 +175,59 @@ class PostOptionsPopup extends StatelessWidget {
   Future<void> selectPhoto({
     required ImageSource source,
   }) async {
-    if (source == ImageSource.camera) {
-      XFile? image = await _picker.pickImage(source: ImageSource.camera);
+    try {
+      if (source == ImageSource.camera) {
+        XFile? image = await _picker.pickImage(
+          source: ImageSource.camera,
+          imageQuality: 75,
+          maxWidth: 1600,
+          maxHeight: 1600,
+          requestFullMetadata: false,
+        );
 
-      if (image != null) {
-        convertToMedias(files: [image], mediaType: GalleryMediaType.photo);
+        if (image != null) {
+          convertToMedias(files: [image], mediaType: GalleryMediaType.photo);
+        }
+      } else {
+        List<XFile> images = await _picker.pickMultiImage(
+          imageQuality: 75,
+          maxWidth: 1600,
+          maxHeight: 1600,
+          requestFullMetadata: false,
+        );
+        convertToMedias(files: images, mediaType: GalleryMediaType.photo);
       }
-    } else {
-      List<XFile> images = await _picker.pickMultiImage();
-      // print('images ${images.length}');
-      convertToMedias(files: images, mediaType: GalleryMediaType.photo);
+    } on PlatformException catch (e) {
+      AppUtil.showToast(
+          message: e.message ?? 'Unable to access camera/gallery',
+          isSuccess: false);
+    } catch (_) {
+      AppUtil.showToast(
+          message: 'Unable to pick media right now. Please try again.',
+          isSuccess: false);
     }
   }
 
   Future<void> selectVideo({
     required ImageSource source,
   }) async {
-    XFile? file = await _picker.pickVideo(source: source);
+    try {
+      XFile? file = await _picker.pickVideo(
+        source: source,
+        maxDuration: const Duration(minutes: 3),
+      );
 
-    if (file != null) {
-      convertToMedias(files: [file], mediaType: GalleryMediaType.video);
+      if (file != null) {
+        convertToMedias(files: [file], mediaType: GalleryMediaType.video);
+      }
+    } on PlatformException catch (e) {
+      AppUtil.showToast(
+          message: e.message ?? 'Unable to access video picker',
+          isSuccess: false);
+    } catch (_) {
+      AppUtil.showToast(
+          message: 'Unable to pick video right now. Please try again.',
+          isSuccess: false);
     }
   }
 
@@ -201,31 +235,50 @@ class PostOptionsPopup extends StatelessWidget {
       {required List<XFile> files, required GalleryMediaType mediaType}) async {
     List<Media> medias = [];
     for (XFile mediaFile in files) {
+      final file = File(mediaFile.path);
+      if (!await file.exists()) {
+        continue;
+      }
+
       Media media = Media();
       media.mediaType = mediaType;
-      File file = File(mediaFile.path);
       media.file = file;
 
+      if (mediaType == GalleryMediaType.photo) {
+        try {
+          final Uint8List bytes = await mediaFile.readAsBytes();
+          media.mainFileBytes = bytes;
+        } catch (e) {
+          debugPrint(
+              '[PostOptionsPopup] Unable to cache picked image bytes: $e');
+        }
+      }
+
       if (mediaType == GalleryMediaType.video) {
-        final videoInfo = await FlutterVideoInfo().getVideoInfo(mediaFile.path);
+        try {
+          final videoInfo =
+              await FlutterVideoInfo().getVideoInfo(mediaFile.path);
+          if (videoInfo?.width != null && videoInfo?.height != null) {
+            media.size = Size(
+                videoInfo!.width!.toDouble(), videoInfo.height!.toDouble());
+          }
 
-        media.size =
-            Size(videoInfo!.width!.toDouble(), videoInfo.height!.toDouble());
-
-        media.thumbnail = await VideoThumbnail.thumbnailData(
-          video: mediaFile.path,
-          imageFormat: ImageFormat.JPEG,
-          maxWidth: 500,
-          // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio
-          quality: 25,
-        );
+          media.thumbnail = await VideoThumbnail.thumbnailData(
+            video: mediaFile.path,
+            imageFormat: ImageFormat.JPEG,
+            maxWidth: 500,
+            quality: 25,
+          );
+        } catch (_) {}
       }
 
       media.id = randomId();
       medias.add(media);
     }
 
-    selectedMediaList!(medias);
+    if (medias.isNotEmpty) {
+      selectedMediaList!(medias);
+    }
   }
 }
 

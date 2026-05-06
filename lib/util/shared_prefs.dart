@@ -1,6 +1,6 @@
 import 'dart:convert';
+import 'dart:ui';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:foap/helper/imports/common_import.dart';
 
 class SharedPrefs {
   void setTutorialSeen() async {
@@ -11,6 +11,16 @@ class SharedPrefs {
   Future<bool> getTutorialSeen() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getBool('tutorialSeen') ?? false;
+  }
+
+  Future<void> setSignupProfileSetupPending(bool pending) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('signupProfileSetupPending', pending);
+  }
+
+  Future<bool> getSignupProfileSetupPending() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('signupProfileSetupPending') ?? false;
   }
 
   Future<bool> isDarkMode() async {
@@ -36,6 +46,7 @@ class SharedPrefs {
   //Set/Get UserLoggedIn Status
   Future setAuthorizationKey(String authKey) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('tutorialSeen', true);
     prefs.setString('authKey', authKey);
   }
 
@@ -96,7 +107,7 @@ class SharedPrefs {
 
   Future<Locale> getLocale() async {
     // Get the user's preferred locale from the system settings
-    var locale = WidgetsBinding.instance.window.locale;
+    var locale = PlatformDispatcher.instance.locale;
     // Alternatively, you can use the device's current locale:
     // var locale = await findSystemLocale();
     return locale;

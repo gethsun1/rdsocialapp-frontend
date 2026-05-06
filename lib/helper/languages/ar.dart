@@ -56,15 +56,19 @@ class Arabic {
     "No...": "لا...",
     "Yes...": "نعم...",
     "Next": "التالي",
-    "Please grant the required permission from settings to access this feature.": "يرجى منح الإذن المطلوب من الإعدادات للوصول إلى هذه الميزة.",
+    "Please grant the required permission from settings to access this feature.":
+        "يرجى منح الإذن المطلوب من الإعدادات للوصول إلى هذه الميزة.",
     "No data found": "لم يتم العثور على بيانات",
     "Watch Ads": "مشاهدة الإعلانات",
-    "By watching Ads, you get to earn coins_value Coin per advert you watch. Click the button to start earning! ": "من خلال مشاهدة الإعلانات، يمكنك ربح عملات معدنية بقيمة كل إعلان تشاهده.  ",
+    "By watching Ads, you get to earn coins_value Coin per advert you watch. Click the button to start earning! ":
+        "من خلال مشاهدة الإعلانات، يمكنك ربح عملات معدنية بقيمة كل إعلان تشاهده.  ",
     "No product is available": "لا يوجد منتج متوفر",
-    "Some error occurred while performing purchase, please try again later.": "حدث خطأ ما أثناء إجراء عملية الشراء، يرجى المحاولة مرة أخرى لاحقًا.",
+    "Some error occurred while performing purchase, please try again later.":
+        "حدث خطأ ما أثناء إجراء عملية الشراء، يرجى المحاولة مرة أخرى لاحقًا.",
     "Store is not available.": "المتجر غير متوفر.",
     "Cancelled by user": "تم الإلغاء من قبل المستخدم",
-    "By signing up, you are acknowledging that you have read, understood and accept our": "من خلال التسجيل، فإنك تقر بأنك قرأت وفهمت ووافقت على موقعنا",
+    "By signing up, you are acknowledging that you have read, understood and accept our":
+        "من خلال التسجيل، فإنك تقر بأنك قرأت وفهمت ووافقت على موقعنا",
     "Terms of Service": "شروط الخدمة",
     "Welcome": "مرحباً",
     "Profile": "حساب تعريفي",
@@ -83,11 +87,14 @@ class Arabic {
     "Email or username": "البريد الإلكتروني أو اسم المستخدم",
     "Login another account": "تسجيل الدخول بحساب آخر",
     "Forgot Password?": "هل نسيت كلمة السر؟",
-    "Your password has been changed successfully": "لقد تم تغيير كلمة المرور الخاصة بك بنجاح",
+    "Your password has been changed successfully":
+        "لقد تم تغيير كلمة المرور الخاصة بك بنجاح",
     "Resend OTP": "إعادة إرسال كلمة المرور لمرة واحدة",
-    "Please enter the one time password sent to your email to verify your account and change your password": "يرجى إدخال كلمة المرور لمرة واحدة المرسلة إلى بريدك الإلكتروني للتحقق من حسابك وتغيير كلمة المرور الخاصة بك",
+    "Please enter the one time password sent to your email to verify your account and change your password":
+        "يرجى إدخال كلمة المرور لمرة واحدة المرسلة إلى بريدك الإلكتروني للتحقق من حسابك وتغيير كلمة المرور الخاصة بك",
     "Let’s help you get back your account": "دعنا نساعدك على استعادة حسابك",
-    "Please enter the one time password sent to your phone number to verify your phone number": "يرجى إدخال كلمة المرور لمرة واحدة المرسلة إلى رقم هاتفك للتحقق من رقم هاتفك",
+    "Please enter the one time password sent to your phone number to verify your phone number":
+        "يرجى إدخال كلمة المرور لمرة واحدة المرسلة إلى رقم هاتفك للتحقق من رقم هاتفك",
     "Let’s help you to change phone number": "دعنا نساعدك على تغيير رقم الهاتف",
     "If you didn’t receive code,": "إذا لم تتلق الرمز،",
     "Send": "يرسل",
@@ -132,8 +139,10 @@ class Arabic {
     "Enter old password": "أدخل كلمة المرور القديمة",
     "Please enter you password": "الرجاء إدخال كلمة المرور الخاصة بك",
     "Your password is too short": "كلمة المرور الخاصة بك قصيرة جدًا",
-    "Your password is acceptable but not strong": "كلمة المرور الخاصة بك مقبولة ولكنها ليست قوية",
-    "Your password must contain letter and number": "يجب أن تحتوي كلمة المرور الخاصة بك على حرف ورقم",
+    "Your password is acceptable but not strong":
+        "كلمة المرور الخاصة بك مقبولة ولكنها ليست قوية",
+    "Your password must contain letter and number":
+        "يجب أن تحتوي كلمة المرور الخاصة بك على حرف ورقم",
     "Your password is great": "كلمة المرور الخاصة بك رائعة",
     "Joined users": "انضم المستخدمون",
     "OR": "أو",
@@ -142,9 +151,12 @@ class Arabic {
     "New Password": "كلمة المرور الجديدة",
     "Confirm Password": "تأكيد كلمة المرور",
     "Categories": "فئات",
-    "Such kind of messages are not allowed": "مثل هذا النوع من الرسائل غير مسموح به",
-    "There is some problem, Please try again later": "هناك مشكلة ما، يرجى المحاولة مرة أخرى في وقت لاحق",
-    "Sorry, but the content you're attempting to upload is not permitted according to our policies.": "عذرًا، لكن المحتوى الذي تحاول تحميله غير مسموح به وفقًا لسياساتنا.",
+    "Such kind of messages are not allowed":
+        "مثل هذا النوع من الرسائل غير مسموح به",
+    "There is some problem, Please try again later":
+        "هناك مشكلة ما، يرجى المحاولة مرة أخرى في وقت لاحق",
+    "Sorry, but the content you're attempting to upload is not permitted according to our policies.":
+        "عذرًا، لكن المحتوى الذي تحاول تحميله غير مسموح به وفقًا لسياساتنا.",
     "Camera": "آلة تصوير",
     "Photo": "صورة",
     "Sent a Photo": "أرسلت صورة",
@@ -201,7 +213,8 @@ class Arabic {
     "Join": "ينضم",
     "Fee": "مصاريف",
     "User name is updated": "يتم تحديث اسم المستخدم",
-    "User profile category type is updated": "يتم تحديث نوع فئة ملف تعريف المستخدم",
+    "User profile category type is updated":
+        "يتم تحديث نوع فئة ملف تعريف المستخدم",
     "Phone number": "رقم التليفون",
     "Change Phone number": "تغيير رقم الهاتف",
     "Update": "تحديث",
@@ -306,12 +319,15 @@ class Arabic {
     "Invite user": "دعوة المستخدم",
     "Invite friends": "دعوة الأصدقاء",
     "See All": "رؤية الكل",
-    "Already invited {{user_name}} in live and waiting for confirmation": "تمت دعوته بالفعل {{user_name}} في البث المباشر وفي انتظار التأكيد",
+    "Already invited {{user_name}} in live and waiting for confirmation":
+        "تمت دعوته بالفعل {{user_name}} في البث المباشر وفي انتظار التأكيد",
     "Waiting to accept": "في انتظار القبول",
     "Invitation declined": "تم رفض الدعوة",
-    "Your invitation for battle is declined by {{user_name}}": "تم رفض دعوتك للمعركة من قبل {{user_name}}",
+    "Your invitation for battle is declined by {{user_name}}":
+        "تم رفض دعوتك للمعركة من قبل {{user_name}}",
     "No response": "لا يوجد رد",
-    "No response from {{user_name}} on live battle request": "لا يوجد رد من {{user_name}} بناء على طلب المعركة الحية",
+    "No response from {{user_name}} on live battle request":
+        "لا يوجد رد من {{user_name}} بناء على طلب المعركة الحية",
     "Clubs": "الأندية",
     "Top Clubs": "أعلى الأندية",
     "Create club": "إنشاء النادي",
@@ -338,15 +354,20 @@ class Arabic {
     "Only Admins": "المشرفين فقط",
     "Follow some user to start chat": "اتبع بعض المستخدمين لبدء الدردشة",
     "No chat found": "لم يتم العثور على دردشة",
-    "Make some audio/video call with friends": "قم بإجراء بعض مكالمات الصوت/الفيديو مع الأصدقاء",
+    "Make some audio/video call with friends":
+        "قم بإجراء بعض مكالمات الصوت/الفيديو مع الأصدقاء",
     "No call found": "لم يتم العثور على مكالمة",
     "No Story found": "لم يتم العثور على قصة",
-    "Post some stories to create highlights": "انشر بعض القصص لإنشاء النقاط البارزة",
+    "Post some stories to create highlights":
+        "انشر بعض القصص لإنشاء النقاط البارزة",
     "No Notification found": "لم يتم العثور على أي إشعار",
     "Delete account": "حذف الحساب",
-    "Are you sure to delete account, Once account is deleted your all data will be deleted": "هل أنت متأكد من حذف الحساب، بمجرد حذف الحساب سيتم حذف جميع البيانات الخاصة بك",
-    "Please allow access to camera and microphone to start video call": "يرجى السماح بالوصول إلى الكاميرا والميكروفون لبدء مكالمة الفيديو",
-    "Please allow access to microphone to start audio call": "يرجى السماح بالوصول إلى الميكروفون لبدء المكالمة الصوتية",
+    "Are you sure to delete account, Once account is deleted your all data will be deleted":
+        "هل أنت متأكد من حذف الحساب، بمجرد حذف الحساب سيتم حذف جميع البيانات الخاصة بك",
+    "Please allow access to camera and microphone to start video call":
+        "يرجى السماح بالوصول إلى الكاميرا والميكروفون لبدء مكالمة الفيديو",
+    "Please allow access to microphone to start audio call":
+        "يرجى السماح بالوصول إلى الميكروفون لبدء المكالمة الصوتية",
     "Star": "نجم",
     "UnStar": "UnStar",
     "Starred messages": "الرسائل المميزة بنجمة",
@@ -366,9 +387,12 @@ class Arabic {
     "Unlock app with Touch ID": "فتح التطبيق باستخدام Touch ID",
     "Use Face ID": "استخدم معرف الوجه",
     "Use Touch ID": "استخدم معرف اللمس",
-    "Unlock you app with touch id / face id": "افتح تطبيقك باستخدام معرف اللمس / معرف الوجه",
-    "Please authenticate to use biometric login into app": "يرجى المصادقة لاستخدام تسجيل الدخول البيومتري في التطبيق",
-    "Please authenticate to remove biometric login into app": "يرجى المصادقة لإزالة تسجيل الدخول البيومتري إلى التطبيق",
+    "Unlock you app with touch id / face id":
+        "افتح تطبيقك باستخدام معرف اللمس / معرف الوجه",
+    "Please authenticate to use biometric login into app":
+        "يرجى المصادقة لاستخدام تسجيل الدخول البيومتري في التطبيق",
+    "Please authenticate to remove biometric login into app":
+        "يرجى المصادقة لإزالة تسجيل الدخول البيومتري إلى التطبيق",
     "Edit Post": "تحرير المشاركة",
     "Delete Post": "حذف المشاركة",
     "Posting...": "إرسال...",
@@ -376,7 +400,8 @@ class Arabic {
     "Retry": "أعد المحاولة",
     "Discard": "ينبذ",
     "Please enter group name": "الرجاء إدخال اسم المجموعة",
-    "Please select some users to create group": "الرجاء تحديد بعض المستخدمين لإنشاء المجموعة",
+    "Please select some users to create group":
+        "الرجاء تحديد بعض المستخدمين لإنشاء المجموعة",
     "Group name": "اسم المجموعة",
     "Admin": "مسؤل",
     "You are Admin": "أنت المشرف",
@@ -389,10 +414,12 @@ class Arabic {
     "left the group": "غادر المجموعة",
     "is now admin": "هو الآن المشرف",
     "Time to update app": "حان الوقت لتحديث التطبيق",
-    "You are using older version of app, You need to update the app to continue": "أنت تستخدم إصدارًا أقدم من التطبيق، وتحتاج إلى تحديث التطبيق للمتابعة",
+    "You are using older version of app, You need to update the app to continue":
+        "أنت تستخدم إصدارًا أقدم من التطبيق، وتحتاج إلى تحديث التطبيق للمتابعة",
     "Copy": "ينسخ",
-    "Stranger chat": "دردشة غريب",
-    "Have fun by chatting with random peoples": "استمتع بالدردشة مع أشخاص عشوائيين",
+    "Incognito chat": "دردشة متخفية",
+    "Have fun by chatting with random peoples":
+        "استمتع بالدردشة مع أشخاص عشوائيين",
     "Tvs": "أجهزة التلفاز",
     "Checking connection..": "التحقق من الاتصال..",
     "Going live": "بث مباشر",
@@ -412,7 +439,8 @@ class Arabic {
     "Gifts received": "الهدايا المستلمة",
     "Gifts sent": "الهدايا المرسلة",
     "Join competitions and earn money": "انضم إلى المسابقات واكسب المال",
-    "A place for people of common interest": "مكان للأشخاص ذوي الاهتمام المشترك",
+    "A place for people of common interest":
+        "مكان للأشخاص ذوي الاهتمام المشترك",
     "Live Users": "المستخدمين المباشرين",
     "Reel": "بكرة",
     "Reels": "بكرات",
@@ -420,15 +448,19 @@ class Arabic {
     "Original audio": "الصوت الأصلي",
     "Use": "يستخدم",
     "View Gift": "عرض الهدية",
-    "Anyone can see this club and join the club": "يمكن لأي شخص رؤية هذا النادي والانضمام إلى النادي",
-    "Only requested member or joined member can see it": "فقط العضو المطلوب أو العضو المنضم يمكنه رؤيته",
+    "Anyone can see this club and join the club":
+        "يمكن لأي شخص رؤية هذا النادي والانضمام إلى النادي",
+    "Only requested member or joined member can see it":
+        "فقط العضو المطلوب أو العضو المنضم يمكنه رؤيته",
     "Communication": "تواصل",
     "Chat group": "مجموعة الدردشة",
-    "Create chat group for discussion with club users": "إنشاء مجموعة دردشة للمناقشة مع مستخدمي النادي",
+    "Create chat group for discussion with club users":
+        "إنشاء مجموعة دردشة للمناقشة مع مستخدمي النادي",
     "Basic info": "معلومات أساسية",
     "Club name": "اسم النادي",
     "Add Cover Photo": "إضافة صورة الغلاف",
-    "Give people an idea of what your group is about with a photo": "امنح الأشخاص فكرة عن موضوع مجموعتك من خلال صورة",
+    "Give people an idea of what your group is about with a photo":
+        "امنح الأشخاص فكرة عن موضوع مجموعتك من خلال صورة",
     "Cover photo": "صورة الغلاف",
     "Leave club": "ترك النادي",
     "Remove": "يزيل",
@@ -436,7 +468,8 @@ class Arabic {
     "Please enter club description": "الرجاء إدخال وصف النادي",
     "Please select club image": "الرجاء تحديد صورة النادي",
     "On request": "عند الطلب",
-    "Interested users can request to join, admin can approve the request": "يمكن للمستخدمين المهتمين طلب الانضمام، ويمكن للمسؤول الموافقة على الطلب",
+    "Interested users can request to join, admin can approve the request":
+        "يمكن للمستخدمين المهتمين طلب الانضمام، ويمكن للمسؤول الموافقة على الطلب",
     "Watch Ads to earn coins": "شاهد الإعلانات لكسب العملات المعدنية",
     "You need": "تحتاج",
     "To join this competition": "للانضمام إلى هذه المسابقة",
@@ -465,12 +498,14 @@ class Arabic {
     "Verified on": "تم التحقق منه",
     "Request sent on": "تم إرسال الطلب",
     "We are reviewing your profile": "نحن نقوم بمراجعة ملفك الشخصي",
-    "Verified accounts have blue checkmark next to their names to show that we have confirmed you are a real person": "تحتوي الحسابات التي تم التحقق منها على علامة اختيار زرقاء بجوار أسمائها لتوضيح أننا تأكدنا من أنك شخص حقيقي",
+    "Verified accounts have blue checkmark next to their names to show that we have confirmed you are a real person":
+        "تحتوي الحسابات التي تم التحقق منها على علامة اختيار زرقاء بجوار أسمائها لتوضيح أننا تأكدنا من أنك شخص حقيقي",
     "Document type": "نوع الوثيقة",
     "Upload document": "تحميل الوثيقة",
     "Please select a document type": "الرجاء تحديد نوع الوثيقة",
     "Please upload identity proof": "يرجى تحميل إثبات الهوية",
-    "Profile verification request is sent, you will be updated soon": "تم إرسال طلب التحقق من الملف الشخصي، وسيتم تحديثك قريبًا",
+    "Profile verification request is sent, you will be updated soon":
+        "تم إرسال طلب التحقق من الملف الشخصي، وسيتم تحديثك قريبًا",
     "Status": "حالة",
     "In processing": "في المعالجة",
     "Cancelled": "تم الإلغاء",
@@ -480,7 +515,8 @@ class Arabic {
     "Pan card": "بطاقة عموم",
     "Other": "آخر",
     "Message to reviewer": "رسالة إلى المراجع",
-    "Upload both front and back side of document": "قم بتحميل الجانب الأمامي والخلفي من المستند",
+    "Upload both front and back side of document":
+        "قم بتحميل الجانب الأمامي والخلفي من المستند",
     "You can upload maximum 2 images": "يمكنك تحميل صورتين كحد أقصى",
     "Payment and coins": "الدفع والعملات المعدنية",
     "Change Language": "تغيير اللغة",
@@ -542,7 +578,8 @@ class Arabic {
     "Ticket Saved": "تم حفظ التذكرة",
     "Confirmed": "مؤكد",
     "Placing order, please wait...": "جارٍ تقديم الطلب، يرجى الانتظار...",
-    "Do not close or refresh the app until the process is completed": "لا تقم بإغلاق التطبيق أو تحديثه حتى تكتمل العملية",
+    "Do not close or refresh the app until the process is completed":
+        "لا تقم بإغلاق التطبيق أو تحديثه حتى تكتمل العملية",
     "Book more": "احجز المزيد",
     "Your transaction is completed": "اكتملت معاملتك",
     "Error in booking..": "خطأ في الحجز..",
@@ -557,7 +594,8 @@ class Arabic {
     "Upcoming": "القادمة",
     "Free": "حر",
     "Public group": "مجموعة عامة",
-    "Anyone can view this group and can join this group, You can remove any member in future": "يمكن لأي شخص مشاهدة هذه المجموعة ويمكنه الانضمام إلى هذه المجموعة، ويمكنك إزالة أي عضو في المستقبل",
+    "Anyone can view this group and can join this group, You can remove any member in future":
+        "يمكن لأي شخص مشاهدة هذه المجموعة ويمكنه الانضمام إلى هذه المجموعة، ويمكنك إزالة أي عضو في المستقبل",
     "Join requests": "طلبات الانضمام",
     "Join invitations": "الانضمام إلى الدعوات",
     "Invites": "يدعو",
@@ -584,41 +622,52 @@ class Arabic {
     "Month": "شهر",
     "Year": "سنة",
     "No dating profiles found": "لم يتم العثور على ملفات تعريف المواعدة",
-    "Change your preferences and explore more": "قم بتغيير تفضيلاتك واستكشف المزيد",
+    "Change your preferences and explore more":
+        "قم بتغيير تفضيلاتك واستكشف المزيد",
     "No matching profiles found": "لم يتم العثور على ملفات تعريف مطابقة",
-    "Explore more dating profiles and get matched": "اكتشف المزيد من الملفات الشخصية للمواعدة واحصل على المطابقة",
+    "Explore more dating profiles and get matched":
+        "اكتشف المزيد من الملفات الشخصية للمواعدة واحصل على المطابقة",
     "No profiles found": "لم يتم العثور على أي ملفات شخصية",
     "Explore more dating profiles": "اكتشف المزيد من الملفات الشخصية للمواعدة",
     "Set location": "تحديد الموقع",
     "Set your location services": "اضبط خدمات موقعك",
-    "We use your location to show you potential matches in your area": "نحن نستخدم موقعك لنظهر لك التطابقات المحتملة في منطقتك",
+    "We use your location to show you potential matches in your area":
+        "نحن نستخدم موقعك لنظهر لك التطابقات المحتملة في منطقتك",
     "Allow notifications": "السماح بالإخطارات",
-    "We'll let you know when you get new matches and messages": "سنخبرك عندما تتلقى مباريات ورسائل جديدة",
+    "We'll let you know when you get new matches and messages":
+        "سنخبرك عندما تتلقى مباريات ورسائل جديدة",
     "Not now": "ليس الآن",
     "Add name": "أضف اسما",
     "What's your first name?": "ما هو اسمك الأول؟",
     "Add photos": "إضافة الصور",
-    "Profile with more good photos are getting more matches, so add your best photos": "الملف الشخصي الذي يحتوي على المزيد من الصور الجيدة يحصل على المزيد من التطابقات، لذا أضف أفضل صورك",
+    "Profile with more good photos are getting more matches, so add your best photos":
+        "الملف الشخصي الذي يحتوي على المزيد من الصور الجيدة يحصل على المزيد من التطابقات، لذا أضف أفضل صورك",
     "When's your birthday?": "متى عيد ميلادك؟",
-    "Be accurate to specify this to get genuine matches": "كن دقيقًا في تحديد هذا للحصول على تطابقات حقيقية",
+    "Be accurate to specify this to get genuine matches":
+        "كن دقيقًا في تحديد هذا للحصول على تطابقات حقيقية",
     "Mention your gender": "اذكر جنسك",
     "Who would you like to date?": "من تريد مواعدته؟",
-    "You can choose more than one answer and change any time": "يمكنك اختيار أكثر من إجابة واحدة والتغيير في أي وقت",
+    "You can choose more than one answer and change any time":
+        "يمكنك اختيار أكثر من إجابة واحدة والتغيير في أي وقت",
     "We need to know more about you.": "نحن بحاجة لمعرفة المزيد عنك.",
     "Add Interests.": "أضف اهتمامات.",
     "Add your interests and habits": "أضف اهتماماتك وعاداتك",
     "Add Professional Details.": "أضف تفاصيل احترافية.",
     "Enable Dating": "تمكين المواعدة",
-    "You need to enable dating profile and have to provide your profile information to start dating peoples": "تحتاج إلى تمكين ملف تعريف المواعدة ويجب عليك تقديم معلومات ملفك الشخصي لبدء مواعدة الأشخاص",
+    "You need to enable dating profile and have to provide your profile information to start dating peoples":
+        "تحتاج إلى تمكين ملف تعريف المواعدة ويجب عليك تقديم معلومات ملفك الشخصي لبدء مواعدة الأشخاص",
     "Follow friends to send post.": "اتبع الأصدقاء لإرسال آخر.",
     "Choose profile category type": "اختر نوع فئة الملف الشخصي",
-    "Category will help people find accounts like yours. You can change this": "ستساعد الفئة الأشخاص في العثور على حسابات مثل حسابك. ",
-    "We will search user in your specified category": "سوف نقوم بالبحث عن المستخدم في الفئة المحددة الخاصة بك",
+    "Category will help people find accounts like yours. You can change this":
+        "ستساعد الفئة الأشخاص في العثور على حسابات مثل حسابك. ",
+    "We will search user in your specified category":
+        "سوف نقوم بالبحث عن المستخدم في الفئة المحددة الخاصة بك",
     "Favourite": "مفضل",
     "Subscribed": "مشترك",
     "Install this cool app from": "قم بتثبيت هذا التطبيق الرائع من",
     "Account is deleted successfully": "تم حذف الحساب بنجاح",
-    "Are you sure to report this post?": "هل أنت متأكد من الإبلاغ عن هذا المنشور؟",
+    "Are you sure to report this post?":
+        "هل أنت متأكد من الإبلاغ عن هذا المنشور؟",
     "Are you sure to block this user?": "هل أنت متأكد من حظر هذا المستخدم؟",
     "Male": "ذكر",
     "Female": "أنثى",
@@ -633,8 +682,10 @@ class Arabic {
     "Select": "يختار",
     "Dislike": "لا يعجبني",
     "Do you smoke?": "هل تدخن؟",
-    "Are you sure, you want to leave group?": "هل أنت متأكد أنك تريد مغادرة المجموعة؟",
-    "Are you sure, you want to delete group?": "هل أنت متأكد أنك تريد حذف المجموعة؟",
+    "Are you sure, you want to leave group?":
+        "هل أنت متأكد أنك تريد مغادرة المجموعة؟",
+    "Are you sure, you want to delete group?":
+        "هل أنت متأكد أنك تريد حذف المجموعة؟",
     "Today": "اليوم",
     "This week": "هذا الاسبوع",
     "This month": "هذا الشهر",
@@ -684,7 +735,8 @@ class Arabic {
     "Boost Post": "تعزيز المشاركة",
     "Goal": "هدف",
     "Select a goal": "حدد هدفا",
-    "What results would you like from this ad?": "ما هي النتائج التي تريدها من هذا الإعلان؟",
+    "What results would you like from this ad?":
+        "ما هي النتائج التي تريدها من هذا الإعلان؟",
     "More profile visits": "المزيد من زيارات الملف الشخصي",
     "More website visits": "المزيد من زيارات الموقع",
     "More messages": "المزيد من الرسائل",
@@ -696,7 +748,8 @@ class Arabic {
     "Audience": "جمهور",
     "Define your audience": "حدد جمهورك",
     "Automatic": "تلقائي",
-    "Targets people similar to your followers": "يستهدف أشخاصًا مشابهين لمتابعيك",
+    "Targets people similar to your followers":
+        "يستهدف أشخاصًا مشابهين لمتابعيك",
     "Create your own": "إنشاء بنفسك",
     "Manually enter your targeting options": "أدخل خيارات الاستهداف يدويًا",
     "Create audience": "إنشاء جمهور",
@@ -709,8 +762,10 @@ class Arabic {
     "Local": "محلي",
     "Your current location": "موقعك الحالي",
     "Radius": "نصف القطر",
-    "We suggest adding a broad range of locations to cover the largest surrounding areas, including countries, countries/regions, and towns/cities.": "نقترح إضافة نطاق واسع من المواقع لتغطية أكبر المناطق المحيطة، بما في ذلك البلدان والبلدان/المناطق والبلدات/المدن.",
-    "We suggest adding a broad range of interests to cover the largest audience.": "نقترح إضافة مجموعة واسعة من الاهتمامات لتغطية أكبر عدد من الجمهور.",
+    "We suggest adding a broad range of locations to cover the largest surrounding areas, including countries, countries/regions, and towns/cities.":
+        "نقترح إضافة نطاق واسع من المواقع لتغطية أكبر المناطق المحيطة، بما في ذلك البلدان والبلدان/المناطق والبلدات/المدن.",
+    "We suggest adding a broad range of interests to cover the largest audience.":
+        "نقترح إضافة مجموعة واسعة من الاهتمامات لتغطية أكبر عدد من الجمهور.",
     "Profile Preferences": "تفضيلات الملف الشخصي",
     "Budget and duration": "الميزانية والمدة",
     "Total spend": "إجمالي الإنفاق",
@@ -727,7 +782,8 @@ class Arabic {
     "Contact Us": "اتصل بنا",
     "Book Now": "احجز الآن",
     "Please enter an audience name": "الرجاء إدخال اسم الجمهور",
-    "Please enter the location of the target audience": "الرجاء إدخال موقع الجمهور المستهدف",
+    "Please enter the location of the target audience":
+        "الرجاء إدخال موقع الجمهور المستهدف",
     "Please enter the audience's interests": "الرجاء إدخال اهتمامات الجمهور",
     "Please select gender and age": "الرجاء تحديد الجنس والعمر",
     "Thanks": "شكرًا",
@@ -770,7 +826,8 @@ class Arabic {
     "Please select experience.": "الرجاء تحديد الخبرة.",
     "Please enter education.": "الرجاء إدخال التعليم.",
     "Please enter cover letter.": "الرجاء إدخال رسالة الغلاف.",
-    "Your have applied for this job successfully": "لقد تقدمت بطلب للحصول على هذه الوظيفة بنجاح",
+    "Your have applied for this job successfully":
+        "لقد تقدمت بطلب للحصول على هذه الوظيفة بنجاح",
     "Tap to edit": "انقر للتحرير",
     "Shared in": "مشترك في",
     "Comment is deleted successfully": "تم حذف التعليق بنجاح",
@@ -780,16 +837,19 @@ class Arabic {
     "You reacted to their story": "لقد تفاعلت مع قصتهم",
     "You replied to their story": "لقد ردت على قصتهم",
     "Follow requests": "متابعة الطلبات",
-    "Accept reject the pending Follow requests": "قبول رفض طلبات المتابعة المعلقة",
+    "Accept reject the pending Follow requests":
+        "قبول رفض طلبات المتابعة المعلقة",
     "started following you": "بدأت بمتابعتك",
     "sent you follow request": "أرسلت لك طلب المتابعة",
     "commented on your post": "علق على مشاركتك",
     "liked your post": "أحب مشاركتك",
     "Admin Added new competition": "قام المشرف بإضافة مسابقة جديدة",
     "Replied on your support request": "تم الرد على طلب الدعم الخاص بك",
-    "Congratulations, Your verification request has been approved.": "تهانينا، تمت الموافقة على طلب التحقق الخاص بك.",
+    "Congratulations, Your verification request has been approved.":
+        "تهانينا، تمت الموافقة على طلب التحقق الخاص بك.",
     "Share online status": "مشاركة حالة الاتصال بالإنترنت",
-    "If you don't share your last seen and online, you won’t be able to see other people's last seen and online status also": "إذا لم تقم بمشاركة آخر ظهور وآخر اتصال لك، فلن تتمكن من رؤية آخر ظهور وحالة اتصال الآخرين أيضًا",
+    "If you don't share your last seen and online, you won’t be able to see other people's last seen and online status also":
+        "إذا لم تقم بمشاركة آخر ظهور وآخر اتصال لك، فلن تتمكن من رؤية آخر ظهور وحالة اتصال الآخرين أيضًا",
     "Copy link": "نسخ الوصلة",
     "Created by SinghCoders": "تم إنشاؤها بواسطة SinghCoders",
     "Banned users": "المستخدمين المحظورين",
@@ -801,14 +861,16 @@ class Arabic {
     "Remove from moderator": "إزالة من المشرف",
     "Ban for 60 minute": "الحظر لمدة 60 دقيقة",
     "Permanent ban": "الحظر الدائم",
-    "You are not allowed to join this live": "غير مسموح لك بالانضمام إلى هذا البث المباشر",
+    "You are not allowed to join this live":
+        "غير مسموح لك بالانضمام إلى هذا البث المباشر",
     "is a moderator now": "هو وسيط الآن",
     "is removed from moderators": "تتم إزالته من المشرفين",
     "Copied": "منقول",
     "Add location": "أضف الموقع",
     "added a new event :": "تم اضافة حدث جديد :",
     "added a new competition :": "تم اضافة مسابقة جديدة :",
-    "added a new fund raising campaign :": "تمت إضافة حملة جديدة لجمع التبرعات:",
+    "added a new fund raising campaign :":
+        "تمت إضافة حملة جديدة لجمع التبرعات:",
     "added a new job opening :": "تم اضافة فرصة عمل جديدة :",
     "added a new offer :": "تم اضافة عرض جديد :",
     "added a new product for sale :": "تم اضافة منتج جديد للبيع :",
@@ -843,7 +905,8 @@ class Arabic {
     "Subscribe": "يشترك",
     "Are you sure to subscribe": "هل أنت متأكد من الاشتراك",
     "For subscribers only": "للمشتركين فقط",
-    "Subscribe {{userName}} to view this content": "يشترك {{userName}} لعرض هذا المحتوى",
+    "Subscribe {{userName}} to view this content":
+        "يشترك {{userName}} لعرض هذا المحتوى",
     "My subscribers": "المشتركين عندي",
     "My subscriptions": "اشتراكاتي",
     "Subscribed you": "اشتركت لك",
@@ -854,8 +917,10 @@ class Arabic {
     "Collaborations": "التعاون",
     "Collaboration request": "طلب التعاون",
     "No collaborator found": "لم يتم العثور على متعاون",
-    "Search some user to add as collaborator": "ابحث عن بعض المستخدمين لإضافتهم كمتعاون",
-    "Maximum 5 collaborators can be added in a post": "يمكن إضافة 5 متعاونين كحد أقصى في المشاركة",
+    "Search some user to add as collaborator":
+        "ابحث عن بعض المستخدمين لإضافتهم كمتعاون",
+    "Maximum 5 collaborators can be added in a post":
+        "يمكن إضافة 5 متعاونين كحد أقصى في المشاركة",
     "Invited you to collaborate on post": "دعوتك للتعاون في النشر",
     "Withdraw collaboration": "سحب التعاون",
     "Account is private": "الحساب خاص",

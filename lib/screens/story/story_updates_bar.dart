@@ -86,8 +86,6 @@ class StoryUpdatesBar extends StatelessWidget {
                       media: stories[index - liveUsers.length - 1].media.last,
                     ).ripple(() {
                       viewStoryCallback(stories[index - liveUsers.length - 1]);
-                    }).ripple(() {
-                      viewStoryCallback(stories[index - liveUsers.length - 1]);
                     }),
                     const SizedBox(
                       height: 4,

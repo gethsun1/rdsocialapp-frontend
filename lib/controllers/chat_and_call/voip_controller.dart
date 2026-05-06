@@ -1,7 +1,11 @@
+import 'dart:async';
+
+import 'package:flutter_callkit_incoming/entities/android_params.dart';
 import 'package:flutter_callkit_incoming/entities/call_event.dart'
     as call_event;
 import 'package:flutter_callkit_incoming/entities/call_kit_params.dart';
 import 'package:flutter_callkit_incoming/entities/ios_params.dart';
+import 'package:flutter_callkit_incoming/entities/notification_params.dart';
 import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart'
     as callkit;
 import 'package:foap/helper/imports/common_import.dart';
@@ -29,22 +33,49 @@ class CallData {
     required this.type,
   });
 
-  factory CallData.fromJson(Map<String, dynamic> json) => CallData(
-        uuid: json["id"],
-        callerName: json["nameCaller"],
-        type: json["type"],
-        id: json["extra"]["id"],
-        callerId: json["extra"]["callerId"],
-        callerImage: json["extra"]["callerImage"],
-        channelName: json["extra"]["channelName"],
-        token: json["extra"]["token"],
-      );
+  factory CallData.fromJson(Map<String, dynamic> json) {
+    int readInt(dynamic value) {
+      if (value is int) return value;
+      if (value is double) return value.toInt();
+      return int.tryParse(value?.toString() ?? '') ?? 0;
+    }
+
+    final extra = json['extra'] is Map
+        ? Map<String, dynamic>.from(json['extra'] as Map)
+        : <String, dynamic>{};
+    final type = readInt(extra['callType'] ?? json['type']);
+
+    return CallData(
+      uuid: (json["id"] ?? json['uuid'] ?? extra['uuid']).toString(),
+      callerName: (json["nameCaller"] ?? extra['callerName'] ?? '').toString(),
+      type: type == 2 ? 1 : type,
+      id: readInt(extra["id"] ?? json['callId'] ?? json['call_id']),
+      callerId: readInt(extra["callerId"] ?? json['callerId']),
+      callerImage: extra["callerImage"]?.toString(),
+      channelName:
+          (extra["channelName"] ?? json['channelName'] ?? '').toString(),
+      token: (extra["token"] ?? json['token'] ?? '').toString(),
+    );
+  }
 }
 
 class VoipController extends GetxController {
   final AgoraCallController agoraCallController = Get.find();
   final UserProfileManager _userProfileManager = Get.find();
   bool? callEndedByMe;
+  StreamSubscription<call_event.CallEvent?>? _callKitSubscription;
+
+  @override
+  void onInit() {
+    listenerSetup();
+    super.onInit();
+  }
+
+  @override
+  void onClose() {
+    _callKitSubscription?.cancel();
+    super.onClose();
+  }
 
   void clear() {
     callEndedByMe = null;
@@ -65,8 +96,74 @@ class VoipController extends GetxController {
     callkit.FlutterCallkitIncoming.endCall(call.uuid);
   }
 
+  Future<void> callConnected(Call call) async {
+    await callkit.FlutterCallkitIncoming.setCallConnected(call.uuid);
+  }
+
+  Future<bool> incomingCall(Call call) async {
+    try {
+      final params = CallKitParams(
+        id: call.uuid,
+        nameCaller: call.opponent.userName,
+        appName: 'RD',
+        avatar: call.opponent.picture,
+        handle: call.channelName,
+        type: call.callType == 1 ? 0 : 1,
+        textAccept: acceptString.tr,
+        textDecline: declineString.tr,
+        duration: 30000,
+        missedCallNotification: const NotificationParams(
+          showNotification: true,
+          isShowCallback: false,
+          subtitle: 'Missed call',
+        ),
+        extra: <String, dynamic>{
+          'id': call.callId,
+          'callerId': call.opponent.id,
+          'callerName': call.opponent.userName,
+          'callerImage': call.opponent.picture,
+          'channelName': call.channelName,
+          'token': call.token,
+          'callType': call.callType,
+        },
+        android: const AndroidParams(
+          isCustomNotification: true,
+          isShowLogo: false,
+          isShowCallID: false,
+          isImportant: true,
+          isShowFullLockedScreen: true,
+          ringtonePath: 'system_ringtone_default',
+          incomingCallNotificationChannelName: 'Incoming Call',
+          missedCallNotificationChannelName: 'Missed Call',
+        ),
+        ios: IOSParams(
+          handleType: 'generic',
+          supportsVideo: call.callType == 2,
+          maximumCallGroups: 1,
+          maximumCallsPerCallGroup: 1,
+          audioSessionMode: 'default',
+          audioSessionActive: true,
+          supportsDTMF: false,
+          supportsHolding: false,
+          supportsGrouping: false,
+          supportsUngrouping: false,
+          ringtonePath: 'system_ringtone_default',
+        ),
+      );
+
+      await callkit.FlutterCallkitIncoming.showCallkitIncoming(params);
+      return true;
+    } catch (e, st) {
+      debugPrint('[VoipController] showCallkitIncoming failed: $e');
+      debugPrint(st.toString());
+      return false;
+    }
+  }
+
   void listenerSetup() {
-    callkit.FlutterCallkitIncoming.onEvent.listen((event) {
+    if (_callKitSubscription != null) return;
+    _callKitSubscription =
+        callkit.FlutterCallkitIncoming.onEvent.listen((event) {
       switch (event!.event) {
         case call_event.Event.actionCallIncoming:
           break;
@@ -89,6 +186,7 @@ class VoipController extends GetxController {
                 token: callData.token,
                 callType: callData.type == 0 ? 1 : 2,
                 opponent: opponent);
+            agoraCallController.player.stop();
             agoraCallController.initiateAcceptCall(call: call);
             clear();
           });
@@ -98,13 +196,13 @@ class VoipController extends GetxController {
           CallData callData = CallData.fromJson(event.body);
 
           Call call = Call(
-              uuid: event.body['id'],
+              uuid: callData.uuid,
               channelName: '',
               isOutGoing: false,
               opponent: UserModel(),
               token: '',
-              callType: 0,
-              callId: 0);
+              callType: callData.type == 0 ? 1 : 2,
+              callId: callData.id);
           if (callData.callerId != _userProfileManager.user.value!.id) {
             //call made by me
             agoraCallController.declineIncomingCall(call: call);
@@ -132,14 +230,15 @@ class VoipController extends GetxController {
 
           break;
         case call_event.Event.actionCallTimeout:
+          CallData callData = CallData.fromJson(event.body);
           Call call = Call(
-              uuid: event.body['id'],
+              uuid: callData.uuid,
               channelName: '',
               isOutGoing: false,
               opponent: UserModel(),
               token: '',
-              callType: 0,
-              callId: 0);
+              callType: callData.type == 0 ? 1 : 2,
+              callId: callData.id);
           // CallData callData = CallData.fromJson(event.body);
           // if (callData.callerId != _userProfileManager.user.value?.id &&
           //     _userProfileManager.user.value?.id != null) {

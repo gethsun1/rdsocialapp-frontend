@@ -56,15 +56,19 @@ class Turkish {
     "No...": "HAYIR...",
     "Yes...": "Evet...",
     "Next": "Sonraki",
-    "Please grant the required permission from settings to access this feature.": "Bu özelliğe erişim için lütfen ayarlardan gerekli izni verin.",
+    "Please grant the required permission from settings to access this feature.":
+        "Bu özelliğe erişim için lütfen ayarlardan gerekli izni verin.",
     "No data found": "Veri bulunamadı",
     "Watch Ads": "Reklamları İzle",
-    "By watching Ads, you get to earn coins_value Coin per advert you watch. Click the button to start earning! ": "Reklamları izleyerek izlediğiniz reklam başına Coin_value Coin kazanırsınız.  ",
+    "By watching Ads, you get to earn coins_value Coin per advert you watch. Click the button to start earning! ":
+        "Reklamları izleyerek izlediğiniz reklam başına Coin_value Coin kazanırsınız.  ",
     "No product is available": "Ürün mevcut değil",
-    "Some error occurred while performing purchase, please try again later.": "Satın alma işlemi gerçekleştirilirken bazı hatalar oluştu. Lütfen daha sonra tekrar deneyin.",
+    "Some error occurred while performing purchase, please try again later.":
+        "Satın alma işlemi gerçekleştirilirken bazı hatalar oluştu. Lütfen daha sonra tekrar deneyin.",
     "Store is not available.": "Mağaza mevcut değil.",
     "Cancelled by user": "Kullanıcı tarafından iptal edildi",
-    "By signing up, you are acknowledging that you have read, understood and accept our": "Kaydolarak, koşullarımızı okuduğunuzu, anladığınızı ve kabul ettiğinizi onaylamış olursunuz.",
+    "By signing up, you are acknowledging that you have read, understood and accept our":
+        "Kaydolarak, koşullarımızı okuduğunuzu, anladığınızı ve kabul ettiğinizi onaylamış olursunuz.",
     "Terms of Service": "Hizmet Şartları",
     "Welcome": "Hoş geldin",
     "Profile": "Profil",
@@ -83,12 +87,17 @@ class Turkish {
     "Email or username": "E-posta veya kullanıcı adı",
     "Login another account": "Başka bir hesaba giriş yapın",
     "Forgot Password?": "Parolanızı mı unuttunuz?",
-    "Your password has been changed successfully": "Şifreniz başarıyla değiştirildi",
+    "Your password has been changed successfully":
+        "Şifreniz başarıyla değiştirildi",
     "Resend OTP": "OTP'yi yeniden gönder",
-    "Please enter the one time password sent to your email to verify your account and change your password": "Hesabınızı doğrulamak ve şifrenizi değiştirmek için lütfen e-postanıza gönderilen tek kullanımlık şifreyi girin",
-    "Let’s help you get back your account": "Hesabınızı geri almanıza yardımcı olalım",
-    "Please enter the one time password sent to your phone number to verify your phone number": "Telefon numaranızı doğrulamak için lütfen telefon numaranıza gönderilen tek kullanımlık şifreyi giriniz",
-    "Let’s help you to change phone number": "Telefon numarasını değiştirmenize yardımcı olalım",
+    "Please enter the one time password sent to your email to verify your account and change your password":
+        "Hesabınızı doğrulamak ve şifrenizi değiştirmek için lütfen e-postanıza gönderilen tek kullanımlık şifreyi girin",
+    "Let’s help you get back your account":
+        "Hesabınızı geri almanıza yardımcı olalım",
+    "Please enter the one time password sent to your phone number to verify your phone number":
+        "Telefon numaranızı doğrulamak için lütfen telefon numaranıza gönderilen tek kullanımlık şifreyi giriniz",
+    "Let’s help you to change phone number":
+        "Telefon numarasını değiştirmenize yardımcı olalım",
     "If you didn’t receive code,": "Kodu almadıysanız,",
     "Send": "Göndermek",
     "Sent": "Gönderilmiş",
@@ -132,8 +141,10 @@ class Turkish {
     "Enter old password": "Eski şifreyi girin",
     "Please enter you password": "Lütfen şifrenizi girin",
     "Your password is too short": "Şifreniz çok kısa",
-    "Your password is acceptable but not strong": "Şifreniz kabul edilebilir ancak güçlü değil",
-    "Your password must contain letter and number": "Şifreniz harf ve rakam içermelidir",
+    "Your password is acceptable but not strong":
+        "Şifreniz kabul edilebilir ancak güçlü değil",
+    "Your password must contain letter and number":
+        "Şifreniz harf ve rakam içermelidir",
     "Your password is great": "Şifreniz harika",
     "Joined users": "Katılan kullanıcılar",
     "OR": "VEYA",
@@ -143,8 +154,10 @@ class Turkish {
     "Confirm Password": "Şifreyi Onayla",
     "Categories": "Kategoriler",
     "Such kind of messages are not allowed": "Bu tür mesajlara izin verilmez",
-    "There is some problem, Please try again later": "Bir sorun oluştu. Lütfen daha sonra tekrar deneyin.",
-    "Sorry, but the content you're attempting to upload is not permitted according to our policies.": "Üzgünüz, ancak yüklemeye çalıştığınız içeriğe politikalarımız uyarınca izin verilmiyor.",
+    "There is some problem, Please try again later":
+        "Bir sorun oluştu. Lütfen daha sonra tekrar deneyin.",
+    "Sorry, but the content you're attempting to upload is not permitted according to our policies.":
+        "Üzgünüz, ancak yüklemeye çalıştığınız içeriğe politikalarımız uyarınca izin verilmiyor.",
     "Camera": "Kamera",
     "Photo": "Fotoğraf",
     "Sent a Photo": "Fotoğraf Gönderildi",
@@ -186,7 +199,8 @@ class Turkish {
     "Search users": "Kullanıcıları ara",
     "Log Out": "Oturumu Kapat",
     "Change Password": "Şifre değiştir",
-    "Are you sure, you want to logout?": "Oturumu kapatmak istediğinizden emin misiniz?",
+    "Are you sure, you want to logout?":
+        "Oturumu kapatmak istediğinizden emin misiniz?",
     "Change Location": "Konumu Değiştir",
     "Location": "Konum",
     "Sent a Location": "Konum Gönderildi",
@@ -194,14 +208,17 @@ class Turkish {
     "New password": "Yeni Şifre",
     "Confirm password": "Şifreyi onayla",
     "Reset password": "Şifreyi sıfırla",
-    "Please enter valid email address": "Lütfen geçerli bir e-posta adresi girin",
-    "Please enter valid phone number": "Lütfen geçerli bir telefon numarası girin",
+    "Please enter valid email address":
+        "Lütfen geçerli bir e-posta adresi girin",
+    "Please enter valid phone number":
+        "Lütfen geçerli bir telefon numarası girin",
     "Please upload image": "Lütfen resim yükleyin",
     "Joined": "Katıldı",
     "Join": "Katılmak",
     "Fee": "Ücret",
     "User name is updated": "Kullanıcı adı güncellendi",
-    "User profile category type is updated": "Kullanıcı profili kategori türü güncellendi",
+    "User profile category type is updated":
+        "Kullanıcı profili kategori türü güncellendi",
     "Phone number": "Telefon numarası",
     "Change Phone number": "Telefon numarasını değiştir",
     "Update": "Güncelleme",
@@ -306,12 +323,15 @@ class Turkish {
     "Invite user": "Kullanıcıyı davet et",
     "Invite friends": "Arkadaşlarınızı davet edin",
     "See All": "Tümünü Gör",
-    "Already invited {{user_name}} in live and waiting for confirmation": "Zaten davet edildi {{user_name}} canlı yayındayım ve onay bekliyorum",
+    "Already invited {{user_name}} in live and waiting for confirmation":
+        "Zaten davet edildi {{user_name}} canlı yayındayım ve onay bekliyorum",
     "Waiting to accept": "Kabul etmeyi bekliyorum",
     "Invitation declined": "Davet reddedildi",
-    "Your invitation for battle is declined by {{user_name}}": "Savaş davetiniz şu kişi tarafından reddedildi: {{user_name}}",
+    "Your invitation for battle is declined by {{user_name}}":
+        "Savaş davetiniz şu kişi tarafından reddedildi: {{user_name}}",
     "No response": "Yanıt yok",
-    "No response from {{user_name}} on live battle request": "Gönderen yanıt yok {{user_name}} canlı savaş isteği üzerine",
+    "No response from {{user_name}} on live battle request":
+        "Gönderen yanıt yok {{user_name}} canlı savaş isteği üzerine",
     "Clubs": "Kulüpler",
     "Top Clubs": "En İyi Kulüpler",
     "Create club": "Kulüp oluştur",
@@ -336,17 +356,23 @@ class Turkish {
     "Send Messages": "Mesaj Gönder",
     "All Participants": "Tüm Katılımcılar",
     "Only Admins": "Yalnızca Yöneticiler",
-    "Follow some user to start chat": "Sohbete başlamak için bir kullanıcıyı takip edin",
+    "Follow some user to start chat":
+        "Sohbete başlamak için bir kullanıcıyı takip edin",
     "No chat found": "Sohbet bulunamadı",
-    "Make some audio/video call with friends": "Arkadaşlarınızla sesli/görüntülü arama yapın",
+    "Make some audio/video call with friends":
+        "Arkadaşlarınızla sesli/görüntülü arama yapın",
     "No call found": "Arama bulunamadı",
     "No Story found": "Hikaye bulunamadı",
-    "Post some stories to create highlights": "Öne çıkanlar oluşturmak için birkaç hikaye yayınlayın",
+    "Post some stories to create highlights":
+        "Öne çıkanlar oluşturmak için birkaç hikaye yayınlayın",
     "No Notification found": "Bildirim bulunamadı",
     "Delete account": "Hesabı sil",
-    "Are you sure to delete account, Once account is deleted your all data will be deleted": "Hesabı sildiğinizden emin misiniz? Hesap silindiğinde tüm verileriniz silinecektir.",
-    "Please allow access to camera and microphone to start video call": "Görüntülü görüşme başlatmak için lütfen kamera ve mikrofona erişime izin verin",
-    "Please allow access to microphone to start audio call": "Lütfen sesli arama başlatmak için mikrofona erişime izin verin",
+    "Are you sure to delete account, Once account is deleted your all data will be deleted":
+        "Hesabı sildiğinizden emin misiniz? Hesap silindiğinde tüm verileriniz silinecektir.",
+    "Please allow access to camera and microphone to start video call":
+        "Görüntülü görüşme başlatmak için lütfen kamera ve mikrofona erişime izin verin",
+    "Please allow access to microphone to start audio call":
+        "Lütfen sesli arama başlatmak için mikrofona erişime izin verin",
     "Star": "Yıldız",
     "UnStar": "Yıldızı Kaldır",
     "Starred messages": "Yıldızlı mesajlar",
@@ -366,9 +392,12 @@ class Turkish {
     "Unlock app with Touch ID": "Touch ID ile uygulamanın kilidini açın",
     "Use Face ID": "Face ID'yi kullan",
     "Use Touch ID": "Touch ID'yi kullanın",
-    "Unlock you app with touch id / face id": "Uygulamanızın kilidini dokunmatik kimlik / yüz kimliğiyle açın",
-    "Please authenticate to use biometric login into app": "Uygulamaya biyometrik giriş yapmak için lütfen kimlik doğrulaması yapın",
-    "Please authenticate to remove biometric login into app": "Uygulamaya biyometrik giriş yapmayı kaldırmak için lütfen kimlik doğrulaması yapın",
+    "Unlock you app with touch id / face id":
+        "Uygulamanızın kilidini dokunmatik kimlik / yüz kimliğiyle açın",
+    "Please authenticate to use biometric login into app":
+        "Uygulamaya biyometrik giriş yapmak için lütfen kimlik doğrulaması yapın",
+    "Please authenticate to remove biometric login into app":
+        "Uygulamaya biyometrik giriş yapmayı kaldırmak için lütfen kimlik doğrulaması yapın",
     "Edit Post": "Gönderiyi Düzenle",
     "Delete Post": "Gönderiyi Sil",
     "Posting...": "Yayınlanıyor...",
@@ -376,7 +405,8 @@ class Turkish {
     "Retry": "Yeniden dene",
     "Discard": "At",
     "Please enter group name": "Lütfen grup adını girin",
-    "Please select some users to create group": "Lütfen grup oluşturmak için birkaç kullanıcı seçin",
+    "Please select some users to create group":
+        "Lütfen grup oluşturmak için birkaç kullanıcı seçin",
     "Group name": "Grup adı",
     "Admin": "Yönetici",
     "You are Admin": "Siz Yöneticisiniz",
@@ -389,15 +419,18 @@ class Turkish {
     "left the group": "gruptan ayrıldı",
     "is now admin": "şimdi yönetici",
     "Time to update app": "Uygulamayı güncelleme zamanı",
-    "You are using older version of app, You need to update the app to continue": "Uygulamanın eski sürümünü kullanıyorsunuz. Devam etmek için uygulamayı güncellemeniz gerekiyor",
+    "You are using older version of app, You need to update the app to continue":
+        "Uygulamanın eski sürümünü kullanıyorsunuz. Devam etmek için uygulamayı güncellemeniz gerekiyor",
     "Copy": "Kopyala",
-    "Stranger chat": "Yabancı sohbet",
-    "Have fun by chatting with random peoples": "Rastgele kişilerle sohbet ederek eğlenin",
+    "Incognito chat": "Gizli sohbet",
+    "Have fun by chatting with random peoples":
+        "Rastgele kişilerle sohbet ederek eğlenin",
     "Tvs": "TV'ler",
     "Checking connection..": "Bağlantı kontrol ediliyor..",
     "Going live": "Canlı yayına geçiliyor",
     "Go": "Gitmek",
-    "Do you want to end live call?": "Canlı görüşmeyi sonlandırmak istiyor musunuz?",
+    "Do you want to end live call?":
+        "Canlı görüşmeyi sonlandırmak istiyor musunuz?",
     "Do you want to end live battle?": "Canlı savaşı bitirmek istiyor musunuz?",
     "Choose battle time": "Savaş zamanını seçin",
     "Users": "Kullanıcılar",
@@ -412,7 +445,8 @@ class Turkish {
     "Gifts received": "Alınan hediyeler",
     "Gifts sent": "Gönderilen hediyeler",
     "Join competitions and earn money": "Yarışmalara katılın ve para kazanın",
-    "A place for people of common interest": "Ortak ilgi alanlarına sahip insanlar için bir yer",
+    "A place for people of common interest":
+        "Ortak ilgi alanlarına sahip insanlar için bir yer",
     "Live Users": "Canlı Kullanıcılar",
     "Reel": "Makara",
     "Reels": "Makaralar",
@@ -420,15 +454,19 @@ class Turkish {
     "Original audio": "Orijinal ses",
     "Use": "Kullanmak",
     "View Gift": "Hediyeyi Görüntüle",
-    "Anyone can see this club and join the club": "Herkes bu kulübü görebilir ve kulübe katılabilir",
-    "Only requested member or joined member can see it": "Yalnızca istenen üye veya katılan üye görebilir",
+    "Anyone can see this club and join the club":
+        "Herkes bu kulübü görebilir ve kulübe katılabilir",
+    "Only requested member or joined member can see it":
+        "Yalnızca istenen üye veya katılan üye görebilir",
     "Communication": "İletişim",
     "Chat group": "Sohbet grubu",
-    "Create chat group for discussion with club users": "Kulüp kullanıcılarıyla tartışmak için sohbet grubu oluşturun",
+    "Create chat group for discussion with club users":
+        "Kulüp kullanıcılarıyla tartışmak için sohbet grubu oluşturun",
     "Basic info": "Temel bilgiler",
     "Club name": "Kulüp adı",
     "Add Cover Photo": "Kapak Fotoğrafı Ekle",
-    "Give people an idea of what your group is about with a photo": "Bir fotoğrafla insanlara grubunuzun neyle ilgili olduğu hakkında fikir verin",
+    "Give people an idea of what your group is about with a photo":
+        "Bir fotoğrafla insanlara grubunuzun neyle ilgili olduğu hakkında fikir verin",
     "Cover photo": "Kapak fotoğrafı",
     "Leave club": "Kulüpten ayrıl",
     "Remove": "Kaldırmak",
@@ -436,13 +474,15 @@ class Turkish {
     "Please enter club description": "Lütfen kulüp açıklamasını girin",
     "Please select club image": "Lütfen kulüp resmini seçin",
     "On request": "Talep üzerine",
-    "Interested users can request to join, admin can approve the request": "İlgilenen kullanıcılar katılma isteğinde bulunabilir, yönetici isteği onaylayabilir",
+    "Interested users can request to join, admin can approve the request":
+        "İlgilenen kullanıcılar katılma isteğinde bulunabilir, yönetici isteği onaylayabilir",
     "Watch Ads to earn coins": "Para kazanmak için Reklamları izleyin",
     "You need": "ihtiyacın var",
     "To join this competition": "Bu yarışmaya katılmak için",
     "Files": "Dosyalar",
     "File": "Dosya",
-    "Finding a perfect user to chat": "Sohbet etmek için mükemmel bir kullanıcı bulma",
+    "Finding a perfect user to chat":
+        "Sohbet etmek için mükemmel bir kullanıcı bulma",
     "Allow": "İzin vermek",
     "Share location": "Konumu paylaş",
     "More from": "Daha fazlası",
@@ -454,7 +494,8 @@ class Turkish {
     "Subscribe using": "Kullanarak abone olun",
     "You are subscribed to this channel now": "Artık bu kanala abonesiniz",
     "Redeem": "Kullan",
-    "Minimum withdrawal limit is {{cash}}\$": "Minimum para çekme limiti {{cash}}\$",
+    "Minimum withdrawal limit is {{cash}}\$":
+        "Minimum para çekme limiti {{cash}}\$",
     "Posted": "Gönderildi",
     "Live History": "Canlı Tarih",
     "Started at": "Başlangıç ​​tarihi:",
@@ -465,12 +506,14 @@ class Turkish {
     "Verified on": "Doğrulanma tarihi",
     "Request sent on": "Talep gönderildi",
     "We are reviewing your profile": "Profilinizi inceliyoruz",
-    "Verified accounts have blue checkmark next to their names to show that we have confirmed you are a real person": "Doğrulanmış hesapların adlarının yanında, sizin gerçek bir kişi olduğunuzu doğruladığımızı gösteren mavi bir onay işareti bulunur",
+    "Verified accounts have blue checkmark next to their names to show that we have confirmed you are a real person":
+        "Doğrulanmış hesapların adlarının yanında, sizin gerçek bir kişi olduğunuzu doğruladığımızı gösteren mavi bir onay işareti bulunur",
     "Document type": "Belge türü",
     "Upload document": "Belgeyi yükle",
     "Please select a document type": "Lütfen bir belge türü seçin",
     "Please upload identity proof": "Lütfen kimlik kanıtını yükleyin",
-    "Profile verification request is sent, you will be updated soon": "Profil doğrulama isteği gönderildi, yakında güncelleneceksiniz",
+    "Profile verification request is sent, you will be updated soon":
+        "Profil doğrulama isteği gönderildi, yakında güncelleneceksiniz",
     "Status": "Durum",
     "In processing": "İşleme aşamasında",
     "Cancelled": "İptal edildi",
@@ -480,7 +523,8 @@ class Turkish {
     "Pan card": "Pan kartı",
     "Other": "Diğer",
     "Message to reviewer": "İnceleyene mesaj",
-    "Upload both front and back side of document": "Belgenin hem ön hem de arka tarafını yükleyin",
+    "Upload both front and back side of document":
+        "Belgenin hem ön hem de arka tarafını yükleyin",
     "You can upload maximum 2 images": "Maksimum 2 görsel yükleyebilirsiniz",
     "Payment and coins": "Ödeme ve madeni paralar",
     "Change Language": "Dili Değiştir",
@@ -542,14 +586,16 @@ class Turkish {
     "Ticket Saved": "!!!>>> Failed to fetch <<<!!!",
     "Confirmed": "Onaylandı",
     "Placing order, please wait...": "Sipariş veriliyor, lütfen bekleyin...",
-    "Do not close or refresh the app until the process is completed": "İşlem tamamlanana kadar uygulamayı kapatmayın veya yenilemeyin",
+    "Do not close or refresh the app until the process is completed":
+        "İşlem tamamlanana kadar uygulamayı kapatmayın veya yenilemeyin",
     "Book more": "Daha fazla rezervasyon yapın",
     "Your transaction is completed": "İşleminiz tamamlandı",
     "Error in booking..": "Rezervasyonda hata..",
     "Please try again later": "Lütfen daha sonra tekrar deneyin",
     "Try again": "Tekrar deneyin",
     "No booking found": "Rezervasyon bulunamadı",
-    "Go to events and book tickets": "Etkinliklere gidin ve bilet rezervasyonu yapın",
+    "Go to events and book tickets":
+        "Etkinliklere gidin ve bilet rezervasyonu yapın",
     "Event Gallery": "Etkinlik Galerisi",
     "Time": "Zaman",
     "Date": "Tarih",
@@ -557,7 +603,8 @@ class Turkish {
     "Upcoming": "Yaklaşan",
     "Free": "Özgür",
     "Public group": "Herkese açık grup",
-    "Anyone can view this group and can join this group, You can remove any member in future": "Herkes bu grubu görüntüleyebilir ve bu gruba katılabilir. Gelecekte herhangi bir üyeyi kaldırabilirsiniz.",
+    "Anyone can view this group and can join this group, You can remove any member in future":
+        "Herkes bu grubu görüntüleyebilir ve bu gruba katılabilir. Gelecekte herhangi bir üyeyi kaldırabilirsiniz.",
     "Join requests": "Katılım istekleri",
     "Join invitations": "Davetiyelere katıl",
     "Invites": "Davetler",
@@ -584,42 +631,57 @@ class Turkish {
     "Month": "Ay",
     "Year": "Yıl",
     "No dating profiles found": "Hiçbir flört profili bulunamadı",
-    "Change your preferences and explore more": "Tercihlerinizi değiştirin ve daha fazlasını keşfedin",
+    "Change your preferences and explore more":
+        "Tercihlerinizi değiştirin ve daha fazlasını keşfedin",
     "No matching profiles found": "Eşleşen profil bulunamadı",
-    "Explore more dating profiles and get matched": "Daha fazla flört profilini keşfedin ve eşleştirin",
+    "Explore more dating profiles and get matched":
+        "Daha fazla flört profilini keşfedin ve eşleştirin",
     "No profiles found": "Profil bulunamadı",
     "Explore more dating profiles": "Daha fazla flört profilini keşfedin",
     "Set location": "Konumu ayarla",
     "Set your location services": "Konum hizmetlerinizi ayarlayın",
-    "We use your location to show you potential matches in your area": "Bölgenizdeki potansiyel eşleşmeleri size göstermek için konumunuzu kullanıyoruz",
+    "We use your location to show you potential matches in your area":
+        "Bölgenizdeki potansiyel eşleşmeleri size göstermek için konumunuzu kullanıyoruz",
     "Allow notifications": "Bildirimlere izin ver",
-    "We'll let you know when you get new matches and messages": "Yeni eşleşmeler ve mesajlar aldığınızda size haber vereceğiz",
+    "We'll let you know when you get new matches and messages":
+        "Yeni eşleşmeler ve mesajlar aldığınızda size haber vereceğiz",
     "Not now": "Şimdi değil",
     "Add name": "Ad ekle",
     "What's your first name?": "Adınız nedir?",
     "Add photos": "Fotoğraf ekle",
-    "Profile with more good photos are getting more matches, so add your best photos": "Daha iyi fotoğraflara sahip profil daha fazla eşleşme alıyor, bu nedenle en iyi fotoğraflarınızı ekleyin",
+    "Profile with more good photos are getting more matches, so add your best photos":
+        "Daha iyi fotoğraflara sahip profil daha fazla eşleşme alıyor, bu nedenle en iyi fotoğraflarınızı ekleyin",
     "When's your birthday?": "Doğum günün ne zaman?",
-    "Be accurate to specify this to get genuine matches": "Gerçek eşleşmeler elde etmek için bunu doğru şekilde belirtin",
+    "Be accurate to specify this to get genuine matches":
+        "Gerçek eşleşmeler elde etmek için bunu doğru şekilde belirtin",
     "Mention your gender": "Cinsiyetinizi belirtin",
     "Who would you like to date?": "Kiminle çıkmak isterdin?",
-    "You can choose more than one answer and change any time": "Birden fazla cevap seçebilir ve istediğiniz zaman değiştirebilirsiniz",
-    "We need to know more about you.": "Senin hakkında daha fazlasını bilmemiz gerekiyor.",
+    "You can choose more than one answer and change any time":
+        "Birden fazla cevap seçebilir ve istediğiniz zaman değiştirebilirsiniz",
+    "We need to know more about you.":
+        "Senin hakkında daha fazlasını bilmemiz gerekiyor.",
     "Add Interests.": "İlgi Alanları Ekle.",
-    "Add your interests and habits": "İlgi alanlarınızı ve alışkanlıklarınızı ekleyin",
+    "Add your interests and habits":
+        "İlgi alanlarınızı ve alışkanlıklarınızı ekleyin",
     "Add Professional Details.": "Profesyonel Ayrıntılar ekleyin.",
     "Enable Dating": "Flört Etmeyi Etkinleştir",
-    "You need to enable dating profile and have to provide your profile information to start dating peoples": "Flört profilini etkinleştirmeniz ve insanlarla çıkmaya başlamak için profil bilgilerinizi sağlamanız gerekiyor",
-    "Follow friends to send post.": "Gönderi göndermek için arkadaşlarınızı takip edin.",
+    "You need to enable dating profile and have to provide your profile information to start dating peoples":
+        "Flört profilini etkinleştirmeniz ve insanlarla çıkmaya başlamak için profil bilgilerinizi sağlamanız gerekiyor",
+    "Follow friends to send post.":
+        "Gönderi göndermek için arkadaşlarınızı takip edin.",
     "Choose profile category type": "Profil kategorisi türünü seçin",
-    "Category will help people find accounts like yours. You can change this": "Kategori, insanların sizinkine benzer hesapları bulmasına yardımcı olacaktır. ",
-    "We will search user in your specified category": "Belirlediğiniz kategorideki kullanıcıyı arayacağız",
+    "Category will help people find accounts like yours. You can change this":
+        "Kategori, insanların sizinkine benzer hesapları bulmasına yardımcı olacaktır. ",
+    "We will search user in your specified category":
+        "Belirlediğiniz kategorideki kullanıcıyı arayacağız",
     "Favourite": "Favori",
     "Subscribed": "Abone olundu",
     "Install this cool app from": "Bu harika uygulamayı şuradan yükleyin:",
     "Account is deleted successfully": "Hesap başarıyla silindi",
-    "Are you sure to report this post?": "Bu gönderiyi bildireceğinizden emin misiniz?",
-    "Are you sure to block this user?": "Bu kullanıcıyı engellediğinizden emin misiniz?",
+    "Are you sure to report this post?":
+        "Bu gönderiyi bildireceğinizden emin misiniz?",
+    "Are you sure to block this user?":
+        "Bu kullanıcıyı engellediğinizden emin misiniz?",
     "Male": "Erkek",
     "Female": "Dişi",
     "Not specified": "Belirtilmedi",
@@ -633,8 +695,10 @@ class Turkish {
     "Select": "Seçme",
     "Dislike": "Beğenmedim",
     "Do you smoke?": "Sigara içiyor musunuz?",
-    "Are you sure, you want to leave group?": "Gruptan ayrılmak istediğinizden emin misiniz?",
-    "Are you sure, you want to delete group?": "Grubu silmek istediğinizden emin misiniz?",
+    "Are you sure, you want to leave group?":
+        "Gruptan ayrılmak istediğinizden emin misiniz?",
+    "Are you sure, you want to delete group?":
+        "Grubu silmek istediğinizden emin misiniz?",
     "Today": "Bugün",
     "This week": "Bu hafta",
     "This month": "Bu ay",
@@ -684,7 +748,8 @@ class Turkish {
     "Boost Post": "Gönderiyi Öne Çıkar",
     "Goal": "Amaç",
     "Select a goal": "Bir hedef seçin",
-    "What results would you like from this ad?": "Bu reklamdan hangi sonuçları istiyorsunuz?",
+    "What results would you like from this ad?":
+        "Bu reklamdan hangi sonuçları istiyorsunuz?",
     "More profile visits": "Daha fazla profil ziyareti",
     "More website visits": "Daha fazla web sitesi ziyareti",
     "More messages": "Daha fazla mesaj",
@@ -696,9 +761,11 @@ class Turkish {
     "Audience": "Kitle",
     "Define your audience": "Hedef kitlenizi tanımlayın",
     "Automatic": "Otomatik",
-    "Targets people similar to your followers": "Takipçilerinize benzer kişileri hedefler",
+    "Targets people similar to your followers":
+        "Takipçilerinize benzer kişileri hedefler",
     "Create your own": "Kendinizinkini yaratın",
-    "Manually enter your targeting options": "Hedefleme seçeneklerinizi manuel olarak girin",
+    "Manually enter your targeting options":
+        "Hedefleme seçeneklerinizi manuel olarak girin",
     "Create audience": "Kitle oluştur",
     "Edit audience": "Kitleyi düzenle",
     "Audience name": "Kitle adı",
@@ -709,8 +776,10 @@ class Turkish {
     "Local": "Yerel",
     "Your current location": "Şu anki konumunuz",
     "Radius": "Yarıçap",
-    "We suggest adding a broad range of locations to cover the largest surrounding areas, including countries, countries/regions, and towns/cities.": "Ülkeler, ülkeler/bölgeler ve kasabalar/şehirler de dahil olmak üzere çevredeki en geniş alanları kapsayacak şekilde geniş bir konum yelpazesi eklemenizi öneririz.",
-    "We suggest adding a broad range of interests to cover the largest audience.": "En geniş kitleyi kapsayacak şekilde geniş bir ilgi alanı yelpazesi eklemenizi öneririz.",
+    "We suggest adding a broad range of locations to cover the largest surrounding areas, including countries, countries/regions, and towns/cities.":
+        "Ülkeler, ülkeler/bölgeler ve kasabalar/şehirler de dahil olmak üzere çevredeki en geniş alanları kapsayacak şekilde geniş bir konum yelpazesi eklemenizi öneririz.",
+    "We suggest adding a broad range of interests to cover the largest audience.":
+        "En geniş kitleyi kapsayacak şekilde geniş bir ilgi alanı yelpazesi eklemenizi öneririz.",
     "Profile Preferences": "Profil Tercihleri",
     "Budget and duration": "Bütçe ve süre",
     "Total spend": "Toplam harcama",
@@ -727,8 +796,10 @@ class Turkish {
     "Contact Us": "Bize Ulaşın",
     "Book Now": "Şimdi Rezervasyon Yapın",
     "Please enter an audience name": "Lütfen bir hedef kitle adı girin",
-    "Please enter the location of the target audience": "Lütfen hedef kitlenin konumunu girin",
-    "Please enter the audience's interests": "Lütfen hedef kitlenin ilgi alanlarını girin",
+    "Please enter the location of the target audience":
+        "Lütfen hedef kitlenin konumunu girin",
+    "Please enter the audience's interests":
+        "Lütfen hedef kitlenin ilgi alanlarını girin",
     "Please select gender and age": "Lütfen cinsiyet ve yaş seçin",
     "Thanks": "Teşekkürler",
     "Sponsored": "sponsorlu",
@@ -770,7 +841,8 @@ class Turkish {
     "Please select experience.": "Lütfen deneyimi seçin.",
     "Please enter education.": "Lütfen eğitime giriniz.",
     "Please enter cover letter.": "Lütfen kapak mektubunu giriniz.",
-    "Your have applied for this job successfully": "Bu işe başarıyla başvurdunuz",
+    "Your have applied for this job successfully":
+        "Bu işe başarıyla başvurdunuz",
     "Tap to edit": "Düzenlemek için dokunun",
     "Shared in": "Paylaşıldı",
     "Comment is deleted successfully": "Yorum başarıyla silindi",
@@ -780,16 +852,19 @@ class Turkish {
     "You reacted to their story": "Onların hikayesine tepki verdiniz",
     "You replied to their story": "Onların hikayesine yanıt verdin",
     "Follow requests": "İstekleri takip et",
-    "Accept reject the pending Follow requests": "Kabul et bekleyen Takip isteklerini reddet",
+    "Accept reject the pending Follow requests":
+        "Kabul et bekleyen Takip isteklerini reddet",
     "started following you": "seni takip etmeye başladım",
     "sent you follow request": "sana takip isteği gönderdim",
     "commented on your post": "gönderinize yorum yaptı",
     "liked your post": "Gönderini beğendim",
     "Admin Added new competition": "Yönetici Yeni rekabet eklendi",
     "Replied on your support request": "Destek isteğinize yanıt verildi",
-    "Congratulations, Your verification request has been approved.": "Tebrikler, Doğrulama isteğiniz onaylandı.",
+    "Congratulations, Your verification request has been approved.":
+        "Tebrikler, Doğrulama isteğiniz onaylandı.",
     "Share online status": "Çevrimiçi durumu paylaş",
-    "If you don't share your last seen and online, you won’t be able to see other people's last seen and online status also": "Son görülme durumunuzu ve çevrimiçi durumunuzu paylaşmazsanız, diğer kişilerin son görülme durumlarını ve çevrimiçi durumlarını da göremezsiniz.",
+    "If you don't share your last seen and online, you won’t be able to see other people's last seen and online status also":
+        "Son görülme durumunuzu ve çevrimiçi durumunuzu paylaşmazsanız, diğer kişilerin son görülme durumlarını ve çevrimiçi durumlarını da göremezsiniz.",
     "Copy link": "Bağlantıyı kopyala",
     "Created by SinghCoders": "SinghCoders tarafından oluşturuldu",
     "Banned users": "Yasaklanan kullanıcılar",
@@ -801,14 +876,16 @@ class Turkish {
     "Remove from moderator": "Moderatörden kaldır",
     "Ban for 60 minute": "60 dakika süreyle yasak",
     "Permanent ban": "Kalıcı yasak",
-    "You are not allowed to join this live": "Bu canlı yayına katılmanıza izin verilmiyor",
+    "You are not allowed to join this live":
+        "Bu canlı yayına katılmanıza izin verilmiyor",
     "is a moderator now": "şu anda moderatör",
     "is removed from moderators": "moderatörlerden kaldırıldı",
     "Copied": "Kopyalandı",
     "Add location": "Konum ekle",
     "added a new event :": "yeni bir etkinlik ekledi:",
     "added a new competition :": "yeni bir yarışma ekledi:",
-    "added a new fund raising campaign :": "yeni bir bağış toplama kampanyası ekledi:",
+    "added a new fund raising campaign :":
+        "yeni bir bağış toplama kampanyası ekledi:",
     "added a new job opening :": "yeni bir iş ilanı ekledi:",
     "added a new offer :": "yeni bir teklif ekledi:",
     "added a new product for sale :": "satışa yeni bir ürün ekledi:",
@@ -843,7 +920,8 @@ class Turkish {
     "Subscribe": "Abone",
     "Are you sure to subscribe": "Abone olduğunuzdan emin misiniz?",
     "For subscribers only": "Yalnızca aboneler için",
-    "Subscribe {{userName}} to view this content": "Abone {{userName}} bu içeriği görüntülemek için",
+    "Subscribe {{userName}} to view this content":
+        "Abone {{userName}} bu içeriği görüntülemek için",
     "My subscribers": "Abonelerim",
     "My subscriptions": "Aboneliklerim",
     "Subscribed you": "Sana abone oldum",
@@ -854,12 +932,16 @@ class Turkish {
     "Collaborations": "İşbirlikleri",
     "Collaboration request": "İşbirliği talebi",
     "No collaborator found": "Ortak çalışan bulunamadı",
-    "Search some user to add as collaborator": "Ortak çalışan olarak eklemek için bir kullanıcı arayın",
-    "Maximum 5 collaborators can be added in a post": "Bir gönderiye en fazla 5 ortak çalışan eklenebilir",
-    "Invited you to collaborate on post": "Sizi gönderi üzerinde işbirliği yapmaya davet etti",
+    "Search some user to add as collaborator":
+        "Ortak çalışan olarak eklemek için bir kullanıcı arayın",
+    "Maximum 5 collaborators can be added in a post":
+        "Bir gönderiye en fazla 5 ortak çalışan eklenebilir",
+    "Invited you to collaborate on post":
+        "Sizi gönderi üzerinde işbirliği yapmaya davet etti",
     "Withdraw collaboration": "İşbirliğini geri çek",
     "Account is private": "Hesap gizli",
-    "Follow this account to view posts": "Gönderileri görüntülemek için bu hesabı takip edin",
+    "Follow this account to view posts":
+        "Gönderileri görüntülemek için bu hesabı takip edin",
     "Add account": "Hesap ekle",
     "Switch account": "Hesap değiştir"
   };

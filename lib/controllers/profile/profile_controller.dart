@@ -14,6 +14,7 @@ import 'dart:io';
 import 'dart:async';
 import 'package:foap/manager/location_manager.dart';
 import 'package:foap/util/form_validator.dart';
+import 'package:foap/util/username_validator.dart';
 import 'package:foap/controllers/auth/login_controller.dart';
 import 'package:foap/controllers/post/post_controller.dart';
 import 'package:foap/model/payment_model.dart';
@@ -34,6 +35,7 @@ class ProfileController extends GetxController {
 
   RxInt userNameCheckStatus = (-1).obs;
   RxBool isLoading = true.obs;
+  String _lastUsernameValidationRequest = '';
 
   RxList<PaymentModel> payments = <PaymentModel>[].obs;
   RxInt selectedSegment = 0.obs;
@@ -127,6 +129,30 @@ class ProfileController extends GetxController {
     }
   }
 
+  void updateBio({required String bio}) {
+    final trimmedBio = bio.trim();
+    EasyLoading.show(status: loadingString.tr);
+
+    ProfileApi.updateBio(
+        bio: trimmedBio,
+        resultCallback: () {
+          EasyLoading.dismiss();
+          AppUtil.showToast(message: profileUpdatedString.tr, isSuccess: true);
+          _userProfileManager.refreshProfile();
+
+          user.value!.bio = trimmedBio;
+          _userProfileManager.user.value?.bio = trimmedBio;
+          update();
+          Future.delayed(const Duration(milliseconds: 800), () {
+            Get.back();
+          });
+        },
+        failureCallback: (message) {
+          EasyLoading.dismiss();
+          AppUtil.showToast(message: message, isSuccess: false);
+        });
+  }
+
   void resetPassword({
     required String oldPassword,
     required String newPassword,
@@ -192,9 +218,20 @@ class ProfileController extends GetxController {
           resultCallback: (token) {
             EasyLoading.dismiss();
             _userProfileManager.refreshProfile();
-            Get.to(() => VerifyOTPPhoneNumberChange(
-                  token: token,
-                ));
+            if (token != null && token.isNotEmpty) {
+              Get.to(() => VerifyOTPPhoneNumberChange(
+                    token: token,
+                  ));
+            } else {
+              user.value!.countryCode = countryCode;
+              user.value!.phone = phoneNumber;
+              update();
+              AppUtil.showToast(
+                  message: profileUpdatedString.tr, isSuccess: true);
+              Future.delayed(const Duration(milliseconds: 800), () {
+                Get.back();
+              });
+            }
           });
     }
   }
@@ -203,10 +240,11 @@ class ProfileController extends GetxController {
     required String userName,
     required isSigningUp,
   }) {
-    if (FormValidator().isTextEmpty(userName)) {
+    final normalizedUserName = UsernameValidator.normalize(userName);
+    if (FormValidator().isTextEmpty(normalizedUserName)) {
       AppUtil.showToast(
           message: pleaseEnterUserNameString.tr, isSuccess: false);
-    } else if (userNameCheckStatus.value != 1) {
+    } else if (!_isUsernameFormatValid(normalizedUserName)) {
       AppUtil.showToast(
           message: pleaseEnterValidUserNameString.tr, isSuccess: false);
     } else {
@@ -214,7 +252,7 @@ class ProfileController extends GetxController {
         if (value) {
           EasyLoading.show(status: loadingString.tr);
           ProfileApi.updateUserName(
-              userName: userName,
+              userName: normalizedUserName,
               resultCallback: () {
                 EasyLoading.dismiss();
                 AppUtil.showToast(
@@ -229,10 +267,46 @@ class ProfileController extends GetxController {
                     Get.back();
                   });
                 }
+              },
+              failureCallback: (message) {
+                EasyLoading.dismiss();
+                AppUtil.showToast(message: message, isSuccess: false);
               });
         }
       });
     }
+  }
+
+  Future<bool> updateUserNameForSignupSetup({
+    required String userName,
+  }) async {
+    final normalizedUserName = UsernameValidator.normalize(userName);
+    if (FormValidator().isTextEmpty(normalizedUserName)) {
+      AppUtil.showToast(
+          message: pleaseEnterUserNameString.tr, isSuccess: false);
+      return false;
+    }
+    if (!_isUsernameFormatValid(normalizedUserName)) {
+      AppUtil.showToast(
+          message: pleaseEnterValidUserNameString.tr, isSuccess: false);
+      return false;
+    }
+
+    final completer = Completer<bool>();
+    EasyLoading.show(status: loadingString.tr);
+    ProfileApi.updateUserName(
+        userName: normalizedUserName,
+        resultCallback: () async {
+          EasyLoading.dismiss();
+          await getMyProfile();
+          completer.complete(true);
+        },
+        failureCallback: (message) {
+          EasyLoading.dismiss();
+          AppUtil.showToast(message: message, isSuccess: false);
+          completer.complete(false);
+        });
+    return completer.future;
   }
 
   void updateProfileCategoryType({
@@ -260,41 +334,159 @@ class ProfileController extends GetxController {
         });
   }
 
+  void enableDemoVerifiedBadge() {
+    if (user.value?.isVerified == true) {
+      return;
+    }
+
+    EasyLoading.show(status: loadingString.tr);
+    ProfileApi.enableDemoVerifiedBadge(resultCallback: (updatedUser) async {
+      if (updatedUser != null && updatedUser.id != 0) {
+        _userProfileManager.user.value = updatedUser;
+        user.value = updatedUser;
+      } else {
+        await _userProfileManager.refreshProfile();
+        user.value = _userProfileManager.user.value;
+        user.value?.isVerified = true;
+        _userProfileManager.user.value?.isVerified = true;
+      }
+      EasyLoading.dismiss();
+      AppUtil.showToast(message: youAreVerifiedNowString.tr, isSuccess: true);
+      update();
+    }, failureCallback: (message) {
+      EasyLoading.dismiss();
+      AppUtil.showToast(message: message, isSuccess: false);
+    });
+  }
+
   void verifyUsername({required String userName}) {
+    final normalizedUserName = UsernameValidator.normalize(userName);
+    _lastUsernameValidationRequest = normalizedUserName;
+
+    if (!_isUsernameFormatValid(normalizedUserName)) {
+      userNameCheckStatus.value = 0;
+      update();
+      return;
+    }
+
+    if (normalizedUserName == _userProfileManager.user.value?.userName) {
+      userNameCheckStatus.value = 1;
+      update();
+      return;
+    }
+
     AuthApi.checkUsername(
-        username: userName,
+        username: normalizedUserName,
         successCallback: () {
+          if (_lastUsernameValidationRequest != normalizedUserName) return;
           userNameCheckStatus.value = 1;
           update();
         },
         failureCallback: () {
+          if (_lastUsernameValidationRequest != normalizedUserName) return;
           userNameCheckStatus.value = 0;
           update();
         });
   }
 
   void editProfileImageAction(XFile pickedFile, bool isCoverImage) async {
-    if (isCoverImage) {
-      Uint8List compressedData = await File(pickedFile.path)
-          .compress(minHeight: 800, minWidth: 800, byQuality: 50);
+    try {
+      if (isCoverImage) {
+        Uint8List compressedData = await File(pickedFile.path)
+            .compress(minHeight: 800, minWidth: 800, byQuality: 50);
 
-      ProfileApi.uploadProfileCoverImage(compressedData, resultCallback: () {
-        _userProfileManager.refreshProfile().then((value) {
-          user.value = _userProfileManager.user.value;
-          update();
+        ProfileApi.uploadProfileCoverImage(compressedData, resultCallback: () {
+          AppUtil.showToast(message: profileUpdatedString.tr, isSuccess: true);
+          _userProfileManager.refreshProfile().then((value) {
+            user.value = _userProfileManager.user.value;
+            update();
+          });
         });
-      });
-    } else {
-      Uint8List compressedData = await File(pickedFile.path)
-          .compress(minHeight: 1000, minWidth: 1000, byQuality: 50);
+      } else {
+        Uint8List compressedData = await File(pickedFile.path)
+            .compress(minHeight: 1000, minWidth: 1000, byQuality: 50);
 
-      ProfileApi.uploadProfileImage(compressedData, resultCallback: () {
-        _userProfileManager.refreshProfile().then((value) {
-          user.value = _userProfileManager.user.value;
-          update();
+        ProfileApi.uploadProfileImage(compressedData, resultCallback: () {
+          AppUtil.showToast(message: profileUpdatedString.tr, isSuccess: true);
+          _userProfileManager.refreshProfile().then((value) {
+            user.value = _userProfileManager.user.value;
+            update();
+          });
         });
-      });
+      }
+    } catch (e) {
+      EasyLoading.dismiss();
+      debugPrint('[ProfileController] profile image update failed: $e');
+      AppUtil.showToast(
+          message:
+              'Unable to prepare selected image. Please try another photo.',
+          isSuccess: false);
     }
+  }
+
+  void editProfileCoverImageData(Uint8List imageData) async {
+    try {
+      ProfileApi.uploadProfileCoverImage(imageData, resultCallback: () {
+        AppUtil.showToast(message: profileUpdatedString.tr, isSuccess: true);
+        _userProfileManager.refreshProfile().then((value) {
+          user.value = _userProfileManager.user.value;
+          update();
+        });
+      });
+    } catch (e) {
+      EasyLoading.dismiss();
+      debugPrint('[ProfileController] cover image update failed: $e');
+      AppUtil.showToast(
+          message:
+              'Unable to prepare selected image. Please try another photo.',
+          isSuccess: false);
+    }
+  }
+
+  Future<bool> updateProfileImageForSignupSetup(
+      XFile pickedFile, bool isCoverImage) async {
+    try {
+      if (isCoverImage) {
+        Uint8List compressedData = await File(pickedFile.path)
+            .compress(minHeight: 800, minWidth: 800, byQuality: 50);
+
+        final updated = await ProfileApi.uploadProfileCoverImage(compressedData,
+            resultCallback: () {});
+        if (updated) {
+          await getMyProfile();
+        }
+        return updated;
+      } else {
+        Uint8List compressedData = await File(pickedFile.path)
+            .compress(minHeight: 1000, minWidth: 1000, byQuality: 50);
+
+        final updated = await ProfileApi.uploadProfileImage(compressedData,
+            resultCallback: () {});
+        if (updated) {
+          await getMyProfile();
+        }
+        return updated;
+      }
+    } catch (e) {
+      EasyLoading.dismiss();
+      debugPrint('[ProfileController] signup profile image update failed: $e');
+      AppUtil.showToast(
+          message:
+              'Unable to update image right now. Please choose another photo.',
+          isSuccess: false);
+      return false;
+    }
+  }
+
+  void resetUserNameValidation({String? userName}) {
+    final normalizedUserName = UsernameValidator.normalize(userName ?? '');
+    userNameCheckStatus.value = normalizedUserName.isEmpty ? -1 : 0;
+    _lastUsernameValidationRequest = normalizedUserName;
+    update();
+  }
+
+  bool _isUsernameFormatValid(String userName) {
+    return UsernameValidator.isValid(userName);
   }
 
   void updateBioMetricSetting(bool value, BuildContext context) {
@@ -353,10 +545,13 @@ class ProfileController extends GetxController {
   }
 
   void blockUser(BuildContext context) {
-    user.value!.isReported = true;
-    update();
+    final blockedUserId = user.value!.id;
 
-    UsersApi.blockUser(userId: user.value!.id, resultCallback: () {});
+    UsersApi.blockUser(
+        userId: blockedUserId,
+        resultCallback: () {
+          Get.back();
+        });
   }
 
 //////////////********** other user profile **************/////////////////
@@ -459,6 +654,7 @@ class ProfileController extends GetxController {
 
       PostApi.getMentionedPosts(
           userId: userId,
+          page: mentionsPostPage,
           resultCallback: (result, metaData) {
             mentionsPostsIsLoading = false;
 

@@ -30,37 +30,71 @@ class CommentModel {
 
   CommentModel();
 
+  static int _readInt(dynamic value, {int fallback = 0}) {
+    if (value == null) return fallback;
+    if (value is int) return value;
+    if (value is double) return value.toInt();
+    return int.tryParse(value.toString()) ?? fallback;
+  }
+
+  static DateTime _readCreatedAt(dynamic value) {
+    if (value is num) {
+      final timestamp = value.toInt();
+      final milliseconds =
+          timestamp > 1000000000000 ? timestamp : timestamp * 1000;
+      return DateTime.fromMillisecondsSinceEpoch(milliseconds).toUtc();
+    }
+    final parsed = DateTime.tryParse(value?.toString() ?? '');
+    return parsed?.toUtc() ?? DateTime.now().toUtc();
+  }
+
   factory CommentModel.fromJson(dynamic json) {
     CommentModel model = CommentModel();
-    model.id = json['id'];
-    model.parentId = json['parent_id'];
-
-    model.comment = json['comment'];
-    model.userId = json['user_id'];
-    model.level = json['level'] ?? 1;
-    model.isFavourite = json['isLike'] == 1;
-
-    model.totalReplies = json['totalChildComment'] ?? 0;
-    model.pendingReplies = json['totalChildComment'] ?? 0;
-
-    model.user = UserModel.fromJson(json['user']);
-    dynamic user = json['user'];
-    if (user != null) {
-      model.userName = user['username'];
-      model.userPicture = user['picture'];
+    if (json is! Map) {
+      return model;
     }
 
-    model.type = json['type'] == 4
+    model.id = _readInt(json['id']);
+    model.parentId = json['parent_id'] == null
+        ? null
+        : _readInt(json['parent_id'] ?? json['parentId']);
+
+    model.comment = (json['comment'] ?? json['text'] ?? '').toString();
+    model.userId = _readInt(json['user_id'] ?? json['userId']);
+    model.level = _readInt(json['level'], fallback: 1);
+    model.isFavourite = json['isLike'] == 1 || json['is_like'] == 1;
+
+    model.totalReplies =
+        _readInt(json['totalChildComment'] ?? json['total_child_comment']);
+    model.pendingReplies = model.totalReplies;
+
+    dynamic user = json['user'] ?? json['createdByUser'] ?? json['userDetail'];
+    model.user = user == null ? UserModel() : UserModel.fromJson(user);
+    if (user != null) {
+      model.userName = (user['username'] ?? '').toString();
+      model.userPicture =
+          (user['picture'] ?? user['profileImageUrl'])?.toString();
+    }
+    if (model.userName.isEmpty) {
+      model.userName = model.user?.userName ?? '';
+    }
+    if (model.userId == 0) {
+      model.userId = model.user?.id ?? 0;
+    }
+
+    final type = _readInt(json['type']);
+    model.type = type == 4
         ? CommentType.gif
-        : json['type'] == 3
+        : type == 3
             ? CommentType.video
-            : json['type'] == 2
+            : type == 2
                 ? CommentType.image
                 : CommentType.text;
-    model.filePath = json['filenameUrl'] ?? '';
+    model.filePath =
+        (json['filenameUrl'] ?? json['fileUrl'] ?? json['file_url'] ?? '')
+            .toString();
 
-    DateTime createDate =
-        DateTime.fromMillisecondsSinceEpoch(json['created_at'] * 1000).toUtc();
+    DateTime createDate = _readCreatedAt(json['created_at']);
     model.commentTime = createDate.getTimeAgo;
 
     model.isPinned = json['isPin'] != null;

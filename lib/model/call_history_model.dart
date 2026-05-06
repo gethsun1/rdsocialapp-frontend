@@ -2,7 +2,6 @@ import 'package:foap/helper/date_extension.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:intl/intl.dart';
 
-
 class CallHistoryModel {
   int id;
   int status;
@@ -26,17 +25,49 @@ class CallHistoryModel {
     required this.receiverDetail,
   });
 
-  factory CallHistoryModel.fromJson(dynamic json) => CallHistoryModel(
-        id: json['id'],
-        status: json['status'],
-        startTime: json['start_time'],
-        endTime: json['end_time'] ?? 0,
-        callTime: json['total_time'] ?? 0,
-        callerId: json['caller_id'],
-        callType: json['call_type'],
-        callerDetail: UserModel.fromJson(json['callerDetail']),
-        receiverDetail: UserModel.fromJson(json['receiverDetail']),
-      );
+  factory CallHistoryModel.fromJson(dynamic json) {
+    final map = json is Map ? Map<String, dynamic>.from(json) : {};
+    int readInt(dynamic value) {
+      if (value is int) return value;
+      if (value is double) return value.toInt();
+      return int.tryParse(value?.toString() ?? '') ?? 0;
+    }
+
+    UserModel readUser(List<String> keys, int fallbackId) {
+      for (final key in keys) {
+        final value = map[key];
+        if (value is Map) {
+          return UserModel.fromJson(Map<String, dynamic>.from(value));
+        }
+      }
+      final user = UserModel();
+      user.id = fallbackId;
+      return user;
+    }
+
+    final callerId = readInt(map['caller_id'] ?? map['callerId']);
+    final receiverId = readInt(map['receiver_id'] ?? map['receiverId']);
+
+    return CallHistoryModel(
+      id: readInt(map['id'] ?? map['callId'] ?? map['call_id']),
+      status: readInt(map['status']),
+      startTime: readInt(map['start_time'] ??
+          map['startTime'] ??
+          map['created_at'] ??
+          map['createdAt']),
+      endTime: readInt(map['end_time'] ?? map['endTime']),
+      callTime: readInt(map['total_time'] ??
+          map['totalTime'] ??
+          map['call_time'] ??
+          map['callTime']),
+      callerId: callerId,
+      callType: readInt(map['call_type'] ?? map['callType']),
+      callerDetail:
+          readUser(['callerDetail', 'caller_detail', 'caller'], callerId),
+      receiverDetail: readUser(
+          ['receiverDetail', 'receiver_detail', 'receiver'], receiverId),
+    );
+  }
 
   UserModel get opponent {
     final UserProfileManager userProfileManager = Get.find();

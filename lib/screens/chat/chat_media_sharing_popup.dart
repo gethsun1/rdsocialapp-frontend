@@ -18,10 +18,20 @@ import '../settings_menu/settings_controller.dart';
 class SharingMediaType {
   ThemeIcon icon;
   String text;
-  MessageContentType contentType;
+  MessageContentType? contentType;
+  ChatSharingActionType actionType;
 
   SharingMediaType(
-      {required this.icon, required this.text, required this.contentType});
+      {required this.icon,
+      required this.text,
+      this.contentType,
+      this.actionType = ChatSharingActionType.message});
+}
+
+enum ChatSharingActionType {
+  message,
+  audioCall,
+  videoCall,
 }
 
 class ChatMediaSharingOptionPopup extends StatefulWidget {
@@ -62,7 +72,7 @@ class _ChatMediaSharingOptionPopupState
     if (_settingsController.setting.value!.enableVideoSharingInChat) {
       mediaTypes.add(SharingMediaType(
           icon: ThemeIcon.videoCamera,
-          text: photoString.tr,
+          text: videoString.tr,
           contentType: MessageContentType.video));
     }
     if (_settingsController.setting.value!.enableFileSharingInChat) {
@@ -92,8 +102,22 @@ class _ChatMediaSharingOptionPopupState
     if (_settingsController.setting.value!.enableAudioSharingInChat) {
       mediaTypes.add(SharingMediaType(
           icon: ThemeIcon.mic,
-          text: audioString.tr,
+          text: voiceString.tr,
           contentType: MessageContentType.audio));
+    }
+    if (_chatDetailController.chatRoom.value?.isGroupChat == false &&
+        _settingsController.setting.value!.enableAudioCalling) {
+      mediaTypes.add(SharingMediaType(
+          icon: ThemeIcon.mobile,
+          text: audioCallString.tr,
+          actionType: ChatSharingActionType.audioCall));
+    }
+    if (_chatDetailController.chatRoom.value?.isGroupChat == false &&
+        _settingsController.setting.value!.enableVideoCalling) {
+      mediaTypes.add(SharingMediaType(
+          icon: ThemeIcon.videoCamera,
+          text: videoCallString.tr,
+          actionType: ChatSharingActionType.videoCall));
     }
     if (_settingsController.setting.value!.enableDrawingSharingInChat) {
       mediaTypes.add(SharingMediaType(
@@ -185,6 +209,17 @@ class _ChatMediaSharingOptionPopupState
   }
 
   void handleAction(SharingMediaType mediaType) {
+    if (mediaType.actionType == ChatSharingActionType.audioCall) {
+      Get.back();
+      _chatDetailController.initiateAudioCall();
+      return;
+    }
+    if (mediaType.actionType == ChatSharingActionType.videoCall) {
+      Get.back();
+      _chatDetailController.initiateVideoCall();
+      return;
+    }
+
     if (mediaType.contentType == MessageContentType.photo) {
       Get.back();
 

@@ -79,7 +79,7 @@ class CommentsScreenState extends State<CommentsScreen> {
                               // height: 500,
                               width: double.infinity,
                               color: AppColorConstants.disabledColor
-                                  .withOpacity(0.1),
+                                  .withValues(alpha: 0.1),
                               child: _smartTextFieldController
                                       .currentHashtag.isNotEmpty
                                   ? TagHashtagView()
@@ -111,7 +111,7 @@ class CommentsScreenState extends State<CommentsScreen> {
                                   _commentsController.comments[index];
                               return CommentTile(
                                 model: comment,
-                                post: widget.post!,
+                                post: widget.post,
                                 replyActionHandler: (comment) {
                                   _commentsController.setReplyComment(comment);
                                 },
@@ -189,7 +189,7 @@ class CommentsScreenState extends State<CommentsScreen> {
         children: <Widget>[
           Expanded(
             child: Container(
-              color: AppColorConstants.cardColor.withOpacity(0.5),
+              color: AppColorConstants.cardColor.withValues(alpha: 0.5),
               child: Row(children: <Widget>[
                 Expanded(
                   child: SizedBox(

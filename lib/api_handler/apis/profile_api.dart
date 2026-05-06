@@ -6,7 +6,8 @@ import 'package:foap/api_handler/api_wrapper.dart';
 import '../../helper/imports/common_import.dart';
 
 class ProfileApi {
-  static Future<void> getMyProfile({required Function(UserModel) resultCallback}) async {
+  static Future<void> getMyProfile(
+      {required Function(UserModel) resultCallback}) async {
     var url = NetworkConstantsUtil.getMyProfile;
     await ApiWrapper().getApi(url: url).then((result) {
       if (result?.success == true) {
@@ -17,7 +18,9 @@ class ProfileApi {
   }
 
   static Future<void> updateUserName(
-      {required String userName, required VoidCallback resultCallback}) async{
+      {required String userName,
+      required VoidCallback resultCallback,
+      Function(String)? failureCallback}) async {
     var url = NetworkConstantsUtil.updateUserProfile;
 
     await ApiWrapper().postApi(url: url, param: {
@@ -25,12 +28,38 @@ class ProfileApi {
     }).then((result) {
       if (result?.success == true) {
         resultCallback();
+      } else {
+        failureCallback?.call(result?.message ?? errorMessageString.tr);
       }
     });
   }
 
+  static Future<bool> updateSignupProfile({
+    String? userName,
+    String? dateOfBirth,
+    Function(String)? failureCallback,
+  }) async {
+    var url = NetworkConstantsUtil.updateUserProfile;
+    final params = <String, String>{};
+
+    if (userName != null) {
+      params['username'] = userName;
+    }
+    if (dateOfBirth != null) {
+      params['date_of_birth'] = dateOfBirth;
+    }
+
+    final result = await ApiWrapper().postApi(url: url, param: params);
+    if (result?.success == true) {
+      return true;
+    }
+
+    failureCallback?.call(result?.message ?? errorMessageString.tr);
+    return false;
+  }
+
   static Future<void> updateProfileCategoryType(
-      {required int categoryType, required VoidCallback resultCallback}) async{
+      {required int categoryType, required VoidCallback resultCallback}) async {
     var url = NetworkConstantsUtil.updateUserProfile;
 
     await ApiWrapper().postApi(url: url, param: {
@@ -42,8 +71,26 @@ class ProfileApi {
     });
   }
 
+  static Future<void> enableDemoVerifiedBadge(
+      {required Function(UserModel?) resultCallback,
+      Function(String)? failureCallback}) async {
+    var url = NetworkConstantsUtil.updateUserProfile;
+
+    await ApiWrapper().postApi(url: url, param: {
+      'is_verified': 1,
+    }).then((result) {
+      if (result?.success == true) {
+        final data = result?.data;
+        final userJson = data is Map ? data['user'] : null;
+        resultCallback(userJson == null ? null : UserModel.fromJson(userJson));
+      } else {
+        failureCallback?.call(result?.message ?? errorMessageString.tr);
+      }
+    });
+  }
+
   static Future<void> updateBiometricSetting(
-      {required int setting, required VoidCallback resultCallback}) async{
+      {required int setting, required VoidCallback resultCallback}) async {
     var url = NetworkConstantsUtil.updateUserProfile;
 
     await ApiWrapper().postApi(url: url, param: {
@@ -58,20 +105,22 @@ class ProfileApi {
   static Future<void> updatePhone(
       {required String countryCode,
       required String phone,
-      required Function(String) resultCallback})async {
+      required Function(String?) resultCallback}) async {
     var url = NetworkConstantsUtil.updatePhone;
 
     await ApiWrapper().postApi(
         url: url,
         param: {"country_code": countryCode, "phone": phone}).then((result) {
       if (result?.success == true) {
-        resultCallback(result!.data['verify_token']);
+        final data = result!.data;
+        final token = data is Map ? data['verify_token']?.toString() : null;
+        resultCallback(token);
       }
     });
   }
 
   static Future<void> updatePaymentDetails(
-      {required String paypalId, required Function() resultCallback}) async{
+      {required String paypalId, required Function() resultCallback}) async {
     var url = NetworkConstantsUtil.updatePaymentDetail;
     var params = {"paypal_id": paypalId};
 
@@ -85,7 +134,7 @@ class ProfileApi {
   static Future<void> updateCountryCity(
       {required String country,
       required String city,
-      required Function() resultCallback})async {
+      required Function() resultCallback}) async {
     var url = NetworkConstantsUtil.updateUserProfile;
 
     await ApiWrapper().postApi(
@@ -96,8 +145,23 @@ class ProfileApi {
     });
   }
 
+  static Future<void> updateBio(
+      {required String bio,
+      required Function() resultCallback,
+      Function(String)? failureCallback}) async {
+    var url = NetworkConstantsUtil.updateUserProfile;
+
+    await ApiWrapper().postApi(url: url, param: {'bio': bio}).then((result) {
+      if (result?.success == true) {
+        resultCallback();
+      } else {
+        failureCallback?.call(result?.message ?? errorMessageString.tr);
+      }
+    });
+  }
+
   static Future<void> updateUserLocation(
-      {required LatLng location, required Function() resultCallback})async {
+      {required LatLng location, required Function() resultCallback}) async {
     var url = NetworkConstantsUtil.updateLocation;
 
     await ApiWrapper().postApi(url: url, param: {
@@ -112,7 +176,7 @@ class ProfileApi {
   }
 
   static Future<void> pauseUserLocation(
-      {required LatLng location, required Function() resultCallback})async {
+      {required LatLng location, required Function() resultCallback}) async {
     var url = NetworkConstantsUtil.updateLocation;
 
     await ApiWrapper().postApi(url: url, param: {
@@ -129,7 +193,7 @@ class ProfileApi {
   static Future<void> changePassword(
       {required String oldPassword,
       required String newPassword,
-      required VoidCallback resultCallback}) async{
+      required VoidCallback resultCallback}) async {
     var url = NetworkConstantsUtil.updatePassword;
 
     await ApiWrapper().postApi(url: url, param: {
@@ -145,7 +209,7 @@ class ProfileApi {
   static Future<void> postRelationInviteUnInvite(
       {required int relationShipId,
       required int userId,
-      required VoidCallback resultCallback}) async{
+      required VoidCallback resultCallback}) async {
     var url = NetworkConstantsUtil.postInviteUnInvite;
 
     await ApiWrapper().postApi(url: url, param: {
@@ -218,36 +282,46 @@ class ProfileApi {
     });
   }
 
-  static Future<void> uploadProfileImage(Uint8List imageData,
-      {required VoidCallback resultCallback}) async{
+  static Future<bool> uploadProfileImage(Uint8List imageData,
+      {required VoidCallback resultCallback}) async {
     EasyLoading.show(status: loadingString.tr);
 
-    await ApiWrapper()
+    final result = await ApiWrapper()
         .multipartImageUpload(
             url: NetworkConstantsUtil.updateProfileImage,
             imageFileData: imageData)
-        .then((result) {
-      EasyLoading.dismiss();
-      if (result?.success == true) {
-        resultCallback();
-      }
-    });
+        .then((result) => result);
+    EasyLoading.dismiss();
+    if (result?.success == true) {
+      resultCallback();
+      return true;
+    } else {
+      AppUtil.showToast(
+          message: result?.message ?? 'Unable to update profile image.',
+          isSuccess: false);
+      return false;
+    }
   }
 
-  static Future<void> uploadProfileCoverImage(Uint8List imageData,
-      {required VoidCallback resultCallback}) async{
+  static Future<bool> uploadProfileCoverImage(Uint8List imageData,
+      {required VoidCallback resultCallback}) async {
     EasyLoading.show(status: loadingString.tr);
 
-    await ApiWrapper()
+    final result = await ApiWrapper()
         .multipartImageUpload(
             url: NetworkConstantsUtil.updateProfileCoverImage,
             imageFileData: imageData)
-        .then((result) {
-      EasyLoading.dismiss();
-      if (result?.success == true) {
-        resultCallback();
-      }
-    });
+        .then((result) => result);
+    EasyLoading.dismiss();
+    if (result?.success == true) {
+      resultCallback();
+      return true;
+    } else {
+      AppUtil.showToast(
+          message: result?.message ?? 'Unable to update cover image.',
+          isSuccess: false);
+      return false;
+    }
   }
 
   static Future<void> updateAccountPrivacy(

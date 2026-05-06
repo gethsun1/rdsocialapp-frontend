@@ -39,8 +39,7 @@ class ChatHistoryController extends GetxController {
       // allRooms = await getIt<DBManager>().mapUnReadCount(groupChatRooms);
       searchedRooms.value = allRooms;
       searchedRooms.value = searchedRooms
-          .where(
-              (e) => e.isGroupChat == true || (e.roomMembers.length > 1))
+          .where((e) => e.isGroupChat == true || (e.roomMembers.length > 1))
           .toList();
       update();
     });
@@ -72,7 +71,7 @@ class ChatHistoryController extends GetxController {
           publicGroups.addAll(result);
 
           publicGroupsDataWrapper.haveMoreData.value =
-              metaData.currentPage <= metaData.pageCount;
+              metaData.currentPage < metaData.pageCount;
           publicGroupsDataWrapper.page += 1;
           callback();
           update();
@@ -89,9 +88,7 @@ class ChatHistoryController extends GetxController {
       if (room.isGroupChat) {
         return room.name!.toLowerCase().contains(text);
       } else {
-        return room.opponent.userDetail.userName
-            .toLowerCase()
-            .contains(text);
+        return room.opponent.userDetail.userName.toLowerCase().contains(text);
       }
     }).toList();
     searchedRooms.refresh();
@@ -102,8 +99,7 @@ class ChatHistoryController extends GetxController {
     getIt<DBManager>().clearUnReadCount(roomId: chatRoom.id);
     int roomsWithUnreadMessageCount =
         await getIt<DBManager>().roomsWithUnreadMessages();
-    _dashboardController
-        .updateUnreadMessageCount(roomsWithUnreadMessageCount);
+    _dashboardController.updateUnreadMessageCount(roomsWithUnreadMessageCount);
 
     getChatRooms();
     update();
@@ -140,9 +136,7 @@ class ChatHistoryController extends GetxController {
   }
 
   void userTypingStatusChanged(
-      {required String userName,
-      required int roomId,
-      required bool status}) {
+      {required String userName, required int roomId, required bool status}) {
     var matchedRooms = allRooms.where((element) => element.id == roomId);
 
     if (matchedRooms.isNotEmpty) {
@@ -161,9 +155,7 @@ class ChatHistoryController extends GetxController {
       if (status == true) {
         Timer(const Duration(seconds: 5), () {
           if (typingStatus[userName] != null) {
-            if (DateTime.now()
-                    .difference(typingStatus[userName]!)
-                    .inSeconds >
+            if (DateTime.now().difference(typingStatus[userName]!).inSeconds >
                 4) {
               room.whoIsTyping.remove(userName);
               typingStatus[userName] = null;

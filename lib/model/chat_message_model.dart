@@ -159,11 +159,15 @@ class ChatMessageUser {
   ChatMessageUser();
 
   factory ChatMessageUser.fromJson(dynamic json) {
+    if (json is! Map) return ChatMessageUser();
+
     ChatMessageUser model = ChatMessageUser();
-    model.id = json['id'] ?? 0;
-    model.messageId = json['chat_message_id'] ?? 0;
-    model.userId = json['user_id'] ?? 0;
-    model.status = json['status'] ?? 0;
+    model.id = ChatMessageModel.readInt(json['id']);
+    model.messageId =
+        ChatMessageModel.readInt(json['chat_message_id'] ?? json['message_id']);
+    model.userId = ChatMessageModel.readInt(json['user_id'] ?? json['userId']);
+    model.status =
+        ChatMessageModel.readInt(json['status'] ?? json['current_status']);
 
     return model;
   }
@@ -210,41 +214,113 @@ class ChatMessageModel {
 
   ChatMessageModel();
 
+  static int readInt(dynamic value, {int fallback = 0}) {
+    if (value == null) return fallback;
+    if (value is int) return value;
+    if (value is double) return value.toInt();
+    return int.tryParse(value.toString()) ?? fallback;
+  }
+
+  static int readEpochSeconds(dynamic value) {
+    final timestamp = readInt(
+      value,
+      fallback: (DateTime.now().millisecondsSinceEpoch / 1000).round(),
+    );
+    return timestamp > 1000000000000 ? (timestamp / 1000).round() : timestamp;
+  }
+
+  static int readEpochMilliseconds(dynamic value) {
+    final timestamp = readInt(
+      value,
+      fallback: DateTime.now().millisecondsSinceEpoch,
+    );
+    return timestamp < 10000000000 ? timestamp * 1000 : timestamp;
+  }
+
+  static int readSenderId(Map<dynamic, dynamic> jsonMap) {
+    final senderValue = jsonMap['sender'];
+    final userValue = jsonMap['user'];
+
+    return readInt(
+      jsonMap['created_by'] ??
+          jsonMap['createdBy'] ??
+          jsonMap['userId'] ??
+          jsonMap['user_id'] ??
+          jsonMap['sender_id'] ??
+          jsonMap['senderId'] ??
+          (senderValue is Map
+              ? senderValue['id'] ??
+                  senderValue['user_id'] ??
+                  senderValue['userId']
+              : senderValue) ??
+          (userValue is Map
+              ? userValue['id'] ?? userValue['user_id'] ?? userValue['userId']
+              : null),
+    );
+  }
+
   factory ChatMessageModel.fromJson(dynamic jsonObj) {
     final UserProfileManager userProfileManager = Get.find();
 
     Map<dynamic, dynamic> jsonMap;
     if (jsonObj is String) {
       jsonMap = json.decode(jsonObj);
-    } else {
+    } else if (jsonObj is Map) {
       jsonMap = jsonObj;
+    } else {
+      jsonMap = {};
     }
     ChatMessageModel model = ChatMessageModel();
-    model.id = jsonMap['id'] ?? 0;
-    model.sender =
-        jsonMap['user'] == null ? null : UserModel.fromJson(jsonMap['user']);
+    model.id = readInt(jsonMap['id']);
+    final senderJson = jsonMap['user'] ??
+        (jsonMap['sender'] is Map ? jsonMap['sender'] : null);
+    model.sender = senderJson == null ? null : UserModel.fromJson(senderJson);
     model.localMessageId =
-        jsonMap['local_message_id'] ?? jsonMap['localMessageId'];
+        (jsonMap['local_message_id'] ?? jsonMap['localMessageId'])
+                ?.toString() ??
+            (model.id == 0
+                ? 'local_${DateTime.now().microsecondsSinceEpoch}'
+                : model.id.toString());
     model.roomId =
-        jsonMap['room'] ?? jsonMap['room_id'] ?? jsonMap['liveCallId'] ?? 0;
-    model.liveTvId = jsonMap['liveTvId'] ?? '';
-    model.isEncrypted = jsonMap['is_encrypted'] ?? 0;
-    model.chatVersion =
-        jsonMap['chat_version'] is String? ? 0 : jsonMap['chat_version'];
-    model.messageContent = jsonMap['message'].replaceAll('\\', '');
+        readInt(jsonMap['room'] ?? jsonMap['room_id'] ?? jsonMap['liveCallId']);
+    model.liveTvId = (jsonMap['liveTvId'] ?? '').toString();
+    model.isEncrypted = readInt(jsonMap['is_encrypted']);
+    model.chatVersion = readInt(jsonMap['chat_version']);
+    model.messageContent =
+        (jsonMap['message'] ?? '').toString().replaceAll('\\', '');
     model.repliedOnMessageContent = jsonMap['replied_on_message'];
-    model.messageType = jsonMap['messageType'] ?? jsonMap['type'];
-    model.senderId = jsonMap['created_by'];
-    model.createdAt = jsonMap['created_at'];
-    model.viewedAt = jsonMap['viewed_at'];
-    model.deleteAfter =
-        jsonMap['deleteAfter'] ?? userProfileManager.user.value!.chatDeleteTime;
-    model.isDeleted = jsonMap['isDeleted'] == 1;
-    model.isStar = jsonMap['isStar'] ?? 0;
-    model.opponentId = jsonMap['opponent_id'] ?? 0;
-    model.userName = jsonMap['username'] ?? '';
-    model.userPicture = jsonMap['picture'] ?? '';
-    model.status = jsonMap['current_status'] ?? 0;
+    model.messageType = readInt(
+        jsonMap['messageType'] ?? jsonMap['message_type'] ?? jsonMap['type'],
+        fallback: 1);
+    model.senderId = readSenderId(jsonMap);
+    model.createdAt =
+        readEpochSeconds(jsonMap['created_at'] ?? jsonMap['createdAt']);
+    final viewedAt = readInt(jsonMap['viewed_at']);
+    model.viewedAt = viewedAt <= 0 ? null : readEpochMilliseconds(viewedAt);
+    model.deleteAfter = readInt(jsonMap['deleteAfter'],
+        fallback: userProfileManager.user.value!.chatDeleteTime);
+    model.isDeleted = jsonMap['isDeleted'] == 1 ||
+        jsonMap['is_deleted'] == 1 ||
+        jsonMap['isDeleted'] == true ||
+        jsonMap['is_deleted'] == true;
+    model.isStar = readInt(jsonMap['isStar'] ?? jsonMap['is_star']);
+    model.opponentId = readInt(jsonMap['opponent_id'] ?? jsonMap['opponentId']);
+    model.userName = (jsonMap['username'] ??
+            jsonMap['userName'] ??
+            (jsonMap['user'] is Map ? jsonMap['user']['username'] : null) ??
+            (jsonMap['sender'] is Map
+                ? jsonMap['sender']['username'] ??
+                    jsonMap['sender']['userName'] ??
+                    jsonMap['sender']['name']
+                : null) ??
+            '')
+        .toString();
+    model.userPicture = (jsonMap['picture'] ??
+            (jsonMap['user'] is Map ? jsonMap['user']['picture'] : null) ??
+            (jsonMap['sender'] is Map ? jsonMap['sender']['picture'] : null) ??
+            '')
+        .toString();
+    model.status = readInt(jsonMap['current_status'] ?? jsonMap['status']);
     model.isDateSeparator = false;
     model.chatMessageUser = jsonMap['chatMessageUser'] == null
         ? []

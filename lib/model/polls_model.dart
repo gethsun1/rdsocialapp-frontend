@@ -8,23 +8,37 @@ class PollsModel {
 
   PollsModel(
       {this.id,
-        this.title,
-        this.totalVoteCount,
-        this.isVote,
-        this.pollOptions});
+      this.title,
+      this.totalVoteCount,
+      this.isVote,
+      this.pollOptions});
 
   PollsModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    title = json['title'];
-    totalVoteCount = json['total_vote_count'];
-    isVote = json['is_vote'];
+    id = _readInt(json['id']);
+    title = json['title']?.toString();
+    totalVoteCount =
+        _readInt(json['total_vote_count'] ?? json['totalVoteCount']);
+    isVote = _readInt(json['is_vote'] ?? json['isVote']);
 
-    if (json['pollOptions'] != null) {
+    final options = json['pollOptions'] ??
+        json['poll_options'] ??
+        json['pollQuestionOption'] ??
+        json['questionOption'];
+    if (options is List) {
       pollOptions = <PollOption>[];
-      json['pollOptions'].forEach((v) {
-        pollOptions!.add(PollOption.fromJson(v));
-      });
+      for (final v in options) {
+        if (v is Map) {
+          pollOptions!.add(PollOption.fromJson(Map<String, dynamic>.from(v)));
+        }
+      }
     }
+  }
+
+  static int _readInt(dynamic value, {int fallback = 0}) {
+    if (value == null) return fallback;
+    if (value is int) return value;
+    if (value is double) return value.toInt();
+    return int.tryParse(value.toString()) ?? fallback;
   }
 
   Map<String, dynamic> toJson() {
@@ -49,9 +63,10 @@ class PollOption {
   PollOption({this.id, this.title, this.totalOptionVoteCount});
 
   PollOption.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    title = json['title'];
-    totalOptionVoteCount = json['total_option_vote_count'];
+    id = PollsModel._readInt(json['id']);
+    title = json['title']?.toString();
+    totalOptionVoteCount = PollsModel._readInt(
+        json['total_option_vote_count'] ?? json['totalOptionVoteCount']);
   }
 
   Map<String, dynamic> toJson() {

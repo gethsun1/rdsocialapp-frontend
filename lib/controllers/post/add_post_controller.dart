@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:foap/api_handler/apis/post_api.dart';
-import 'package:foap/helper/file_extension.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/string_extension.dart';
 import 'package:video_compress/video_compress.dart';
@@ -10,6 +8,7 @@ import '../../api_handler/apis/misc_api.dart';
 import '../../helper/enum_linking.dart';
 import '../../model/location.dart';
 import '../../screens/chat/media.dart';
+import '../../util/constant_util.dart';
 import '../home/home_controller.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -91,129 +90,219 @@ class AddPostController extends GetxController {
       int? audioId,
       double? audioStartTime,
       double? audioEndTime}) async {
+    final trimmedTitle = title.trim();
+    if (items.isEmpty && trimmedTitle.isEmpty) {
+      AppUtil.showToast(
+          message: 'Please add text or media to publish a post.',
+          isSuccess: false);
+      return;
+    }
+
     currentPostType = postType;
     postingMedia = items;
-    postingTitle = title;
+    postingTitle = trimmedTitle;
     postingStatus.value = PostingStatus.posting;
 
-    var responses = await Future.wait([
-      for (Media media in items)
-        uploadMedia(
-          media,
-          competitionId,
-        )
-    ]).whenComplete(() {});
+    try {
+      final responses = await Future.wait([
+        for (Media media in items)
+          uploadMedia(
+            media,
+            competitionId,
+          )
+      ]);
 
-    publishAction(
-      postType: postType,
-      galleryItems: responses,
-      postCompletionHandler: postCompletionHandler,
-      title: title,
-      tags: title.getHashtags(),
-      location: taggedLocation.value,
-      mentions: title.getMentions(),
-      allowComments: allowComments,
-      competitionId: competitionId,
-      clubId: clubId,
-      eventId: eventId,
-      fundRaisingCampaignId: fundRaisingCampaignId,
-      isReel: isReel,
-      audioId: audioId,
-      audioStartTime: audioStartTime,
-      audioEndTime: audioEndTime,
-    );
+      final galleryItems = responses.where((e) => e.isNotEmpty).toList();
+      if (galleryItems.length != items.length) {
+        postingStatus.value = PostingStatus.none;
+        isErrorInPosting.value = true;
+        AppUtil.showToast(
+            message: 'Media upload failed. Please check network and try again.',
+            isSuccess: false);
+        return;
+      }
+
+      publishAction(
+        postType: postType,
+        galleryItems: galleryItems,
+        postCompletionHandler: postCompletionHandler,
+        title: trimmedTitle,
+        tags: trimmedTitle.getHashtags(),
+        location: taggedLocation.value,
+        mentions: trimmedTitle.getMentions(),
+        allowComments: allowComments,
+        competitionId: competitionId,
+        clubId: clubId,
+        eventId: eventId,
+        fundRaisingCampaignId: fundRaisingCampaignId,
+        isReel: isReel,
+        audioId: audioId,
+        audioStartTime: audioStartTime,
+        audioEndTime: audioEndTime,
+      );
+    } catch (e) {
+      postingStatus.value = PostingStatus.none;
+      isErrorInPosting.value = true;
+      debugPrint('[AddPost] submitPost failed: $e');
+      AppUtil.showToast(
+          message: 'Unable to publish post right now. Please try again.',
+          isSuccess: false);
+    }
   }
 
   Future<Map<String, String>> uploadMedia(
       Media media, int? competitionId) async {
-    Map<String, String> gallery = {};
     final completer = Completer<Map<String, String>>();
+    final mediaId = (media.id ?? randomId()).replaceAll('/', '');
+    media.id ??= mediaId;
 
     final tempDir = await getTemporaryDirectory();
     File file;
     String? videoThumbnailPath;
 
-    if (media.mediaType == GalleryMediaType.photo) {
-      Uint8List mainFileData = await media.file!.compress();
-
-      file = await File(
-              '${tempDir.path}/${media.id!.replaceAll('/', '')}.png')
-          .create();
-      file.writeAsBytesSync(mainFileData);
+    if (media.mediaType == GalleryMediaType.photo && media.file != null) {
+      // ImagePicker already constrains post images before this point. Uploading
+      // the picked file directly avoids Android-side recompression edge cases
+      // that can produce an empty gallery payload even when the server is up.
       uploadMainFile(
-          file, media, videoThumbnailPath, competitionId, completer);
+          media.file!, media, videoThumbnailPath, competitionId, completer);
     } else if (media.mediaType == GalleryMediaType.gif) {
-      gallery = {
+      final gallery = {
         'filename': media.filePath!,
         'video_thumb': videoThumbnailPath ?? '',
         'type': competitionId == null ? '1' : '2',
-        'media_type':
-            mediaTypeIdFromMediaType(media.mediaType!).toString(),
+        'media_type': mediaTypeIdFromMediaType(media.mediaType!).toString(),
         'is_default': '1',
       };
       completer.complete(gallery);
-    } else if (media.mediaType == GalleryMediaType.video) {
+    } else if (media.mediaType == GalleryMediaType.video &&
+        media.file != null) {
       EasyLoading.show(status: loadingString.tr);
-      MediaInfo? mediaInfo = await VideoCompress.compressVideo(
-        media.file!.path,
-        quality: VideoQuality.DefaultQuality,
-        deleteOrigin: false, // It's false by default
-      );
+      try {
+        MediaInfo? mediaInfo = await VideoCompress.compressVideo(
+          media.file!.path,
+          quality: VideoQuality.DefaultQuality,
+          deleteOrigin: false, // It's false by default
+        );
 
-      // code after compressing
-      file = mediaInfo!.file!;
+        file = mediaInfo?.file ?? media.file!;
 
-      File videoThumbnail = await File(
-              '${tempDir.path}/${media.id!.replaceAll('/', '')}_thumbnail.png')
-          .create();
+        if (media.thumbnail != null) {
+          final videoThumbnail =
+              await File('${tempDir.path}/${mediaId}_thumbnail.png').create();
 
-      videoThumbnail.writeAsBytesSync(media.thumbnail!);
+          videoThumbnail.writeAsBytesSync(media.thumbnail!);
 
-      await MiscApi.uploadFile(
-        videoThumbnail.path,
-        mediaType: media.mediaType!,
-        type: UploadMediaType.post,
-        resultCallback: (fileName, filePath) async {
-          videoThumbnailPath = fileName;
-          await videoThumbnail.delete();
-        },
-      );
+          await MiscApi.uploadFile(
+            videoThumbnail.path,
+            mediaType: media.mediaType!,
+            type: UploadMediaType.post,
+            resultCallback: (fileName, filePath) async {
+              videoThumbnailPath = fileName;
+              try {
+                await videoThumbnail.delete();
+              } catch (_) {}
+            },
+          );
+        }
+      } catch (e) {
+        debugPrint('[AddPost] video preprocessing failed: $e');
+        file = media.file!;
+      }
 
-      uploadMainFile(
-          file, media, videoThumbnailPath, competitionId, completer);
-    } else {
+      uploadMainFile(file, media, videoThumbnailPath, competitionId, completer);
+    } else if (media.file != null) {
       // for audio files
-      uploadMainFile(media.file!, media, videoThumbnailPath, competitionId,
-          completer);
+      uploadMainFile(
+          media.file!, media, videoThumbnailPath, competitionId, completer);
+    } else {
+      if (!completer.isCompleted) {
+        completer.complete({});
+      }
     }
 
-    return completer.future;
+    return completer.future.timeout(
+      const Duration(seconds: 60),
+      onTimeout: () => {},
+    );
   }
 
-  Future uploadMainFile(File file, Media media, String? videoThumbnailPath,
-      int? competitionId, Completer completer) async {
+  Future<void> uploadMainFile(
+      File file,
+      Media media,
+      String? videoThumbnailPath,
+      int? competitionId,
+      Completer<Map<String, String>> completer) async {
     Map<String, String> gallery = {};
 
-    await MiscApi.uploadFile(file.path,
-        type: UploadMediaType.post, mediaType: media.mediaType!,
-        resultCallback: (fileName, filePath) async {
-      String imagePath = fileName;
+    try {
+      final uploadFile = await _uploadableFile(file, media);
+      if (uploadFile == null) {
+        debugPrint('[AddPost] upload source file is missing: ${file.path}');
+        return;
+      }
 
-      await file.delete();
+      await MiscApi.uploadFile(uploadFile.path,
+          type: UploadMediaType.post,
+          mediaType: media.mediaType!, resultCallback: (fileName, filePath) {
+        final imagePath = fileName;
 
-      gallery = {
-        'filename': imagePath,
-        'video_thumb': videoThumbnailPath ?? '',
-        'type': competitionId == null ? '1' : '2',
-        'media_type':
-            mediaTypeIdFromMediaType(media.mediaType!).toString(),
-        'is_default': '1',
-        'height': (media.size?.height ?? 0).toString(),
-        'width': (media.size?.width ?? 0).toString(),
-        'audio_time': media.duration.toString()
-      };
-      completer.complete(gallery);
-    });
+        gallery = {
+          'filename': imagePath,
+          'video_thumb': videoThumbnailPath ?? '',
+          'type': competitionId == null ? '1' : '2',
+          'media_type': mediaTypeIdFromMediaType(media.mediaType!).toString(),
+          'is_default': '1',
+          'height': (media.size?.height ?? 0).toString(),
+          'width': (media.size?.width ?? 0).toString(),
+          'audio_time': (media.duration ?? 0).toString()
+        };
+        if (!completer.isCompleted) {
+          completer.complete(gallery);
+        }
+
+        unawaited(uploadFile.delete().catchError((_) => uploadFile));
+      });
+    } catch (e) {
+      debugPrint('[AddPost] uploadMainFile failed: $e');
+    }
+
+    if (!completer.isCompleted) {
+      completer.complete({});
+    }
+  }
+
+  Future<File?> _uploadableFile(File file, Media media) async {
+    if (await file.exists()) {
+      return file;
+    }
+
+    final bytes = media.mainFileBytes;
+    if (bytes == null || bytes.isEmpty) {
+      return null;
+    }
+
+    final mediaId = (media.id ?? randomId()).replaceAll('/', '');
+    media.id ??= mediaId;
+    final tempDir = await getTemporaryDirectory();
+    final extension = _uploadExtension(media);
+    final fallbackFile =
+        await File('${tempDir.path}/${mediaId}_upload$extension')
+            .create(recursive: true);
+    await fallbackFile.writeAsBytes(bytes, flush: true);
+    media.file = fallbackFile;
+    return fallbackFile;
+  }
+
+  String _uploadExtension(Media media) {
+    switch (media.mediaType) {
+      case GalleryMediaType.video:
+        return '.mp4';
+      case GalleryMediaType.audio:
+        return '.mp3';
+      default:
+        return '.jpg';
+    }
   }
 
   void publishAction({
@@ -236,9 +325,8 @@ class AddPostController extends GetxController {
   }) {
     PostApi.addPost(
         postType: postType,
-        postContentType: galleryItems.isEmpty
-            ? PostContentType.text
-            : PostContentType.media,
+        postContentType:
+            galleryItems.isEmpty ? PostContentType.text : PostContentType.media,
         title: title,
         gallery: galleryItems,
         allowComments: allowComments,
@@ -254,25 +342,41 @@ class AddPostController extends GetxController {
           if (postId != null) {
             Get.back();
             postCompletionHandler();
+            AppUtil.showToast(message: postedString.tr, isSuccess: true);
 
             postingMedia = [];
             postingTitle = '';
-            await linkCollaboratorsToPost(postId);
+            if (postId > 0) {
+              await linkCollaboratorsToPost(postId);
 
-            PostApi.getPostDetail(postId, resultCallback: (result) {
-              if (result != null) {
-                _homeController.addNewPost(result);
-              }
+              PostApi.getPostDetail(postId, resultCallback: (result) {
+                if (result != null) {
+                  _homeController.addNewPost(result);
+                } else {
+                  _homeController.getPosts(callback: () {}, isRecent: true);
+                }
+                postingStatus.value = PostingStatus.posted;
+
+                Future.delayed(const Duration(seconds: 2), () {
+                  postingStatus.value = PostingStatus.none;
+                });
+              });
+            } else {
+              _homeController.getPosts(callback: () {}, isRecent: true);
               postingStatus.value = PostingStatus.posted;
 
               Future.delayed(const Duration(seconds: 2), () {
                 postingStatus.value = PostingStatus.none;
               });
-            });
+            }
 
             clear();
           } else {
             isErrorInPosting.value = true;
+            postingStatus.value = PostingStatus.none;
+            AppUtil.showToast(
+                message: 'Post publish failed. Please try again in a moment.',
+                isSuccess: false);
           }
         });
   }
@@ -345,8 +449,7 @@ class AddPostController extends GetxController {
 
   Future<void> linkCollaboratorsToPost(int postId) async {
     for (UserModel user in collaborators) {
-      await PostApi.linkCollaborator(
-          postId: postId, collaboratorId: user.id);
+      await PostApi.linkCollaborator(postId: postId, collaboratorId: user.id);
     }
 
     collaborators.clear();

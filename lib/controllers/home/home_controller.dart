@@ -170,8 +170,6 @@ class HomeController extends GetxController {
         postSearchQuery.isRecent = 1;
       } else if (index == 2) {
         postSearchQuery.isVideo = 1;
-      } else {
-        postSearchQuery.isRecent = 1;
       }
 
       getPosts(isRecent: false, callback: callback);
@@ -195,7 +193,7 @@ class HomeController extends GetxController {
 
   void getPolls() async {
     MiscApi.getPolls(resultCallback: (result) {
-      polls.addAll(result);
+      polls.value = result;
       polls.unique((e) => e.id);
     });
   }
@@ -205,8 +203,16 @@ class HomeController extends GetxController {
         pollId: pollId,
         questionOptionId: questionOptionId,
         resultCallback: (result) {
-          polls.addAll(result);
-          polls.unique((e) => e.id);
+          for (final poll in result) {
+            final existingIndex =
+                polls.indexWhere((element) => element.id == poll.id);
+            if (existingIndex >= 0) {
+              polls[existingIndex] = poll;
+            } else {
+              polls.add(poll);
+            }
+          }
+          polls.refresh();
         });
   }
 
@@ -234,7 +240,6 @@ class HomeController extends GetxController {
           isVideo: postSearchQuery.isVideo,
           page: dataWrapper.page,
           resultCallback: (result, metadata) {
-            print('resultCallback ${posts.length}');
             posts.addAll(result);
             posts.sort((a, b) => b.createDate!.compareTo(a.createDate!));
             posts.unique((e) => e.id);
@@ -325,18 +330,30 @@ class HomeController extends GetxController {
     final activeStoriesFuture = getCurrentActiveStories();
     final followersStoriesFuture = getFollowersStories();
     final myActiveStories = await activeStoriesFuture;
-    final followersStories = await followersStoriesFuture;
+    final currentUserId = _userProfileManager.user.value!.id;
+    final allFollowersStories = await followersStoriesFuture;
+    final myStoriesFromFollowers = allFollowersStories
+        .where((story) => _isCurrentUserStory(story, currentUserId))
+        .toList();
+    final followersStories = allFollowersStories
+        .where((story) => !_isCurrentUserStory(story, currentUserId))
+        .toList();
+    final myMergedStories = _dedupeStoryMedia([
+      ...myActiveStories,
+      for (final story in myStoriesFromFollowers) ...story.media,
+    ])
+      ..sort((a, b) => a.createdAtDate.compareTo(b.createdAtDate));
     stories.clear();
 
     StoryModel story = StoryModel(
-        id: 1,
+        id: currentUserId,
         name: '',
         userName: _userProfileManager.user.value!.userName,
         // email: '',
         userImage: _userProfileManager.user.value!.picture,
-        media: myActiveStories);
+        media: myMergedStories);
 
-    if (myActiveStories.isNotEmpty) {
+    if (myMergedStories.isNotEmpty) {
       stories.add(story);
       stories.addAll(followersStories);
     } else {
@@ -345,6 +362,30 @@ class HomeController extends GetxController {
     stories.unique((e) => e.id);
     isRefreshingStories.value = false;
     update();
+  }
+
+  bool _isCurrentUserStory(StoryModel story, int currentUserId) {
+    return story.id == currentUserId ||
+        story.media.any((media) => media.userId == currentUserId);
+  }
+
+  List<StoryMediaModel> _dedupeStoryMedia(List<StoryMediaModel> media) {
+    final seen = <String>{};
+    final deduped = <StoryMediaModel>[];
+    for (final item in media) {
+      final key = item.id > 0
+          ? 'id:${item.id}'
+          : [
+              item.userId,
+              item.type,
+              item.mediaUrl,
+              item.createdAtDate,
+            ].join('|');
+      if (seen.add(key)) {
+        deduped.add(item);
+      }
+    }
+    return deduped;
   }
 
   Future<List<UserModel>> getLiveUsers() async {
@@ -364,6 +405,7 @@ class HomeController extends GetxController {
 
     await StoryApi.getStories(resultCallback: (result) {
       for (var story in result) {
+        story.media.sort((a, b) => a.createdAtDate.compareTo(b.createdAtDate));
         var allMedias = story.media;
         var notViewedStoryMedias = allMedias
             .where((element) => viewedStoryIds.contains(element.id) == false);
@@ -377,11 +419,19 @@ class HomeController extends GetxController {
       }
     });
 
+    notViewedStories.sort(_compareStoriesByLatestMediaDesc);
+    viewedAllStories.sort(_compareStoriesByLatestMediaDesc);
     followersStories.addAll(notViewedStories);
     followersStories.addAll(viewedAllStories);
     followersStories.unique((e) => e.id);
 
     return followersStories;
+  }
+
+  int _compareStoriesByLatestMediaDesc(StoryModel a, StoryModel b) {
+    final aLatest = a.media.isEmpty ? 0 : a.media.last.createdAtDate;
+    final bLatest = b.media.isEmpty ? 0 : b.media.last.createdAtDate;
+    return bLatest.compareTo(aLatest);
   }
 
   Future<List<StoryMediaModel>> getCurrentActiveStories() async {

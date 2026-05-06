@@ -3,6 +3,10 @@ class English {
     "Help": "Help",
     "Back": "Back",
     "About": "About",
+    "Bio": "Bio",
+    "Tell people a little about yourself":
+        "Tell people a little about yourself",
+    "Up to 160 characters": "Up to 160 characters",
     "Ok": "Ok",
     "Submit": "Submit",
     "Done": "Done",
@@ -157,6 +161,9 @@ class English {
     "Gif": "Gif",
     "Sent a Gif": "Sent a Gif",
     "Audio": "Audio",
+    "Voice": "Voice",
+    "Audio call": "Audio call",
+    "Video call": "Video call",
     "Sent an Audio": "Sent an Audio",
     "Contact": "Contact",
     "Sent a Contact": "Sent a Contact",
@@ -183,8 +190,7 @@ class English {
     "Explore": "Explore",
     "Log Out": "Log Out",
     "Change Password": "Change Password",
-    "Are you sure, you want to logout?":
-        "Are you sure, you want to logout?",
+    "Are you sure, you want to logout?": "Are you sure, you want to logout?",
     "Change Location": "Change Location",
     "Location": "Location",
     "Sent a Location": "Sent a Location",
@@ -408,7 +414,7 @@ class English {
     "You are using older version of app, You need to update the app to continue":
         "You are using older version of app, You need to update the app to continue",
     "Copy": "Copy",
-    "Stranger chat": "Stranger chat",
+    "Incognito chat": "Incognito chat",
     "Have fun by chatting with random peoples":
         "Have fun by chatting with random peoples",
     "Tvs": "Tvs",
@@ -487,14 +493,14 @@ class English {
         "Minimum {{coins}} coins required to redeem",
     "Minimum withdrawal limit is {{cash}}\$":
         "Minimum withdrawal limit is {{cash}}\$",
-    "Please enter valid amount of coins":
-        "Please enter valid amount of coins",
+    "Please enter valid amount of coins": "Please enter valid amount of coins",
     "Enter number of coins to redeem": "Enter number of coins to redeem",
     "Live History": "Live History",
     "Your live history": "Your live history",
     "Started at": "Started at",
     "Request Verification": "Request Verification",
     "Apply Verification": "Apply Verification",
+    "Get verified badge": "Get verified badge",
     "Verified": "Verified",
     "Your profile is verified now": "Your profile is verified now",
     "Verified on ": "Verified on ",
@@ -547,8 +553,7 @@ class English {
     "Subscribed": "Subscribed",
     "Install this cool app from": "Install this cool app from",
     "Account is deleted successfully": "Account is deleted successfully",
-    "Are you sure to report this post?":
-        "Are you sure to report this post?",
+    "Are you sure to report this post?": "Are you sure to report this post?",
     "Are you sure to block this user?": "Are you sure to block this user?",
     "Male": "Male",
     "Female": "Female",
@@ -576,6 +581,7 @@ class English {
     "Ratings": "Ratings",
     "No view": "No view",
     "Saved Posts": "Saved Posts",
+    "Post bookmarked successfully": "Post bookmarked successfully",
     "Videos": "Videos",
     "No video found": "No video found",
     "Tap to edit": "Tap to edit",
@@ -653,8 +659,7 @@ class English {
         "Search some user to add as collaborator",
     "Maximum 5 collaborators can be added in a post":
         "Maximum 5 collaborators can be added in a post",
-    "Invited you to collaborate on post":
-        "Invited you to collaborate on post",
+    "Invited you to collaborate on post": "Invited you to collaborate on post",
     "Withdraw collaboration": "Withdraw collaboration",
   };
 }

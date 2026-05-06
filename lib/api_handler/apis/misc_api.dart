@@ -6,9 +6,72 @@ import '../../helper/enum_linking.dart';
 import '../../model/follow_request.dart';
 import '../../model/support_request_response.dart';
 
+class _PagedNode {
+  final List items;
+  final APIMetaData metaData;
+
+  _PagedNode({required this.items, required this.metaData});
+}
+
 class MiscApi {
+  static APIMetaData _fallbackMetaData(int page) {
+    return APIMetaData(
+      totalCount: 0,
+      pageCount: page,
+      currentPage: page,
+      perPage: 20,
+    );
+  }
+
+  static APIMetaData _parseMetaData(dynamic value, int page) {
+    if (value is Map<String, dynamic>) {
+      return APIMetaData.fromJson(value);
+    }
+    if (value is Map) {
+      return APIMetaData.fromJson(Map<String, dynamic>.from(value));
+    }
+    return _fallbackMetaData(page);
+  }
+
+  static _PagedNode _parsePagedNode(
+    dynamic data,
+    List<String> keys,
+    int page,
+  ) {
+    final fallbackMetaData = _fallbackMetaData(page);
+    if (data is! Map) {
+      return _PagedNode(items: [], metaData: fallbackMetaData);
+    }
+
+    final map = Map<String, dynamic>.from(data);
+    for (final key in keys) {
+      final node = map[key];
+      if (node is Map) {
+        final nodeMap = Map<String, dynamic>.from(node);
+        final items = nodeMap['items'];
+        return _PagedNode(
+          items: items is List ? items : [],
+          metaData: _parseMetaData(nodeMap['_meta'] ?? nodeMap['meta'], page),
+        );
+      }
+      if (node is List) {
+        return _PagedNode(items: node, metaData: fallbackMetaData);
+      }
+    }
+
+    final directItems = map['items'];
+    if (directItems is List) {
+      return _PagedNode(
+        items: directItems,
+        metaData: _parseMetaData(map['_meta'] ?? map['meta'], page),
+      );
+    }
+
+    return _PagedNode(items: [], metaData: fallbackMetaData);
+  }
+
   static Future<void> getProfileCategoryType(
-      {required Function(List<CategoryModel>) resultCallback}) async{
+      {required Function(List<CategoryModel>) resultCallback}) async {
     var url = NetworkConstantsUtil.profileCategoryTypes;
 
     EasyLoading.show(status: loadingString.tr);
@@ -23,23 +86,27 @@ class MiscApi {
   }
 
   static Future<void> getPolls(
-      {required Function(List<PollsModel>) resultCallback}) async{
+      {required Function(List<PollsModel>) resultCallback}) async {
     var url = NetworkConstantsUtil.getPolls;
 
     await ApiWrapper().getApi(url: url).then((result) {
       if (result?.success == true) {
-        var items = result!.data['poll']['items'];
+        final parsed = _parsePagedNode(
+          result?.data,
+          ['poll', 'polls', 'results'],
+          1,
+        );
         resultCallback(List<PollsModel>.from(
-            items.map((x) => PollsModel.fromJson(x))));
+            parsed.items.map((x) => PollsModel.fromJson(x))));
       }
     });
   }
 
   static Future<void> postPollAnswer(
       {required int pollId,
-        // required int pollQuestionId,
-        required int questionOptionId,
-        required Function(List<PollsModel>) resultCallback}) async{
+      // required int pollQuestionId,
+      required int questionOptionId,
+      required Function(List<PollsModel>) resultCallback}) async {
     var url = NetworkConstantsUtil.postPoll;
 
     await ApiWrapper().postApi(url: url, param: {
@@ -48,12 +115,45 @@ class MiscApi {
       "question_option_id": questionOptionId.toString(),
     }).then((response) {
       if (response?.success == true) {
-        var result = response!.data['result'];
-        var question = result['question'].first;
-        question['pollQuestionOption'] = result['questionOption'];
+        final data = response?.data;
+        final polls = <PollsModel>[];
 
-        resultCallback(List<PollsModel>.from(
-            [question].map((x) => PollsModel.fromJson(x))));
+        if (data is Map) {
+          final poll = data['poll'] ?? data['question'];
+          if (poll is Map) {
+            polls.add(PollsModel.fromJson(Map<String, dynamic>.from(poll)));
+          } else if (poll is List) {
+            polls.addAll(poll
+                .whereType<Map>()
+                .map((x) => PollsModel.fromJson(Map<String, dynamic>.from(x))));
+          }
+
+          final result = data['result'];
+          if (polls.isEmpty && result is Map) {
+            final question = result['question'];
+            final questionOption =
+                result['questionOption'] ?? result['pollOptions'];
+            if (question is List &&
+                question.isNotEmpty &&
+                question.first is Map) {
+              final questionMap = Map<String, dynamic>.from(question.first);
+              questionMap['pollOptions'] =
+                  questionMap['pollOptions'] ?? questionOption;
+              questionMap['pollQuestionOption'] =
+                  questionMap['pollQuestionOption'] ?? questionOption;
+              polls.add(PollsModel.fromJson(questionMap));
+            } else if (question is Map) {
+              final questionMap = Map<String, dynamic>.from(question);
+              questionMap['pollOptions'] =
+                  questionMap['pollOptions'] ?? questionOption;
+              questionMap['pollQuestionOption'] =
+                  questionMap['pollQuestionOption'] ?? questionOption;
+              polls.add(PollsModel.fromJson(questionMap));
+            }
+          }
+        }
+
+        resultCallback(polls);
       }
     });
   }
@@ -64,13 +164,15 @@ class MiscApi {
     var url = NetworkConstantsUtil.getNotifications;
 
     await ApiWrapper().getApi(url: url).then((result) {
-      if (result?.success == true) {
-        var items = result!.data['notification']['items'];
-        resultCallback(
-            List<NotificationModel>.from(
-                items.map((x) => NotificationModel.fromJson(x))),
-            APIMetaData.fromJson(result.data['notification']['_meta']));
-      }
+      final parsed = _parsePagedNode(
+        result?.data,
+        ['notification', 'notifications', 'results'],
+        1,
+      );
+      resultCallback(
+          List<NotificationModel>.from(
+              parsed.items.map((x) => NotificationModel.fromJson(x))),
+          parsed.metaData);
     });
   }
 
@@ -87,13 +189,16 @@ class MiscApi {
     });
   }
 
-  static Future<void> getSettings({required Function(SettingModel) resultCallback}) async {
+  static Future<void> getSettings(
+      {required Function(SettingModel) resultCallback}) async {
     var url = NetworkConstantsUtil.getSettings;
 
     await ApiWrapper().getApiWithoutToken(url: url).then((result) {
-      if (result?.success == true) {
-        var setting = result!.data['setting'];
-        resultCallback(SettingModel.fromJson(setting));
+      if (result?.success == true && result?.data is Map<String, dynamic>) {
+        final setting = (result!.data as Map<String, dynamic>)['setting'];
+        if (setting is Map<String, dynamic>) {
+          resultCallback(SettingModel.fromJson(setting));
+        }
       }
     });
   }
@@ -140,8 +245,8 @@ class MiscApi {
 
   static Future<void> searchHashtag(
       {required String hashtag,
-        required int page,
-        required Function(List<Hashtag>, APIMetaData) resultCallback}) async {
+      required int page,
+      required Function(List<Hashtag>, APIMetaData) resultCallback}) async {
     var url = '${NetworkConstantsUtil.searchHashtag}$hashtag&page=$page';
 
     ApiWrapper().getApi(url: url).then((result) {
@@ -154,7 +259,8 @@ class MiscApi {
     });
   }
 
-  static Future<void> getFAQ({required Function(List<FAQModel>) resultCallback}) async {
+  static Future<void> getFAQ(
+      {required Function(List<FAQModel>) resultCallback}) async {
     var url = NetworkConstantsUtil.getFAQs;
 
     await ApiWrapper().getApi(url: url).then((result) {
@@ -170,37 +276,93 @@ class MiscApi {
   static Future uploadFile(String filePath,
       {required UploadMediaType type,
       required GalleryMediaType mediaType,
+      Map<String, String>? extraFields,
       required Function(String, String) resultCallback}) async {
     EasyLoading.show(status: loadingString.tr);
 
-    await ApiWrapper()
-        .uploadFile(
-            url: NetworkConstantsUtil.uploadFileImage,
-            file: filePath,
-            mediaType: mediaType,
-            type: type)
-        .then((result) {
+    try {
+      final result = await ApiWrapper().uploadFile(
+          url: NetworkConstantsUtil.uploadFileImage,
+          file: filePath,
+          mediaType: mediaType,
+          type: type,
+          extraFields: extraFields);
+
       EasyLoading.dismiss();
-      if (result?.success == true) {
-        var items = result!.data['files'] as List<dynamic>;
 
-        bool isProhabited = items.first['isProhabited'];
-
-        if (isProhabited == false) {
-          resultCallback(items.first['file'], items.first['fileUrl']);
-        } else {
-          AppUtil.showToast(
-              message: thisContentNotAllowedString.tr, isSuccess: false);
-        }
+      if (result == null) {
+        AppUtil.showToast(
+            message: 'Upload request failed. Please check your connection.',
+            isSuccess: false);
+        return;
       }
-    });
-  }
 
+      if (result.success != true) {
+        AppUtil.showToast(
+            message: (result.message?.isNotEmpty == true)
+                ? result.message!
+                : 'Unable to upload media right now.',
+            isSuccess: false);
+        return;
+      }
+
+      final dynamic data = result.data;
+      final dynamic filesNode =
+          data is Map<String, dynamic> ? data['files'] : null;
+
+      Map<String, dynamic>? fileItem;
+      if (filesNode is List && filesNode.isNotEmpty && filesNode.first is Map) {
+        fileItem = Map<String, dynamic>.from(filesNode.first as Map);
+      } else if (filesNode is Map) {
+        fileItem = Map<String, dynamic>.from(filesNode);
+      } else if (data is Map &&
+          (data['file'] != null || data['fileUrl'] != null)) {
+        fileItem = Map<String, dynamic>.from(data);
+      }
+
+      if (fileItem == null) {
+        AppUtil.showToast(
+            message: 'Upload succeeded but file data was missing.',
+            isSuccess: false);
+        return;
+      }
+
+      final dynamic moderationFlag =
+          fileItem['isProhabited'] ?? fileItem['isProhibited'] ?? false;
+      final bool isProhibited = moderationFlag == true ||
+          moderationFlag == 1 ||
+          moderationFlag == '1' ||
+          moderationFlag.toString().toLowerCase() == 'true';
+
+      if (isProhibited) {
+        AppUtil.showToast(
+            message: thisContentNotAllowedString.tr, isSuccess: false);
+        return;
+      }
+
+      final String? uploadedFile = fileItem['file']?.toString();
+      final String? uploadedUrl = fileItem['fileUrl']?.toString();
+      if (uploadedFile == null || uploadedFile.isEmpty) {
+        AppUtil.showToast(
+            message: 'Upload succeeded but filename was missing.',
+            isSuccess: false);
+        return;
+      }
+
+      resultCallback(uploadedFile, uploadedUrl ?? '');
+    } catch (e) {
+      EasyLoading.dismiss();
+      debugPrint('[MiscApi] uploadFile failed: $e');
+      AppUtil.showToast(
+          message: 'Media upload failed unexpectedly. Please try again.',
+          isSuccess: false);
+    }
+  }
 
   static Future<void> getFollowRequests(
       {required int page,
-        required Function(List<FollowRequestModel>, APIMetaData)
-        resultCallback}) async {
+      required Function(List<FollowRequestModel>, APIMetaData)
+          resultCallback}) async {
     var url = '${NetworkConstantsUtil.followRequests}&page=$page';
 
     await ApiWrapper().getApi(url: url).then((result) {
@@ -228,56 +390,72 @@ class MiscApi {
         url: url, param: {"user_id": userId.toString()}).then((result) {});
   }
 
-
   static Future<void> getNotificationInfo(
       {required Function(int) resultCallback}) async {
     var url = NetworkConstantsUtil.notificationInformation;
 
     await ApiWrapper().getApi(url: url).then((result) {
       if (result?.success == true) {
-        var count = result!.data['unread_notification'];
-        resultCallback(count);
+        final count = result!.data is Map
+            ? (result.data['unread_notification'] ??
+                result.data['unreadNotification'] ??
+                result.data['count'])
+            : 0;
+        resultCallback(int.tryParse(count?.toString() ?? '') ?? 0);
       }
     });
   }
 
-  static Future<void> markNotificationAsRead(
-      {required int id, required Function() resultCallback}) async {
+  static Future<bool> markNotificationAsRead({required int id}) async {
     var url = NetworkConstantsUtil.markNotificationAsRead;
 
-    await ApiWrapper().postApi(url: url, param: {
+    final result = await ApiWrapper().postApi(url: url, param: {
       "id": id,
+      "notification_id": id,
+      "notificationId": id,
+      "is_read": 1,
+      "read_status": 1,
       "is_read_all": 0
 
       /// for single send 0, send 1 to all as read
-    }).then((result) {
-      if (result?.success == true) {
-        resultCallback();
-      }
     });
+    return result?.success == true;
   }
 
-  static Future<void> pinContent(
+  static Future<int?> pinContent(
       {required PinContentType type,
-        required int refId,
-        required Function(int) successHandler}) async {
+      required int refId,
+      required Function(int) successHandler}) async {
     var url = NetworkConstantsUtil.addPinContent;
 
-    await ApiWrapper().postApi(url: url, param: {
+    final result = await ApiWrapper().postApi(url: url, param: {
       "reference_id": refId,
       "type": pinContentTypeId(type),
-    }).then((result) {
-      var id = result!.data['id'];
-      successHandler(id);
     });
+
+    if (result?.success != true) return null;
+
+    final data = result?.data;
+    final rawId = data is Map
+        ? data['id'] ??
+            data['pin_id'] ??
+            data['pinId'] ??
+            (data['pin'] is Map ? data['pin']['id'] : null)
+        : null;
+    final id = int.tryParse(rawId?.toString() ?? '');
+    if (id != null) {
+      successHandler(id);
+    }
+    return id;
   }
 
-  static Future<void> removePinContent({
+  static Future<bool> removePinContent({
     required PinContentType type,
     required int refId,
   }) async {
     var url = '${NetworkConstantsUtil.removePinContent}$refId';
 
-    await ApiWrapper().deleteApi(url: url).then((response) {});
+    final response = await ApiWrapper().deleteApi(url: url);
+    return response?.success == true;
   }
 }

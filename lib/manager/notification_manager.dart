@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_fgbg/flutter_fgbg.dart';
+import 'package:flutter_callkit_incoming/flutter_callkit_incoming.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:foap/api_handler/apis/chat_api.dart';
@@ -13,6 +14,7 @@ import 'package:foap/screens/profile/other_user_profile.dart';
 import 'package:overlay_support/overlay_support.dart';
 import '../api_handler/apis/auth_api.dart';
 import '../controllers/chat_and_call/agora_call_controller.dart';
+import '../controllers/chat_and_call/voip_controller.dart';
 import '../controllers/live/agora_live_controller.dart';
 import '../main.dart';
 import '../model/live_model.dart';
@@ -64,6 +66,17 @@ class NotificationManager {
 
   Future<void> initialize() async {
     initializeFCM();
+    Get.find<VoipController>().listenerSetup();
+    if (Platform.isAndroid) {
+      await FlutterCallkitIncoming.requestNotificationPermission({
+        "title": "Notification permission",
+        "rationaleMessagePermission":
+            "Notification permission is required to show incoming calls.",
+        "postNotificationMessageRequired":
+            "Please allow notification permission from settings."
+      });
+      await FlutterCallkitIncoming.requestFullIntentPermission();
+    }
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('@drawable/ic_launcher');
     const DarwinInitializationSettings initializationSettingsIOS =
@@ -101,16 +114,51 @@ class NotificationManager {
 
     if (notificationType == 104) {
       flutterLocalNotificationsPlugin.cancelAll();
+      await FlutterCallkitIncoming.endAllCalls();
       // AwesomeNotifications().dismissAllNotifications();
     } else {
       // new call
-      String channelName = data['channelName'] as String;
-      String token = data['token'] as String;
-      String id = data['callType'] as String;
-      String uuid = data['uuid'] as String;
-      String callerId = data['callerId'] as String;
-      String username = data['username'] as String;
-      String callType = data['callType'] as String;
+      String readString(String key, [String fallback = '']) =>
+          data[key]?.toString() ?? fallback;
+      int readInt(String key) => int.tryParse(readString(key)) ?? 0;
+
+      String channelName = readString('channelName');
+      String token = readString('token');
+      String id = readString('id', readString('callId'));
+      String uuid = readString('uuid');
+      String callerId = readString('callerId', readString('userId'));
+      String username = readString('username', readString('callerName'));
+      String callerImage =
+          readString('callerImage', readString('userImageUrl'));
+      String callType = readString('callType');
+
+      final caller = UserModel();
+      caller.id = int.tryParse(callerId) ?? 0;
+      caller.userName = username;
+      caller.picture = callerImage;
+
+      final call = Call(
+        uuid: uuid,
+        channelName: channelName,
+        isOutGoing: false,
+        opponent: caller,
+        token: token,
+        callType: readInt('callType'),
+        callId: int.tryParse(id) ?? 0,
+      );
+
+      final payload = {
+        "channelName": channelName,
+        "token": token,
+        "callerId": callerId.toString(),
+        "callType": callType,
+        "id": id,
+        "uuid": uuid
+      };
+      SharedPrefs().setCallNotificationData(payload);
+
+      final didShowCallUi = await Get.find<VoipController>().incomingCall(call);
+      if (didShowCallUi) return;
 
       var acceptAction = const AndroidNotificationAction(
         'accept_action', // ID of the action
@@ -148,14 +196,7 @@ class NotificationManager {
           callType == '1' ? 'Audio call' : 'Video call',
           'Call from $username',
           notificationDetails,
-          payload: jsonEncode({
-            "channelName": channelName,
-            "token": token,
-            "callerId": callerId.toString(),
-            "callType": callType,
-            "id": id,
-            "uuid": uuid
-          }));
+          payload: jsonEncode(payload));
 
       // AwesomeNotifications().createNotification(
       //     content: NotificationContent(
@@ -407,7 +448,7 @@ void performActionOnCallNotificationBanner(
         Call call = Call(
             uuid: uuid,
             channelName: channelName,
-            isOutGoing: true,
+            isOutGoing: false,
             opponent: user,
             token: token,
             callType: int.parse(callType),

@@ -29,7 +29,9 @@ class _StoryViewerState extends State<StoryViewer> {
   @override
   void initState() {
     storyController.showHideEmoticons(false);
-    storyController.setCurrentStoryMedia(widget.story.media.first);
+    if (widget.story.media.isNotEmpty) {
+      storyController.setCurrentStoryMedia(widget.story.media.first);
+    }
 
     super.initState();
   }
@@ -44,6 +46,10 @@ class _StoryViewerState extends State<StoryViewer> {
   }
 
   Widget storyWidget() {
+    if (widget.story.media.isEmpty) {
+      return _emptyStoryFallback();
+    }
+
     return Column(
       children: [
         Expanded(
@@ -52,17 +58,17 @@ class _StoryViewerState extends State<StoryViewer> {
               FlutterStoryView(
                 controller: controller,
                 storyItems: [
-                  for (StoryMediaModel media in widget.story.media.reversed)
+                  for (StoryMediaModel media in widget.story.media)
                     media.isVideoPost() == true
                         ? StoryItem(
-                            url: media.video!,
+                            url: media.video ?? '',
                             type: StoryItemType.video,
                             viewers: [],
                             duration: media.videoDuration != null
                                 ? media.videoDuration! ~/ 1000
                                 : null)
                         : StoryItem(
-                            url: media.image!,
+                            url: media.image ?? '',
                             type: StoryItemType.image,
                             viewers: [],
                           )
@@ -100,6 +106,36 @@ class _StoryViewerState extends State<StoryViewer> {
         ),
         // replyWidget()
       ],
+    );
+  }
+
+  Widget _emptyStoryFallback() {
+    return Container(
+      color: Colors.black,
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 28),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.broken_image_outlined,
+                  color: Colors.white70, size: 42),
+              const SizedBox(height: 12),
+              BodyLargeText(
+                'This story is unavailable.',
+                color: Colors.white70,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
+              BodyLargeText(
+                'Close',
+                color: Colors.white,
+                weight: TextWeight.semiBold,
+              ).ripple(() => Get.back()),
+            ],
+          ),
+        ),
+      ),
     );
   }
 

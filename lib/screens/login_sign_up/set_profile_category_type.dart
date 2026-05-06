@@ -105,7 +105,7 @@ class _SetProfileCategoryTypeState extends State<SetProfileCategoryType> {
                 profileController.updateProfileCategoryType(
                   profileCategoryType:
                       _setProfileCategoryController.profileCategoryType.value,
-                  isSigningUp: true,
+                  isSigningUp: widget.isFromSignup,
                 );
               }).hp(DesignConstants.horizontalPadding),
           const SizedBox(

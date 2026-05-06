@@ -1,4 +1,4 @@
-class Russian{
+class Russian {
   static var data = {
     "Help": "Помощь",
     "Back": "Назад",
@@ -56,15 +56,19 @@ class Russian{
     "No...": "Нет...",
     "Yes...": "Да...",
     "Next": "Следующий",
-    "Please grant the required permission from settings to access this feature.": "Предоставьте необходимое разрешение в настройках для доступа к этой функции.",
+    "Please grant the required permission from settings to access this feature.":
+        "Предоставьте необходимое разрешение в настройках для доступа к этой функции.",
     "No data found": "Данные не найдены",
     "Watch Ads": "Смотреть рекламу",
-    "By watching Ads, you get to earn coins_value Coin per advert you watch. Click the button to start earning! ": "Просматривая рекламу, вы можете зарабатывать монеты coin_value за просмотренную рекламу.  ",
+    "By watching Ads, you get to earn coins_value Coin per advert you watch. Click the button to start earning! ":
+        "Просматривая рекламу, вы можете зарабатывать монеты coin_value за просмотренную рекламу.  ",
     "No product is available": "Ни один продукт не доступен",
-    "Some error occurred while performing purchase, please try again later.": "При совершении покупки произошла ошибка. Повторите попытку позже.",
+    "Some error occurred while performing purchase, please try again later.":
+        "При совершении покупки произошла ошибка. Повторите попытку позже.",
     "Store is not available.": "Магазин недоступен.",
     "Cancelled by user": "Отменено пользователем",
-    "By signing up, you are acknowledging that you have read, understood and accept our": "Зарегистрировавшись, вы подтверждаете, что прочитали, поняли и принимаете наши",
+    "By signing up, you are acknowledging that you have read, understood and accept our":
+        "Зарегистрировавшись, вы подтверждаете, что прочитали, поняли и принимаете наши",
     "Terms of Service": "Условия использования",
     "Welcome": "Добро пожаловать",
     "Profile": "Профиль",
@@ -85,9 +89,11 @@ class Russian{
     "Forgot Password?": "Забыли пароль?",
     "Your password has been changed successfully": "Ваш пароль успешно изменен",
     "Resend OTP": "Повторно отправить OTP",
-    "Please enter the one time password sent to your email to verify your account and change your password": "Пожалуйста, введите одноразовый пароль, отправленный на ваш адрес электронной почты, чтобы подтвердить свою учетную запись и изменить свой пароль.",
+    "Please enter the one time password sent to your email to verify your account and change your password":
+        "Пожалуйста, введите одноразовый пароль, отправленный на ваш адрес электронной почты, чтобы подтвердить свою учетную запись и изменить свой пароль.",
     "Let’s help you get back your account": "Поможем вернуть аккаунт",
-    "Please enter the one time password sent to your phone number to verify your phone number": "Пожалуйста, введите одноразовый пароль, отправленный на ваш номер телефона, чтобы подтвердить свой номер телефона.",
+    "Please enter the one time password sent to your phone number to verify your phone number":
+        "Пожалуйста, введите одноразовый пароль, отправленный на ваш номер телефона, чтобы подтвердить свой номер телефона.",
     "Let’s help you to change phone number": "Поможем изменить номер телефона",
     "If you didn’t receive code,": "Если вы не получили код,",
     "Send": "Отправлять",
@@ -126,14 +132,17 @@ class Russian{
     "Please enter confirm password": "Пожалуйста, введите подтверждение пароля",
     "Passwords do not match": "Пароли не совпадают",
     "Please enter user name": "Пожалуйста, введите имя пользователя",
-    "Please enter valid user name": "Пожалуйста, введите действительное имя пользователя",
+    "Please enter valid user name":
+        "Пожалуйста, введите действительное имя пользователя",
     "Enter new password": "Введите новый пароль",
     "Enter confirm password": "Введите пароль для подтверждения",
     "Enter old password": "Введите старый пароль",
     "Please enter you password": "Пожалуйста, введите пароль",
     "Your password is too short": "Ваш пароль слишком короткий",
-    "Your password is acceptable but not strong": "Ваш пароль приемлем, но ненадежен",
-    "Your password must contain letter and number": "Ваш пароль должен содержать букву и цифру",
+    "Your password is acceptable but not strong":
+        "Ваш пароль приемлем, но ненадежен",
+    "Your password must contain letter and number":
+        "Ваш пароль должен содержать букву и цифру",
     "Your password is great": "Ваш пароль великолепен",
     "Joined users": "Присоединившиеся пользователи",
     "OR": "ИЛИ",
@@ -142,9 +151,12 @@ class Russian{
     "New Password": "Новый пароль",
     "Confirm Password": "Подтвердите пароль",
     "Categories": "Категории",
-    "Such kind of messages are not allowed": "Подобные сообщения не допускаются",
-    "There is some problem, Please try again later": "Возникла проблема. Повторите попытку позже.",
-    "Sorry, but the content you're attempting to upload is not permitted according to our policies.": "Извините, но контент, который вы пытаетесь загрузить, не разрешен в соответствии с нашими правилами.",
+    "Such kind of messages are not allowed":
+        "Подобные сообщения не допускаются",
+    "There is some problem, Please try again later":
+        "Возникла проблема. Повторите попытку позже.",
+    "Sorry, but the content you're attempting to upload is not permitted according to our policies.":
+        "Извините, но контент, который вы пытаетесь загрузить, не разрешен в соответствии с нашими правилами.",
     "Camera": "Камера",
     "Photo": "Фото",
     "Sent a Photo": "Отправил фото",
@@ -194,14 +206,17 @@ class Russian{
     "New password": "Новый пароль",
     "Confirm password": "Подтвердите пароль",
     "Reset password": "Сбросить пароль",
-    "Please enter valid email address": "Пожалуйста, введите действительный адрес электронной почты",
-    "Please enter valid phone number": "Пожалуйста, введите действительный номер телефона",
+    "Please enter valid email address":
+        "Пожалуйста, введите действительный адрес электронной почты",
+    "Please enter valid phone number":
+        "Пожалуйста, введите действительный номер телефона",
     "Please upload image": "Пожалуйста, загрузите изображение",
     "Joined": "Присоединился",
     "Join": "Присоединиться",
     "Fee": "Платеж",
     "User name is updated": "Имя пользователя обновлено",
-    "User profile category type is updated": "Тип категории профиля пользователя обновлен.",
+    "User profile category type is updated":
+        "Тип категории профиля пользователя обновлен.",
     "Phone number": "Номер телефона",
     "Change Phone number": "Изменить номер телефона",
     "Update": "Обновлять",
@@ -306,12 +321,15 @@ class Russian{
     "Invite user": "Пригласить пользователя",
     "Invite friends": "Пригласить друзей",
     "See All": "Посмотреть все",
-    "Already invited {{user_name}} in live and waiting for confirmation": "Уже приглашен {{user_name}} в прямом эфире и жду подтверждения",
+    "Already invited {{user_name}} in live and waiting for confirmation":
+        "Уже приглашен {{user_name}} в прямом эфире и жду подтверждения",
     "Waiting to accept": "Ожидание принятия",
     "Invitation declined": "Приглашение отклонено",
-    "Your invitation for battle is declined by {{user_name}}": "Ваше приглашение на бой отклонено {{user_name}}",
+    "Your invitation for battle is declined by {{user_name}}":
+        "Ваше приглашение на бой отклонено {{user_name}}",
     "No response": "Нет ответа",
-    "No response from {{user_name}} on live battle request": "Нет ответа от {{user_name}} по запросу живого боя",
+    "No response from {{user_name}} on live battle request":
+        "Нет ответа от {{user_name}} по запросу живого боя",
     "Clubs": "Клубы",
     "Top Clubs": "Лучшие клубы",
     "Create club": "Создать клуб",
@@ -336,17 +354,23 @@ class Russian{
     "Send Messages": "Отправлять сообщения",
     "All Participants": "Все участники",
     "Only Admins": "Только администраторы",
-    "Follow some user to start chat": "Подпишитесь на какого-нибудь пользователя, чтобы начать чат",
+    "Follow some user to start chat":
+        "Подпишитесь на какого-нибудь пользователя, чтобы начать чат",
     "No chat found": "Чат не найден",
-    "Make some audio/video call with friends": "Сделайте аудио/видео звонок друзьям",
+    "Make some audio/video call with friends":
+        "Сделайте аудио/видео звонок друзьям",
     "No call found": "Звонок не найден",
     "No Story found": "История не найдена",
-    "Post some stories to create highlights": "Опубликуйте несколько историй, чтобы выделить основные моменты",
+    "Post some stories to create highlights":
+        "Опубликуйте несколько историй, чтобы выделить основные моменты",
     "No Notification found": "Уведомление не найдено",
     "Delete account": "Удалить аккаунт",
-    "Are you sure to delete account, Once account is deleted your all data will be deleted": "Вы уверены, что удалили учетную запись? Как только учетная запись будет удалена, все ваши данные будут удалены.",
-    "Please allow access to camera and microphone to start video call": "Разрешите доступ к камере и микрофону, чтобы начать видеовызов.",
-    "Please allow access to microphone to start audio call": "Разрешите доступ к микрофону, чтобы начать голосовой вызов.",
+    "Are you sure to delete account, Once account is deleted your all data will be deleted":
+        "Вы уверены, что удалили учетную запись? Как только учетная запись будет удалена, все ваши данные будут удалены.",
+    "Please allow access to camera and microphone to start video call":
+        "Разрешите доступ к камере и микрофону, чтобы начать видеовызов.",
+    "Please allow access to microphone to start audio call":
+        "Разрешите доступ к микрофону, чтобы начать голосовой вызов.",
     "Star": "Звезда",
     "UnStar": "UnStar",
     "Starred messages": "Помеченные сообщения",
@@ -366,9 +390,12 @@ class Russian{
     "Unlock app with Touch ID": "Разблокируйте приложение с помощью Touch ID",
     "Use Face ID": "Используйте идентификатор лица",
     "Use Touch ID": "Используйте Touch ID",
-    "Unlock you app with touch id / face id": "Разблокируйте приложение с помощью Touch ID/Face ID",
-    "Please authenticate to use biometric login into app": "Пожалуйста, авторизуйтесь, чтобы использовать биометрический вход в приложение.",
-    "Please authenticate to remove biometric login into app": "Пожалуйста, пройдите аутентификацию, чтобы удалить биометрический вход в приложение.",
+    "Unlock you app with touch id / face id":
+        "Разблокируйте приложение с помощью Touch ID/Face ID",
+    "Please authenticate to use biometric login into app":
+        "Пожалуйста, авторизуйтесь, чтобы использовать биометрический вход в приложение.",
+    "Please authenticate to remove biometric login into app":
+        "Пожалуйста, пройдите аутентификацию, чтобы удалить биометрический вход в приложение.",
     "Edit Post": "Редактировать сообщение",
     "Delete Post": "Удалить сообщение",
     "Posting...": "Публикация...",
@@ -376,23 +403,27 @@ class Russian{
     "Retry": "Повторить попытку",
     "Discard": "Отказаться",
     "Please enter group name": "Пожалуйста, введите название группы",
-    "Please select some users to create group": "Пожалуйста, выберите некоторых пользователей для создания группы",
+    "Please select some users to create group":
+        "Пожалуйста, выберите некоторых пользователей для создания группы",
     "Group name": "Название группы",
     "Admin": "Админ",
     "You are Admin": "Вы администратор",
     "Leave group": "Покинуть группу",
     "Delete group": "Удалить группу",
-    "Only admins can send message": "Только администраторы могут отправлять сообщения",
+    "Only admins can send message":
+        "Только администраторы могут отправлять сообщения",
     "is added to group": "добавлен в группу",
     "is removed from group": "удален из группы",
     "is removed from admins": "удален из админа",
     "left the group": "покинул группу",
     "is now admin": "теперь администратор",
     "Time to update app": "Время обновить приложение",
-    "You are using older version of app, You need to update the app to continue": "Вы используете старую версию приложения. Чтобы продолжить, вам необходимо обновить приложение.",
+    "You are using older version of app, You need to update the app to continue":
+        "Вы используете старую версию приложения. Чтобы продолжить, вам необходимо обновить приложение.",
     "Copy": "Копировать",
-    "Stranger chat": "Незнакомый чат",
-    "Have fun by chatting with random peoples": "Развлекайтесь, общаясь со случайными людьми",
+    "Incognito chat": "Инкогнито-чат",
+    "Have fun by chatting with random peoples":
+        "Развлекайтесь, общаясь со случайными людьми",
     "Tvs": "Телевизоры",
     "Checking connection..": "Проверяем соединение..",
     "Going live": "Выход в эфир",
@@ -411,8 +442,10 @@ class Russian{
     "Gift is sent successfully": "Подарок успешно отправлен",
     "Gifts received": "Подарки получены",
     "Gifts sent": "Подарки отправлены",
-    "Join competitions and earn money": "Участвуйте в конкурсах и зарабатывайте деньги",
-    "A place for people of common interest": "Место для людей с общими интересами",
+    "Join competitions and earn money":
+        "Участвуйте в конкурсах и зарабатывайте деньги",
+    "A place for people of common interest":
+        "Место для людей с общими интересами",
     "Live Users": "Живые пользователи",
     "Reel": "Катушка",
     "Reels": "Катушки",
@@ -420,15 +453,19 @@ class Russian{
     "Original audio": "Оригинальный звук",
     "Use": "Использовать",
     "View Gift": "Посмотреть подарок",
-    "Anyone can see this club and join the club": "Любой может увидеть этот клуб и вступить в него.",
-    "Only requested member or joined member can see it": "Его может видеть только запрошенный или присоединившийся участник.",
+    "Anyone can see this club and join the club":
+        "Любой может увидеть этот клуб и вступить в него.",
+    "Only requested member or joined member can see it":
+        "Его может видеть только запрошенный или присоединившийся участник.",
     "Communication": "Коммуникация",
     "Chat group": "Группа чата",
-    "Create chat group for discussion with club users": "Создать чат-группу для обсуждения с пользователями клуба",
+    "Create chat group for discussion with club users":
+        "Создать чат-группу для обсуждения с пользователями клуба",
     "Basic info": "Основная информация",
     "Club name": "Название клуба",
     "Add Cover Photo": "Добавить фото обложки",
-    "Give people an idea of what your group is about with a photo": "Дайте людям представление о том, чем занимается ваша группа, с помощью фотографии.",
+    "Give people an idea of what your group is about with a photo":
+        "Дайте людям представление о том, чем занимается ваша группа, с помощью фотографии.",
     "Cover photo": "Фото на обложке",
     "Leave club": "Покинуть клуб",
     "Remove": "Удалять",
@@ -436,13 +473,15 @@ class Russian{
     "Please enter club description": "Пожалуйста, введите описание клуба",
     "Please select club image": "Пожалуйста, выберите изображение клуба",
     "On request": "По запросу",
-    "Interested users can request to join, admin can approve the request": "Заинтересованные пользователи могут подать заявку на присоединение, администратор может одобрить запрос.",
+    "Interested users can request to join, admin can approve the request":
+        "Заинтересованные пользователи могут подать заявку на присоединение, администратор может одобрить запрос.",
     "Watch Ads to earn coins": "Смотрите рекламу, чтобы заработать монеты",
     "You need": "Вам нужно",
     "To join this competition": "Чтобы присоединиться к этому конкурсу",
     "Files": "Файлы",
     "File": "Файл",
-    "Finding a perfect user to chat": "Находим идеального пользователя для общения",
+    "Finding a perfect user to chat":
+        "Находим идеального пользователя для общения",
     "Allow": "Позволять",
     "Share location": "Поделиться местоположением",
     "More from": "Больше от",
@@ -452,9 +491,11 @@ class Russian{
     "Live chat": "Живой чат",
     "Subscribe channel to view": "Подпишитесь на канал для просмотра",
     "Subscribe using": "Подпишитесь, используя",
-    "You are subscribed to this channel now": "Вы сейчас подписаны на этот канал",
+    "You are subscribed to this channel now":
+        "Вы сейчас подписаны на этот канал",
     "Redeem": "Выкупать",
-    "Minimum withdrawal limit is {{cash}}\$": "Минимальный лимит вывода составляет {{cash}}\$",
+    "Minimum withdrawal limit is {{cash}}\$":
+        "Минимальный лимит вывода составляет {{cash}}\$",
     "Posted": "Опубликовано",
     "Live History": "Живая история",
     "Started at": "Началось с",
@@ -465,12 +506,15 @@ class Russian{
     "Verified on": "Проверено",
     "Request sent on": "Запрос отправлен",
     "We are reviewing your profile": "Мы проверяем ваш профиль",
-    "Verified accounts have blue checkmark next to their names to show that we have confirmed you are a real person": "Проверенные учетные записи отмечены синей галочкой рядом с их именами, чтобы показать, что мы подтвердили, что вы реальный человек.",
+    "Verified accounts have blue checkmark next to their names to show that we have confirmed you are a real person":
+        "Проверенные учетные записи отмечены синей галочкой рядом с их именами, чтобы показать, что мы подтвердили, что вы реальный человек.",
     "Document type": "Тип документа",
     "Upload document": "Загрузить документ",
     "Please select a document type": "Пожалуйста, выберите тип документа",
-    "Please upload identity proof": "Пожалуйста, загрузите документ, удостоверяющий личность",
-    "Profile verification request is sent, you will be updated soon": "Запрос на проверку профиля отправлен, скоро вы будете обновлены",
+    "Please upload identity proof":
+        "Пожалуйста, загрузите документ, удостоверяющий личность",
+    "Profile verification request is sent, you will be updated soon":
+        "Запрос на проверку профиля отправлен, скоро вы будете обновлены",
     "Status": "Статус",
     "In processing": "В обработке",
     "Cancelled": "Отменено",
@@ -480,8 +524,10 @@ class Russian{
     "Pan card": "Карта Пана",
     "Other": "Другой",
     "Message to reviewer": "Сообщение рецензенту",
-    "Upload both front and back side of document": "Загрузите как лицевую, так и обратную сторону документа.",
-    "You can upload maximum 2 images": "Вы можете загрузить максимум 2 изображения",
+    "Upload both front and back side of document":
+        "Загрузите как лицевую, так и обратную сторону документа.",
+    "You can upload maximum 2 images":
+        "Вы можете загрузить максимум 2 изображения",
     "Payment and coins": "Оплата и монеты",
     "Change Language": "Изменить язык",
     "Choose image": "Выбрать изображение",
@@ -542,14 +588,16 @@ class Russian{
     "Ticket Saved": "Билет сохранен.",
     "Confirmed": "Подтвержденный",
     "Placing order, please wait...": "Размещаю заказ, пожалуйста, подождите...",
-    "Do not close or refresh the app until the process is completed": "Не закрывайте и не обновляйте приложение до завершения процесса.",
+    "Do not close or refresh the app until the process is completed":
+        "Не закрывайте и не обновляйте приложение до завершения процесса.",
     "Book more": "Забронировать больше",
     "Your transaction is completed": "Ваша транзакция завершена",
     "Error in booking..": "Ошибка при бронировании..",
     "Please try again later": "Пожалуйста, повторите попытку позже",
     "Try again": "Попробуйте еще раз",
     "No booking found": "Бронирование не найдено",
-    "Go to events and book tickets": "Переходите на мероприятия и заказывайте билеты",
+    "Go to events and book tickets":
+        "Переходите на мероприятия и заказывайте билеты",
     "Event Gallery": "Галерея событий",
     "Time": "Время",
     "Date": "Дата",
@@ -557,7 +605,8 @@ class Russian{
     "Upcoming": "Предстоящие",
     "Free": "Бесплатно",
     "Public group": "Публичная группа",
-    "Anyone can view this group and can join this group, You can remove any member in future": "Любой может просмотреть эту группу и присоединиться к ней. В будущем вы можете удалить любого участника.",
+    "Anyone can view this group and can join this group, You can remove any member in future":
+        "Любой может просмотреть эту группу и присоединиться к ней. В будущем вы можете удалить любого участника.",
     "Join requests": "Запросы на присоединение",
     "Join invitations": "Присоединяйтесь к приглашениям",
     "Invites": "Приглашает",
@@ -584,42 +633,55 @@ class Russian{
     "Month": "Месяц",
     "Year": "Год",
     "No dating profiles found": "Профили знакомств не найдены",
-    "Change your preferences and explore more": "Измените свои предпочтения и узнайте больше",
+    "Change your preferences and explore more":
+        "Измените свои предпочтения и узнайте больше",
     "No matching profiles found": "Подходящих профилей не найдено",
-    "Explore more dating profiles and get matched": "Изучите больше профилей знакомств и найдите себе пару",
+    "Explore more dating profiles and get matched":
+        "Изучите больше профилей знакомств и найдите себе пару",
     "No profiles found": "Профили не найдены",
     "Explore more dating profiles": "Исследуйте больше профилей знакомств",
     "Set location": "Установить местоположение",
     "Set your location services": "Настройте службы определения местоположения",
-    "We use your location to show you potential matches in your area": "Мы используем ваше местоположение, чтобы показать вам потенциальные совпадения в вашем регионе.",
+    "We use your location to show you potential matches in your area":
+        "Мы используем ваше местоположение, чтобы показать вам потенциальные совпадения в вашем регионе.",
     "Allow notifications": "Разрешить уведомления",
-    "We'll let you know when you get new matches and messages": "Мы сообщим вам, когда вы получите новые совпадения и сообщения.",
+    "We'll let you know when you get new matches and messages":
+        "Мы сообщим вам, когда вы получите новые совпадения и сообщения.",
     "Not now": "Не сейчас",
     "Add name": "Добавить имя",
     "What's your first name?": "Как твое имя?",
     "Add photos": "Добавить фотографии",
-    "Profile with more good photos are getting more matches, so add your best photos": "Профиль с большим количеством хороших фотографий получает больше совпадений, поэтому добавляйте свои лучшие фотографии.",
+    "Profile with more good photos are getting more matches, so add your best photos":
+        "Профиль с большим количеством хороших фотографий получает больше совпадений, поэтому добавляйте свои лучшие фотографии.",
     "When's your birthday?": "Когда у тебя день рождения?",
-    "Be accurate to specify this to get genuine matches": "Будьте точны, чтобы указать это, чтобы получить подлинные совпадения.",
+    "Be accurate to specify this to get genuine matches":
+        "Будьте точны, чтобы указать это, чтобы получить подлинные совпадения.",
     "Mention your gender": "Упомяните свой пол",
     "Who would you like to date?": "С кем бы ты хотел встречаться?",
-    "You can choose more than one answer and change any time": "Вы можете выбрать более одного ответа и изменить его в любое время.",
+    "You can choose more than one answer and change any time":
+        "Вы можете выбрать более одного ответа и изменить его в любое время.",
     "We need to know more about you.": "Нам нужно знать о вас больше.",
     "Add Interests.": "Добавить интересы.",
     "Add your interests and habits": "Добавьте свои интересы и привычки",
     "Add Professional Details.": "Добавьте профессиональные детали.",
     "Enable Dating": "Включить знакомства",
-    "You need to enable dating profile and have to provide your profile information to start dating peoples": "Вам необходимо включить профиль знакомств и предоставить информацию своего профиля, чтобы начать встречаться с людьми.",
-    "Follow friends to send post.": "Следуйте за друзьями, чтобы отправить сообщение.",
+    "You need to enable dating profile and have to provide your profile information to start dating peoples":
+        "Вам необходимо включить профиль знакомств и предоставить информацию своего профиля, чтобы начать встречаться с людьми.",
+    "Follow friends to send post.":
+        "Следуйте за друзьями, чтобы отправить сообщение.",
     "Choose profile category type": "Выберите тип категории профиля",
-    "Category will help people find accounts like yours. You can change this": "Категория поможет людям найти аккаунты, похожие на ваш. ",
-    "We will search user in your specified category": "Мы найдем пользователя в указанной вами категории.",
+    "Category will help people find accounts like yours. You can change this":
+        "Категория поможет людям найти аккаунты, похожие на ваш. ",
+    "We will search user in your specified category":
+        "Мы найдем пользователя в указанной вами категории.",
     "Favourite": "Любимый",
     "Subscribed": "Подписан",
     "Install this cool app from": "Установите это классное приложение с",
     "Account is deleted successfully": "Аккаунт успешно удален",
-    "Are you sure to report this post?": "Вы уверены, что сообщите об этом сообщении?",
-    "Are you sure to block this user?": "Вы уверены, что заблокируете этого пользователя?",
+    "Are you sure to report this post?":
+        "Вы уверены, что сообщите об этом сообщении?",
+    "Are you sure to block this user?":
+        "Вы уверены, что заблокируете этого пользователя?",
     "Male": "Мужской",
     "Female": "Женский",
     "Not specified": "Не указан",
@@ -633,8 +695,10 @@ class Russian{
     "Select": "Выбирать",
     "Dislike": "Не нравится",
     "Do you smoke?": "Вы курите?",
-    "Are you sure, you want to leave group?": "Вы уверены, что хотите покинуть группу?",
-    "Are you sure, you want to delete group?": "Вы уверены, что хотите удалить группу?",
+    "Are you sure, you want to leave group?":
+        "Вы уверены, что хотите покинуть группу?",
+    "Are you sure, you want to delete group?":
+        "Вы уверены, что хотите удалить группу?",
     "Today": "Сегодня",
     "This week": "На этой неделе",
     "This month": "В этом месяце",
@@ -684,7 +748,8 @@ class Russian{
     "Boost Post": "Повышение поста",
     "Goal": "Цель",
     "Select a goal": "Выберите цель",
-    "What results would you like from this ad?": "Каких результатов вы хотите от этой рекламы?",
+    "What results would you like from this ad?":
+        "Каких результатов вы хотите от этой рекламы?",
     "More profile visits": "Больше посещений профиля",
     "More website visits": "Больше посещений сайта",
     "More messages": "Больше сообщений",
@@ -696,9 +761,11 @@ class Russian{
     "Audience": "Аудитория",
     "Define your audience": "Определите свою аудиторию",
     "Automatic": "Автоматический",
-    "Targets people similar to your followers": "Таргетинг на людей, похожих на ваших подписчиков",
+    "Targets people similar to your followers":
+        "Таргетинг на людей, похожих на ваших подписчиков",
     "Create your own": "Создайте свой собственный",
-    "Manually enter your targeting options": "Вручную введите параметры таргетинга",
+    "Manually enter your targeting options":
+        "Вручную введите параметры таргетинга",
     "Create audience": "Создать аудиторию",
     "Edit audience": "Изменить аудиторию",
     "Audience name": "Название аудитории",
@@ -709,8 +776,10 @@ class Russian{
     "Local": "Местный",
     "Your current location": "Ваше текущее местоположение",
     "Radius": "Радиус",
-    "We suggest adding a broad range of locations to cover the largest surrounding areas, including countries, countries/regions, and towns/cities.": "Мы предлагаем добавить широкий спектр локаций, чтобы охватить крупнейшие прилегающие территории, включая страны, страны/регионы и города.",
-    "We suggest adding a broad range of interests to cover the largest audience.": "Мы предлагаем добавить широкий спектр интересов, чтобы охватить как можно большую аудиторию.",
+    "We suggest adding a broad range of locations to cover the largest surrounding areas, including countries, countries/regions, and towns/cities.":
+        "Мы предлагаем добавить широкий спектр локаций, чтобы охватить крупнейшие прилегающие территории, включая страны, страны/регионы и города.",
+    "We suggest adding a broad range of interests to cover the largest audience.":
+        "Мы предлагаем добавить широкий спектр интересов, чтобы охватить как можно большую аудиторию.",
     "Profile Preferences": "Настройки профиля",
     "Budget and duration": "Бюджет и продолжительность",
     "Total spend": "Общие расходы",
@@ -727,8 +796,10 @@ class Russian{
     "Contact Us": "Связаться с нами",
     "Book Now": "Забронируйте сейчас",
     "Please enter an audience name": "Пожалуйста, введите название аудитории",
-    "Please enter the location of the target audience": "Пожалуйста, укажите местоположение целевой аудитории",
-    "Please enter the audience's interests": "Пожалуйста, укажите интересы аудитории",
+    "Please enter the location of the target audience":
+        "Пожалуйста, укажите местоположение целевой аудитории",
+    "Please enter the audience's interests":
+        "Пожалуйста, укажите интересы аудитории",
     "Please select gender and age": "Пожалуйста, выберите пол и возраст",
     "Thanks": "Спасибо",
     "Sponsored": "Спонсор",
@@ -769,8 +840,10 @@ class Russian{
     "Please select resume.": "Пожалуйста, выберите резюме.",
     "Please select experience.": "Пожалуйста, выберите опыт.",
     "Please enter education.": "Пожалуйста, укажите образование.",
-    "Please enter cover letter.": "Пожалуйста, введите сопроводительное письмо.",
-    "Your have applied for this job successfully": "Вы успешно подали заявку на эту вакансию",
+    "Please enter cover letter.":
+        "Пожалуйста, введите сопроводительное письмо.",
+    "Your have applied for this job successfully":
+        "Вы успешно подали заявку на эту вакансию",
     "Tap to edit": "Нажмите, чтобы изменить",
     "Shared in": "Совместно в",
     "Comment is deleted successfully": "Комментарий успешно удален",
@@ -780,16 +853,19 @@ class Russian{
     "You reacted to their story": "Вы отреагировали на их историю",
     "You replied to their story": "Вы ответили на их историю",
     "Follow requests": "Следуйте запросам",
-    "Accept reject the pending Follow requests": "Принять отклонить ожидающие запросы на отслеживание",
+    "Accept reject the pending Follow requests":
+        "Принять отклонить ожидающие запросы на отслеживание",
     "started following you": "начал следить за тобой",
     "sent you follow request": "отправил вам запрос на подписку",
     "commented on your post": "прокомментировал ваше сообщение",
     "liked your post": "понравился твой пост",
     "Admin Added new competition": "Админ Добавлен новый конкурс",
     "Replied on your support request": "Ответ на ваш запрос в службу поддержки",
-    "Congratulations, Your verification request has been approved.": "Поздравляем! Ваш запрос на проверку одобрен.",
+    "Congratulations, Your verification request has been approved.":
+        "Поздравляем! Ваш запрос на проверку одобрен.",
     "Share online status": "Поделиться онлайн-статусом",
-    "If you don't share your last seen and online, you won’t be able to see other people's last seen and online status also": "Если вы не поделитесь своим последним посещением и онлайн-статусом, вы также не сможете видеть последние посещения и онлайн-статус других людей.",
+    "If you don't share your last seen and online, you won’t be able to see other people's last seen and online status also":
+        "Если вы не поделитесь своим последним посещением и онлайн-статусом, вы также не сможете видеть последние посещения и онлайн-статус других людей.",
     "Copy link": "Скопировать ссылку",
     "Created by SinghCoders": "Создано SinghCoders",
     "Banned users": "Забаненные пользователи",
@@ -801,14 +877,16 @@ class Russian{
     "Remove from moderator": "Удалить из модератора",
     "Ban for 60 minute": "Бан на 60 минут",
     "Permanent ban": "Постоянный бан",
-    "You are not allowed to join this live": "Вам не разрешено присоединяться к этой трансляции",
+    "You are not allowed to join this live":
+        "Вам не разрешено присоединяться к этой трансляции",
     "is a moderator now": "сейчас модератор",
     "is removed from moderators": "удален из модераторов",
     "Copied": "Скопировано",
     "Add location": "Добавить местоположение",
     "added a new event :": "добавлено новое событие:",
     "added a new competition :": "добавлен новый конкурс:",
-    "added a new fund raising campaign :": "добавлена ​​новая кампания по сбору средств:",
+    "added a new fund raising campaign :":
+        "добавлена ​​новая кампания по сбору средств:",
     "added a new job opening :": "добавлена ​​новая вакансия:",
     "added a new offer :": "добавил новое предложение:",
     "added a new product for sale :": "добавлен новый товар на продажу:",
@@ -843,7 +921,8 @@ class Russian{
     "Subscribe": "Подписаться",
     "Are you sure to subscribe": "Вы уверены, что подписываетесь?",
     "For subscribers only": "Только для подписчиков",
-    "Subscribe {{userName}} to view this content": "Подписаться {{userName}} чтобы просмотреть этот контент",
+    "Subscribe {{userName}} to view this content":
+        "Подписаться {{userName}} чтобы просмотреть этот контент",
     "My subscribers": "Мои подписчики",
     "My subscriptions": "Мои подписки",
     "Subscribed you": "Подписался на тебя",
@@ -854,12 +933,16 @@ class Russian{
     "Collaborations": "Сотрудничество",
     "Collaboration request": "Запрос на сотрудничество",
     "No collaborator found": "Соавтор не найден",
-    "Search some user to add as collaborator": "Найдите какого-нибудь пользователя, чтобы добавить его в качестве соавтора",
-    "Maximum 5 collaborators can be added in a post": "В публикацию можно добавить максимум 5 соавторов.",
-    "Invited you to collaborate on post": "Приглашаем вас к сотрудничеству над публикацией",
+    "Search some user to add as collaborator":
+        "Найдите какого-нибудь пользователя, чтобы добавить его в качестве соавтора",
+    "Maximum 5 collaborators can be added in a post":
+        "В публикацию можно добавить максимум 5 соавторов.",
+    "Invited you to collaborate on post":
+        "Приглашаем вас к сотрудничеству над публикацией",
     "Withdraw collaboration": "Отказаться от сотрудничества",
     "Account is private": "Аккаунт является частным",
-    "Follow this account to view posts": "Подпишитесь на этот аккаунт, чтобы просматривать сообщения",
+    "Follow this account to view posts":
+        "Подпишитесь на этот аккаунт, чтобы просматривать сообщения",
     "Add account": "Добавить аккаунт",
     "Switch account": "Сменить аккаунт"
   };

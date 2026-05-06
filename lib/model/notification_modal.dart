@@ -26,40 +26,77 @@ class NotificationModel {
 
   NotificationModel(
       {required this.id,
-        required this.title,
-        required this.message,
-        required this.date,
-        required this.type,
-        this.readStatus = false,
-        this.actionBy,
-        this.competition,
-        this.post,
-        this.club});
+      required this.title,
+      required this.message,
+      required this.date,
+      required this.type,
+      this.readStatus = false,
+      this.actionBy,
+      this.competition,
+      this.post,
+      this.club});
 
-  factory NotificationModel.fromJson(Map<String, dynamic> json) =>
-      NotificationModel(
-        id: json["id"],
-        title: json["title"],
-        message: json["message"],
-        date:
-        DateTime.fromMillisecondsSinceEpoch(json['created_at'] * 1000)
-            .toUtc(),
-        type: getType(json["type"]),
-        actionBy: json["createdByUser"] == null
-            ? null
-            : UserModel.fromJson(json["createdByUser"]),
-        competition: json["type"] == 4
-            ? CompetitionModel.fromJson(json["refrenceDetails"])
-            : null,
-        post: json["type"] == 2 || json["type"] == 3 || json["type"] == 7
-            ? json["refrenceDetails"] == null
-            ? null
-            : PostModel.fromJson(json["refrenceDetails"])
-            : null,
-        readStatus: json["read_status"] == 1,
+  static int _readInt(dynamic value, {int fallback = 0}) {
+    if (value == null) return fallback;
+    if (value is int) return value;
+    if (value is double) return value.toInt();
+    return int.tryParse(value.toString()) ?? fallback;
+  }
 
-        // club: json["type"] == 11 ? ClubModel.fromJson(json["reference"]) : null,
-      );
+  static DateTime _readCreatedAt(dynamic value) {
+    if (value is num) {
+      final timestamp = value.toInt();
+      final milliseconds =
+          timestamp > 1000000000000 ? timestamp : timestamp * 1000;
+      return DateTime.fromMillisecondsSinceEpoch(milliseconds).toUtc();
+    }
+    final parsed = DateTime.tryParse(value?.toString() ?? '');
+    return parsed?.toUtc() ?? DateTime.now().toUtc();
+  }
+
+  factory NotificationModel.fromJson(Map<String, dynamic> json) {
+    final typeValue = _readInt(json["type"]);
+    final reference = json["refrenceDetails"] ??
+        json["referenceDetails"] ??
+        json["reference"] ??
+        json["post"];
+
+    return NotificationModel(
+      id: _readInt(json["id"]),
+      title: (json["title"] ?? '').toString(),
+      message: (json["message"] ?? '').toString(),
+      date: _readCreatedAt(json['created_at']),
+      type: getType(typeValue),
+      actionBy: json["createdByUser"] == null
+          ? null
+          : UserModel.fromJson(json["createdByUser"]),
+      competition: typeValue == 4 && reference != null
+          ? CompetitionModel.fromJson(reference)
+          : null,
+      post: typeValue == 2 || typeValue == 3 || typeValue == 7
+          ? reference == null
+              ? null
+              : PostModel.fromJson(reference)
+          : null,
+      readStatus: _readBool(json["read_status"] ??
+          json["readStatus"] ??
+          json["is_read"] ??
+          json["isRead"] ??
+          json["is_read_status"]),
+
+      // club: json["type"] == 11 ? ClubModel.fromJson(json["reference"]) : null,
+    );
+  }
+
+  static bool _readBool(dynamic value, {bool fallback = false}) {
+    if (value == null) return fallback;
+    if (value is bool) return value;
+    if (value is num) return value != 0;
+    final normalized = value.toString().trim().toLowerCase();
+    if (normalized == 'true' || normalized == '1') return true;
+    if (normalized == 'false' || normalized == '0') return false;
+    return fallback;
+  }
 
   String get notificationTime {
     return date.getTimeAgo;

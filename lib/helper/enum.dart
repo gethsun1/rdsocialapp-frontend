@@ -16,7 +16,7 @@ enum SearchFrom {
   phone,
 }
 
-enum PostSource { posts, mentions, videos, saved }
+enum PostSource { posts, mentions, videos, saved, archived }
 
 enum PostingStatus { none, posting, posted, error }
 
@@ -65,14 +65,7 @@ enum MessageContentType {
   reactedOnStory,
 }
 
-enum UploadMediaType {
-  storyOrHighlights,
-  chat,
-  club,
-  verification,
-  post
-
-}
+enum UploadMediaType { storyOrHighlights, chat, club, verification, post }
 
 ///Media picker selection type
 enum GalleryMediaType {
@@ -203,18 +196,10 @@ enum LiveUserRole { host, moderator, viewer }
 
 enum LiveStreamingStatus { none, checking, preparing, streaming, ended, failed }
 
-enum SMSGateway{
-  twilio,
-  sms91,
-  firebase
-}
+enum SMSGateway { twilio, sms91, firebase }
 
-enum SubscribedStatus{
-  notSubscribed,
-  subscribed,
-  expired
-}
+enum SubscribedStatus { notSubscribed, subscribed, expired }
 
-enum PinContentType {post, comment}
+enum PinContentType { post, comment }
 
-enum CollaborationStatusType {deleted, pending, rejected, cancelled, accepted}
+enum CollaborationStatusType { deleted, pending, rejected, cancelled, accepted }

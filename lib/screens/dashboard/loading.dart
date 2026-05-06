@@ -1,14 +1,22 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/services.dart';
 import 'package:foap/helper/imports/common_import.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'package:local_auth/error_codes.dart' as auth_error;
 import 'package:local_auth/local_auth.dart';
 
 import '../../controllers/misc/subscription_packages_controller.dart';
+import '../../helper/file_extension.dart';
 import '../../manager/socket_manager.dart';
+import '../chat/media.dart';
 import '../../util/shared_prefs.dart';
-import '../login_sign_up/set_user_name.dart';
-import '../login_sign_up/tutorial_screen.dart';
+import '../login_sign_up/ask_to_follow.dart';
+import '../login_sign_up/auth_tab.dart';
+import '../login_sign_up/signup_profile_setup.dart';
+import '../post/add_post_screen.dart';
 import 'dashboard_screen.dart';
 
 class LoadingScreen extends StatefulWidget {
@@ -27,6 +35,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   RxInt bioMetricType = 0.obs;
   late final Future<void> _startupFuture;
   bool _isRouting = false;
+  List<Media> _recoveredPostMedia = [];
 
   @override
   void initState() {
@@ -34,25 +43,104 @@ class _LoadingScreenState extends State<LoadingScreen> {
     _startupFuture = checkBiometric();
   }
 
-  void openNextScreen() {
+  Future<void> _restoreSavedSessionIfNeeded() async {
+    if (_userProfileManager.isLogin == true) {
+      return;
+    }
+
+    final authKey = await SharedPrefs().getAuthorizationKey();
+    if (authKey == null || authKey.isEmpty) {
+      return;
+    }
+
+    await _userProfileManager.refreshProfile();
+  }
+
+  Future<void> openNextScreen() async {
     if (_isRouting || !mounted) return;
     _isRouting = true;
 
-    if (_userProfileManager.isLogin == true) {
-      packageController.initiate();
-      if (_userProfileManager.user.value!.userName.isNotEmpty) {
-        Get.offAll(() => const DashboardScreen());
+    await _restoreSavedSessionIfNeeded();
+    if (!mounted) return;
 
-        getIt<SocketManager>().connect();
-      } else {
-        Get.offAll(() => const SetUserName());
+    if (_userProfileManager.isLogin == true) {
+      final setupPending = await SharedPrefs().getSignupProfileSetupPending();
+      final profileNeedsSetup =
+          _userProfileManager.user.value?.requiresSignupProfileSetup ?? false;
+      if (!mounted) return;
+      if (setupPending || profileNeedsSetup) {
+        await SharedPrefs().setSignupProfileSetupPending(true);
+        Get.offAll(() => const SignupProfileSetup());
+        return;
       }
+
+      packageController.initiate();
+      Get.offAll(() => const DashboardScreen());
+      getIt<SocketManager>().connect();
+      _openRecoveredPostComposerIfNeeded();
     } else {
-      Get.offAll(() => const TutorialScreen());
+      final tutorialSeen = await SharedPrefs().getTutorialSeen();
+      if (!mounted) return;
+      Get.offAll(() => tutorialSeen ? const AuthTab() : const AskToFollow());
     }
   }
 
+  Future<void> recoverLostPickerData() async {
+    try {
+      final LostDataResponse response = await ImagePicker().retrieveLostData();
+      if (response.isEmpty) {
+        return;
+      }
+
+      final List<XFile>? files = response.files;
+      if (files == null || files.isEmpty) {
+        debugPrint(
+            '[LoadingScreen] retrieveLostData has no files: ${response.exception}');
+        return;
+      }
+
+      final List<Media> recovered = [];
+      for (final file in files) {
+        final detectedType = File(file.path).mediaType;
+        if (detectedType != GalleryMediaType.photo &&
+            detectedType != GalleryMediaType.video) {
+          continue;
+        }
+        recovered.add(await file.toMedia(detectedType));
+      }
+
+      if (recovered.isNotEmpty) {
+        _recoveredPostMedia = recovered;
+      }
+    } catch (e) {
+      debugPrint('[LoadingScreen] retrieveLostData failed: $e');
+    }
+  }
+
+  void _openRecoveredPostComposerIfNeeded() {
+    if (_recoveredPostMedia.isEmpty) {
+      return;
+    }
+
+    final items = List<Media>.from(_recoveredPostMedia);
+    _recoveredPostMedia = [];
+
+    Future.delayed(const Duration(milliseconds: 500), () {
+      if (Get.context == null) return;
+      AppUtil.showToast(
+          message: 'Recovered your captured media. Continue posting.',
+          isSuccess: true);
+      Get.to(() => AddPostScreen(
+            postType: PostType.basic,
+            items: items,
+            postCompletionHandler: () {},
+          ));
+    });
+  }
+
   Future checkBiometric() async {
+    await recoverLostPickerData();
+
     try {
       bool bioMetricAuthStatus = await SharedPrefs().getBioMetricAuthStatus();
       if (bioMetricAuthStatus == true) {
@@ -72,7 +160,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     }
 
     if (mounted) {
-      openNextScreen();
+      unawaited(openNextScreen());
     }
   }
 
@@ -82,12 +170,12 @@ class _LoadingScreenState extends State<LoadingScreen> {
           localizedReason: 'Please authenticate to login into app');
 
       if (didAuthenticate == true) {
-        openNextScreen();
+        unawaited(openNextScreen());
       }
     } on PlatformException catch (e) {
       debugPrint('[LoadingScreen] Biometric login failed: ${e.code}');
       if (e.code == auth_error.notAvailable) {
-        openNextScreen();
+        unawaited(openNextScreen());
       }
     }
   }

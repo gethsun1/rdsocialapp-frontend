@@ -17,6 +17,7 @@ class _ChangeUserNameState extends State<ChangeUserName> {
   void initState() {
     super.initState();
     userName.text = _userProfileManager.user.value!.userName;
+    profileController.verifyUsername(userName: userName.text);
   }
 
   @override
@@ -33,7 +34,7 @@ class _ChangeUserNameState extends State<ChangeUserName> {
               rightBtnTitle: doneString.tr,
               completion: () {
                 profileController.updateUserName(
-                  userName: userName.text,
+                  userName: userName.text.trim().toLowerCase(),
                   isSigningUp: false,
                 );
               }),
@@ -49,9 +50,7 @@ class _ChangeUserNameState extends State<ChangeUserName> {
                   AppTextField(
                     controller: userName,
                     onChanged: (value) {
-                      if (value.length > 3) {
-                        profileController.verifyUsername(userName: value);
-                      }
+                      profileController.verifyUsername(userName: value);
                     },
                   ),
                   Positioned(

@@ -1,15 +1,11 @@
 import 'package:foap/controllers/post/post_controller.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/screens/profile/user_post_media.dart';
-import '../../components/highlights_bar.dart';
 import '../../components/sm_tab_bar.dart';
 import '../../controllers/chat_and_call/chat_detail_controller.dart';
-import '../../controllers/story/highlights_controller.dart';
 import '../../controllers/profile/profile_controller.dart';
 import '../../model/post_search_query.dart';
 import '../chat/chat_detail.dart';
-import '../highlights/choose_stories.dart';
-import '../highlights/hightlights_viewer.dart';
 import '../live/gifts_list.dart';
 import '../reuseable_widgets/post_list.dart';
 import '../settings_menu/settings_controller.dart';
@@ -27,7 +23,6 @@ class OtherUserProfile extends StatefulWidget {
 class OtherUserProfileState extends State<OtherUserProfile>
     with SingleTickerProviderStateMixin {
   final ProfileController _profileController = Get.find();
-  final HighlightsController _highlightsController = Get.find();
   final SettingsController _settingsController = Get.find();
   final ChatDetailController _chatDetailController = Get.find();
   final PostController _postController = Get.find();
@@ -73,7 +68,6 @@ class OtherUserProfileState extends State<OtherUserProfile>
     query.userId = widget.userId;
     _postController.setPostSearchQuery(query: query, callback: () {});
     _profileController.getReels(widget.userId);
-    _highlightsController.getHighlights(userId: widget.userId);
   }
 
   @override
@@ -107,14 +101,9 @@ class OtherUserProfileState extends State<OtherUserProfile>
                       ],
                       backgroundColor: AppColorConstants.backgroundColor,
                       pinned: true,
-                      expandedHeight: 550,
+                      expandedHeight: 560,
                       flexibleSpace: FlexibleSpaceBar(
-                        background: Column(
-                          children: [
-                            addProfileView(),
-                            addHighlightsView().tP25
-                          ],
-                        ),
+                        background: addProfileView(),
                       ),
                     ),
                     SliverPersistentHeader(
@@ -152,14 +141,11 @@ class OtherUserProfileState extends State<OtherUserProfile>
                     Stack(
                       children: [coverImage(), imageAndNameView()],
                     ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    statsView().hp(DesignConstants.horizontalPadding),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    buttonsView().hp(DesignConstants.horizontalPadding)
+                    profileBioView(_profileController.user.value!)
+                        .tp(20)
+                        .hp(DesignConstants.horizontalPadding),
+                    buttonsView().tP16.hp(DesignConstants.horizontalPadding),
+                    statsView().tp(20).hp(DesignConstants.horizontalPadding),
                   ],
                 )
               : Container();
@@ -253,7 +239,6 @@ class OtherUserProfileState extends State<OtherUserProfile>
                     user: _profileController.user.value!);
               }),
         ),
-
         if (_settingsController.setting.value!.enableChat)
           SizedBox(
               width: Get.width * 0.25,
@@ -292,6 +277,29 @@ class OtherUserProfileState extends State<OtherUserProfile>
                               }));
                         });
                   })).lP8,
+      ],
+    );
+  }
+
+  Widget profileBioView(UserModel user) {
+    final bio = user.bio?.trim() ?? '';
+    final joined = user.joinedMonthYear;
+
+    return Column(
+      children: [
+        if (bio.isNotEmpty)
+          BodyMediumText(
+            bio,
+            maxLines: 3,
+            textAlign: TextAlign.center,
+            weight: TextWeight.regular,
+          ).bP8,
+        if (joined.isNotEmpty)
+          BodySmallText(
+            '${joinedString.tr} $joined',
+            color: AppColorConstants.subHeadingTextColor,
+            textAlign: TextAlign.center,
+          ),
       ],
     );
   }
@@ -397,23 +405,6 @@ class OtherUserProfileState extends State<OtherUserProfile>
                 ],
               ),
             ));
-  }
-
-  Widget addHighlightsView() {
-    return Obx(() => _highlightsController.isLoading.value == true
-        ? const StoryAndHighlightsShimmer()
-        : HighlightsBar(
-            highlights: _highlightsController.highlights,
-            addHighlightCallback: () {
-              Get.to(() => const ChooseStoryForHighlights());
-            },
-            viewHighlightCallback: (highlight) {
-              Get.to(() => HighlightViewer(highlight: highlight))!
-                  .then((value) {
-                loadData();
-              });
-            },
-          ));
   }
 }
 

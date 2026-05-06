@@ -13,24 +13,23 @@ class AppScaffold extends StatelessWidget {
 
   const AppScaffold(
       {super.key,
-        required this.body,
-        this.backgroundColor,
-        this.appBar,
-        this.floatingActionButton,
-        this.bottomNavigationBar,
-        this.resizeToAvoidBottomInset,
-        this.extendBodyBehindAppBar,
-        this.floatingActionButtonLocation});
+      required this.body,
+      this.backgroundColor,
+      this.appBar,
+      this.floatingActionButton,
+      this.bottomNavigationBar,
+      this.resizeToAvoidBottomInset,
+      this.extendBodyBehindAppBar,
+      this.floatingActionButtonLocation});
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-        onWillPop: () async {
-          return false;
-        },
+    return PopScope(
+        canPop: false,
         child: Scaffold(
             backgroundColor:
-            backgroundColor ?? AppColorConstants.backgroundColor,
+                backgroundColor ?? AppColorConstants.backgroundColor,
+            extendBodyBehindAppBar: extendBodyBehindAppBar ?? false,
             body: GestureDetector(
                 onTap: () {
                   FocusScope.of(context).requestFocus(FocusNode());

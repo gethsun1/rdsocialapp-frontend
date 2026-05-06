@@ -5,7 +5,76 @@ import '../../model/chat_room_model.dart';
 import '../../model/user_model.dart';
 import '../api_wrapper.dart';
 
+class _ChatPagedNode {
+  final List items;
+  final APIMetaData metaData;
+
+  _ChatPagedNode({required this.items, required this.metaData});
+}
+
 class ChatApi {
+  static int _readId(dynamic value) {
+    if (value is int) return value;
+    if (value is double) return value.toInt();
+    return int.tryParse(value?.toString() ?? '') ?? 0;
+  }
+
+  static APIMetaData _fallbackMetaData(int page) {
+    return APIMetaData(
+      totalCount: 0,
+      pageCount: page,
+      currentPage: page,
+      perPage: 20,
+    );
+  }
+
+  static APIMetaData _parseMetaData(dynamic value, int page) {
+    if (value is Map<String, dynamic>) {
+      return APIMetaData.fromJson(value);
+    }
+    if (value is Map) {
+      return APIMetaData.fromJson(Map<String, dynamic>.from(value));
+    }
+    return _fallbackMetaData(page);
+  }
+
+  static _ChatPagedNode _parsePagedNode(
+    dynamic data,
+    List<String> keys,
+    int page,
+  ) {
+    final fallbackMetaData = _fallbackMetaData(page);
+    if (data is! Map) {
+      return _ChatPagedNode(items: [], metaData: fallbackMetaData);
+    }
+
+    final map = Map<String, dynamic>.from(data);
+    for (final key in keys) {
+      final node = map[key];
+      if (node is Map) {
+        final nodeMap = Map<String, dynamic>.from(node);
+        final items = nodeMap['items'];
+        return _ChatPagedNode(
+          items: items is List ? items : [],
+          metaData: _parseMetaData(nodeMap['_meta'] ?? nodeMap['meta'], page),
+        );
+      }
+      if (node is List) {
+        return _ChatPagedNode(items: node, metaData: fallbackMetaData);
+      }
+    }
+
+    final directItems = map['items'];
+    if (directItems is List) {
+      return _ChatPagedNode(
+        items: directItems,
+        metaData: _parseMetaData(map['_meta'] ?? map['meta'], page),
+      );
+    }
+
+    return _ChatPagedNode(items: [], metaData: fallbackMetaData);
+  }
+
   static Future<void> createChatRoom(int opponentId,
       {required Function(int) resultCallback}) async {
     var url = NetworkConstantsUtil.createChatRoom;
@@ -13,7 +82,14 @@ class ChatApi {
 
     await ApiWrapper().postApi(url: url, param: param).then((result) {
       if (result?.success == true) {
-        resultCallback(result!.data['room_id']);
+        final data = result?.data;
+        final roomId = data is Map
+            ? data['room_id'] ??
+                data['roomId'] ??
+                data['id'] ??
+                (data['room'] is Map ? data['room']['id'] : null)
+            : null;
+        resultCallback(_readId(roomId));
       }
     });
   }
@@ -30,18 +106,25 @@ class ChatApi {
       'receiver_id': '',
       'title': title,
       'image': image ?? '',
-      'description': description ?? ''
+      'description': description ?? '',
+      'chat_access_group': '2',
     };
 
     await ApiWrapper().postApi(url: url, param: param).then((result) {
-      resultCallback(result!.data['room_id']);
+      final data = result?.data;
+      final roomId = data is Map
+          ? data['room_id'] ??
+              data['roomId'] ??
+              data['id'] ??
+              (data['room'] is Map ? data['room']['id'] : null)
+          : null;
+      resultCallback(_readId(roomId));
     });
   }
 
-  static Future updateGroupChatRoom(int groupId, String title,
-      String? image, String? description, String? groupAccess) async {
-    var url =
-        NetworkConstantsUtil.updateGroupChatRoom + groupId.toString();
+  static Future updateGroupChatRoom(int groupId, String title, String? image,
+      String? description, String? groupAccess) async {
+    var url = NetworkConstantsUtil.updateGroupChatRoom + groupId.toString();
 
     Map<String, String> param = {};
 
@@ -67,8 +150,7 @@ class ChatApi {
   }
 
   static Future<void> deleteChatRoomMessages(int roomId) async {
-    var url =
-        NetworkConstantsUtil.deleteChatRoomMessages + roomId.toString();
+    var url = NetworkConstantsUtil.deleteChatRoomMessages + roomId.toString();
 
     await ApiWrapper().postApi(
         url: url, param: {'room_id': roomId.toString()}).then((result) {});
@@ -79,10 +161,13 @@ class ChatApi {
     var url = NetworkConstantsUtil.getChatRooms;
     await ApiWrapper().getApi(url: url).then((result) {
       if (result?.success == true) {
-        var room = result!.data['room'] as List<dynamic>;
-        room = room.toList();
+        final parsed = _parsePagedNode(
+          result?.data,
+          ['room', 'rooms', 'chatRoom', 'results'],
+          1,
+        );
         resultCallback(List<ChatRoomModel>.from(
-            room.map((x) => ChatRoomModel.fromJson(x))));
+            parsed.items.map((x) => ChatRoomModel.fromJson(x))));
       }
     });
   }
@@ -95,12 +180,15 @@ class ChatApi {
 
     await ApiWrapper().getApi(url: url).then((result) {
       if (result?.success == true) {
-        var room = result!.data['room']['items'] as List<dynamic>;
-        room = room.toList();
+        final parsed = _parsePagedNode(
+          result?.data,
+          ['room', 'rooms', 'chatRoom', 'results'],
+          page,
+        );
         resultCallback(
             List<ChatRoomModel>.from(
-                room.map((x) => ChatRoomModel.fromJson(x))),
-            APIMetaData.fromJson(result.data['room']['_meta']));
+                parsed.items.map((x) => ChatRoomModel.fromJson(x))),
+            parsed.metaData);
       }
     });
   }
@@ -112,7 +200,9 @@ class ChatApi {
 
     await ApiWrapper().getApi(url: url).then((result) {
       if (result?.success == true) {
-        var room = result!.data['room'] as Map<String, dynamic>?;
+        final data = result?.data;
+        var room = data is Map ? data['room'] ?? data['chatRoom'] : null;
+        room ??= data;
         if (room != null) {
           resultCallback(ChatRoomModel.fromJson(room));
         }
@@ -131,9 +221,13 @@ class ChatApi {
 
     await ApiWrapper().getApi(url: url).then((result) {
       if (result?.success == true) {
-        var items = result!.data['chatMessage']['items'];
+        final parsed = _parsePagedNode(
+          result?.data,
+          ['chatMessage', 'chatMessages', 'message', 'messages', 'results'],
+          1,
+        );
         resultCallback(List<ChatMessageModel>.from(
-            items.map((x) => ChatMessageModel.fromJson(x))));
+            parsed.items.map((x) => ChatMessageModel.fromJson(x))));
       }
     });
   }
@@ -146,16 +240,22 @@ class ChatApi {
 
     await ApiWrapper().getApi(url: url).then((result) {
       if (result?.success == true) {
-        var callHistory = result!.data['callHistory'];
-        var items = (callHistory['items'] as List)
-            .where((e) => e['receiverDetail'] != null);
+        final parsed = _parsePagedNode(
+          result?.data,
+          ['callHistory', 'calls', 'call', 'results'],
+          page,
+        );
+        final items = parsed.items.where((e) {
+          if (e is! Map) return false;
+          return e['receiverDetail'] != null ||
+              e['receiver_detail'] != null ||
+              e['receiver'] != null;
+        });
 
-        print('test');
         resultCallback(
             List<CallHistoryModel>.from(
                 items.map((x) => CallHistoryModel.fromJson(x))),
-            APIMetaData.fromJson(result.data['callHistory']['_meta']));
-        print('test1');
+            parsed.metaData);
       }
     });
   }
@@ -168,8 +268,13 @@ class ChatApi {
 
     await ApiWrapper().getApi(url: url).then((result) {
       if (result?.success == true) {
-        var callHistory = result!.data['call'];
-        resultCallback(CallHistoryModel.fromJson(callHistory));
+        final data = result?.data;
+        var callHistory = data is Map
+            ? data['call'] ?? data['callDetail'] ?? data['result']
+            : data;
+        if (callHistory != null) {
+          resultCallback(CallHistoryModel.fromJson(callHistory));
+        }
       }
     });
   }
@@ -189,8 +294,8 @@ class ChatApi {
           getRandomOnlineUsers(profileCategoryType,
               resultCallback: resultCallback);
         } else {
-          resultCallback(List<UserModel>.from(
-              items.map((x) => UserModel.fromJson(x))));
+          resultCallback(
+              List<UserModel>.from(items.map((x) => UserModel.fromJson(x))));
         }
       }
     });

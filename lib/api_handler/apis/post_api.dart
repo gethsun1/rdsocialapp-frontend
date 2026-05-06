@@ -10,9 +10,166 @@ import '../../model/comment_model.dart';
 import '../../model/location.dart';
 import '../../model/post_model.dart';
 import '../../model/user_model.dart';
+import '../../util/app_util.dart';
 import '../api_wrapper.dart';
 
+class _PostsParseResult {
+  final List<PostModel> posts;
+  final APIMetaData metaData;
+
+  _PostsParseResult({required this.posts, required this.metaData});
+}
+
+class _PagedNode {
+  final List items;
+  final APIMetaData metaData;
+
+  _PagedNode({required this.items, required this.metaData});
+}
+
 class PostApi {
+  static int? _readNullableId(dynamic value) {
+    if (value == null) return null;
+    if (value is int) return value;
+    if (value is double) return value.toInt();
+    return int.tryParse(value.toString());
+  }
+
+  static int? _extractCreatedPostId(dynamic data) {
+    if (data is! Map) return null;
+
+    final map = Map<String, dynamic>.from(data);
+    final directId = _readNullableId(
+      map['post_id'] ?? map['postId'] ?? map['id'] ?? map['postID'],
+    );
+    if (directId != null) return directId;
+
+    final post = map['post'];
+    if (post is Map) {
+      return _readNullableId(post['id'] ?? post['post_id'] ?? post['postId']);
+    }
+
+    return null;
+  }
+
+  static APIMetaData _fallbackMetaData(int page) {
+    return APIMetaData(
+      totalCount: 0,
+      pageCount: page,
+      currentPage: page,
+      perPage: 20,
+    );
+  }
+
+  static APIMetaData _parseMetaData(dynamic value, int page) {
+    if (value is Map<String, dynamic>) {
+      return APIMetaData.fromJson(value);
+    }
+    if (value is Map) {
+      return APIMetaData.fromJson(Map<String, dynamic>.from(value));
+    }
+    return _fallbackMetaData(page);
+  }
+
+  static List<PostModel> _parsePostItems(dynamic value) {
+    if (value is! List) return [];
+
+    final posts = <PostModel>[];
+    for (final item in value) {
+      try {
+        posts.add(PostModel.fromJson(_extractPostJson(item)));
+      } catch (error) {
+        debugPrint('[PostApi] Skipping post that failed to parse: $error');
+      }
+    }
+    return posts;
+  }
+
+  static dynamic _extractPostJson(dynamic item) {
+    if (item is! Map) return item;
+    final map = Map<String, dynamic>.from(item);
+    return map['post'] ??
+        map['postDetail'] ??
+        map['post_detail'] ??
+        map['referenceDetails'] ??
+        map['referenceDetail'] ??
+        map['reference_details'] ??
+        map['reference'] ??
+        item;
+  }
+
+  static _PostsParseResult _parsePostsResponse(
+    ApiResponse? response,
+    int page,
+  ) {
+    final data = response?.data;
+    if (data is! Map) {
+      return _PostsParseResult(
+          posts: <PostModel>[], metaData: _fallbackMetaData(page));
+    }
+
+    final parsed = _parsePagedNode(
+      data,
+      [
+        'post',
+        'posts',
+        'favorite',
+        'favorites',
+        'favourite',
+        'favourites',
+        'results',
+      ],
+      page,
+    );
+
+    if (parsed.items.isEmpty) {
+      return _PostsParseResult(
+          posts: <PostModel>[], metaData: _fallbackMetaData(page));
+    }
+
+    return _PostsParseResult(
+      posts: _parsePostItems(parsed.items),
+      metaData: parsed.metaData,
+    );
+  }
+
+  static _PagedNode _parsePagedNode(
+    dynamic data,
+    List<String> keys,
+    int page,
+  ) {
+    final fallbackMetaData = _fallbackMetaData(page);
+    if (data is! Map) {
+      return _PagedNode(items: [], metaData: fallbackMetaData);
+    }
+
+    final map = Map<String, dynamic>.from(data);
+    for (final key in keys) {
+      final node = map[key];
+      if (node is Map) {
+        final nodeMap = Map<String, dynamic>.from(node);
+        final items = nodeMap['items'];
+        return _PagedNode(
+          items: items is List ? items : [],
+          metaData: _parseMetaData(nodeMap['_meta'] ?? nodeMap['meta'], page),
+        );
+      }
+      if (node is List) {
+        return _PagedNode(items: node, metaData: fallbackMetaData);
+      }
+    }
+
+    final directItems = map['items'];
+    if (directItems is List) {
+      return _PagedNode(
+        items: directItems,
+        metaData: _parseMetaData(map['_meta'] ?? map['meta'], page),
+      );
+    }
+
+    return _PagedNode(items: [], metaData: fallbackMetaData);
+  }
+
   static Future<void> addPost(
       {required PostType postType,
       required String title,
@@ -26,9 +183,8 @@ class PostApi {
       int? clubId,
       int? sharingPostId,
       int? audioId,
-        int? contentRefId,
-
-        double? audioStartTime,
+      int? contentRefId,
+      double? audioStartTime,
       double? audioEndTime,
       bool? addToPost,
       required Function(int?) resultCallback}) async {
@@ -43,6 +199,7 @@ class PostApi {
       "hashtag": hashTag,
       "mentionUser": mentions,
       "gallary": gallery,
+      "gallery": gallery,
       'competition_id': competitionId,
       'content_type_reference_id': contentRefId,
       'club_id': clubId,
@@ -59,8 +216,11 @@ class PostApi {
 
     await ApiWrapper().postApi(url: url, param: parameters).then((result) {
       if (result?.success == true) {
-        resultCallback(result!.data['post_id']);
+        resultCallback(_extractCreatedPostId(result!.data) ?? 0);
       } else {
+        if (result?.message != null && result!.message!.isNotEmpty) {
+          AppUtil.showToast(message: result.message!, isSuccess: false);
+        }
         resultCallback(null);
       }
     });
@@ -95,6 +255,7 @@ class PostApi {
       int? audioId,
       int? isMine,
       int? isSaved,
+      int? isArchived,
       int? isVideo,
       int? isRecent,
       String? title,
@@ -137,7 +298,10 @@ class PostApi {
       url = '$url&audio_id=$audioId';
     }
     if (isSaved != null) {
-      url = '$url&is_favorite=1';
+      url = '$url&is_favorite=1&isFavorite=1';
+    }
+    if (isArchived != null) {
+      url = '$url&is_archive=$isArchived&is_archived=$isArchived';
     }
     if (isVideo != null) {
       url = '$url&is_video_post=1';
@@ -145,29 +309,22 @@ class PostApi {
     url = '$url&page=$page';
     EasyLoading.show(status: loadingString.tr);
 
-
     await ApiWrapper().getApi(url: url).then((response) {
       EasyLoading.dismiss();
 
-      if (response?.data != null) {
-        List<PostModel> posts = [];
-        var items = response!.data['post']['items'];
-        posts = List<PostModel>.from(items.map((x) => PostModel.fromJson(x)))
-            .where((element) =>
-                element.gallery.isNotEmpty )
-            .toList();
-
-        APIMetaData metaData =
-            APIMetaData.fromJson(response.data['post']['_meta']);
-
-        resultCallback(posts, metaData);
-      }
+      final parsed = _parsePostsResponse(response, page);
+      final posts = isArchived == null
+          ? parsed.posts.where((post) => !post.isArchived).toList()
+          : parsed.posts
+              .where((post) => post.isArchived == (isArchived == 1))
+              .toList();
+      resultCallback(posts, parsed.metaData);
     });
   }
 
   static Future<void> getMentionedPosts(
       {int? userId,
-      int page = 0,
+      int page = 1,
       required Function(List<PostModel>, APIMetaData) resultCallback}) async {
     var url = '${NetworkConstantsUtil.mentionedPosts}$userId&page=$page';
 
@@ -176,18 +333,8 @@ class PostApi {
     await ApiWrapper().getApi(url: url).then((response) {
       EasyLoading.dismiss();
 
-      if (response?.data != null) {
-        List<PostModel> posts = [];
-        var items = response!.data['post']['items'];
-        posts = List<PostModel>.from(items.map((x) => PostModel.fromJson(x)))
-            .where((element) => element.gallery.isNotEmpty)
-            .toList();
-
-        APIMetaData metaData =
-            APIMetaData.fromJson(response.data['post']['_meta']);
-
-        resultCallback(posts, metaData);
-      }
+      final parsed = _parsePostsResponse(response, page);
+      resultCallback(parsed.posts, parsed.metaData);
     });
   }
 
@@ -209,7 +356,7 @@ class PostApi {
       {required Function(PostModel?) resultCallback}) async {
     var url = NetworkConstantsUtil.postDetailByUniqueId;
     url =
-    '$url$id&expand=user,user.userLiveDetail,clubDetail,audio,giftSummary,clubDetail.createdByUser';
+        '$url$id&expand=user,user.userLiveDetail,clubDetail,audio,giftSummary,clubDetail.createdByUser';
     await ApiWrapper().getApi(url: url).then((response) {
       if (response?.success == true) {
         var post = response!.data['post'];
@@ -238,12 +385,16 @@ class PostApi {
     }
 
     await ApiWrapper().getApi(url: url).then((response) {
-      if (response?.success == true) {
-        var items = response!.data['comment']['items'];
-        resultCallback(
-            List<CommentModel>.from(items.map((x) => CommentModel.fromJson(x))),
-            APIMetaData.fromJson(response.data['comment']['_meta']));
-      }
+      final parsed = _parsePagedNode(
+        response?.data,
+        ['comment', 'comments', 'postComment', 'results'],
+        page,
+      );
+      resultCallback(
+        List<CommentModel>.from(
+            parsed.items.map((x) => CommentModel.fromJson(x))),
+        parsed.metaData,
+      );
     });
   }
 
@@ -270,11 +421,22 @@ class PostApi {
       "filename": filename ?? ''
     }).then((response) {
       if (response?.success == true) {
-        var id = response!.data['id'];
+        final data = response!.data;
+        final id = data is Map
+            ? data['id'] ??
+                data['comment_id'] ??
+                (data['comment'] is Map ? data['comment']['id'] : null)
+            : null;
 
-        resultCallback(id);
+        resultCallback(_readId(id));
       }
     });
+  }
+
+  static int _readId(dynamic value) {
+    if (value is int) return value;
+    if (value is double) return value.toInt();
+    return int.tryParse(value?.toString() ?? '') ?? 0;
   }
 
   static Future<void> deleteComment(
@@ -341,6 +503,16 @@ class PostApi {
     });
   }
 
+  static Future<ApiResponse?> archiveUnarchivePost(
+      {required bool archive, required int postId}) async {
+    final url = archive
+        ? NetworkConstantsUtil.archivePost
+        : NetworkConstantsUtil.unarchivePost;
+
+    return ApiWrapper()
+        .postApi(url: url, param: {"post_id": postId.toString()});
+  }
+
   static Future<void> getPostInsight(int id,
       {required Function(PostInsight) resultCallback}) async {
     var url = '${NetworkConstantsUtil.postInsight}$id';
@@ -351,7 +523,8 @@ class PostApi {
     });
   }
 
-  static Future<void> likeUnlikePost({required bool like, required int postId}) async {
+  static Future<void> likeUnlikePost(
+      {required bool like, required int postId}) async {
     var url = (like
         ? NetworkConstantsUtil.likePost
         : NetworkConstantsUtil.unlikePost);
@@ -380,15 +553,15 @@ class PostApi {
     });
   }
 
-  static Future<void> saveUnSavePost({required bool save, required int postId}) async {
+  static Future<bool> saveUnSavePost(
+      {required bool save, required int postId}) async {
     var url = (save
         ? NetworkConstantsUtil.savePost
         : NetworkConstantsUtil.removeSavedPost);
 
-    await ApiWrapper().postApi(url: url, param: {
-      "reference_id": postId.toString(),
-      'type': '3'
-    }).then((value) {});
+    final result = await ApiWrapper().postApi(
+        url: url, param: {"reference_id": postId.toString(), 'type': '3'});
+    return result?.success == true;
   }
 
   static Future<void> linkCollaborator(

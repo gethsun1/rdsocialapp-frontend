@@ -22,19 +22,16 @@ class StoryVideo extends StatefulWidget {
 class _StoryVideoState extends State<StoryVideo> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Stack(
-        children: [
-          if (widget.controller != null &&
-              widget.controller!.value.isInitialized)
-            Center(
-              child: AspectRatio(
-                aspectRatio: widget.controller!.value.aspectRatio,
-                child: VideoPlayer(widget.controller!),
-              ),
+    return Stack(
+      children: [
+        if (widget.controller != null && widget.controller!.value.isInitialized)
+          Center(
+            child: AspectRatio(
+              aspectRatio: widget.controller!.value.aspectRatio,
+              child: VideoPlayer(widget.controller!),
             ),
-        ],
-      ),
+          ),
+      ],
     );
   }
 }

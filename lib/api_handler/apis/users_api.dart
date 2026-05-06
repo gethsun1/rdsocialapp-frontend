@@ -1,4 +1,3 @@
-
 import 'package:foap/api_handler/api_wrapper.dart';
 import '../../helper/imports/common_import.dart';
 import '../../model/api_meta_data.dart';
@@ -6,7 +5,8 @@ import '../../model/search_model.dart';
 
 class UsersApi {
   static Future<void> getSuggestedUsers(
-      {required int page, required Function(List<UserModel>) resultCallback}) async{
+      {required int page,
+      required Function(List<UserModel>) resultCallback}) async {
     var url = '${NetworkConstantsUtil.getSuggestedUsers}&page=$page';
 
     await ApiWrapper().getApi(url: url).then((result) {
@@ -22,19 +22,19 @@ class UsersApi {
 
   static Future<void> searchUsers(
       {required UserSearchModel searchModel,
-        required int page,
-        required Function(List<UserModel>, APIMetaData) resultCallback}) async {
+      required int page,
+      required Function(List<UserModel>, APIMetaData) resultCallback}) async {
     var url = NetworkConstantsUtil.findFriends;
     //searchFrom  ----- 1=username,2=email,3=phone
     String searchFromValue = searchModel.searchFrom == null
         ? ''
         : searchModel.searchFrom == SearchFrom.username
-        ? '1'
-        : searchModel.searchFrom == SearchFrom.email
-        ? '2'
-        : '3';
+            ? '1'
+            : searchModel.searchFrom == SearchFrom.email
+                ? '2'
+                : '3';
     url =
-    '${url}searchText=${searchModel.searchText ?? ''}&searchFrom=$searchFromValue&isExactMatch=${searchModel.isExactMatch ?? ''}&is_chat_user_online=${searchModel.isOnline == 1 ? '1' : ''}&page=$page';
+        '${url}searchText=${searchModel.searchText ?? ''}&searchFrom=$searchFromValue&isExactMatch=${searchModel.isExactMatch ?? ''}&is_chat_user_online=${searchModel.isOnline == 1 ? '1' : ''}&page=$page';
     await ApiWrapper().getApi(url: url).then((result) {
       if (result?.success == true) {
         var topUsers = result!.data['user']['items'];
@@ -59,7 +59,8 @@ class UsersApi {
     });
   }
 
-  static Future<void> otherUserProfileView({required int refId, required int sourceType}) async{
+  static Future<void> otherUserProfileView(
+      {required int refId, required int sourceType}) async {
     var url = NetworkConstantsUtil.userView;
 
     await ApiWrapper().postApi(url: url, param: {
@@ -68,12 +69,12 @@ class UsersApi {
     });
   }
 
-  static Future<void> followUnfollowUser({required bool isFollowing,
-    required UserModel user}) async {
+  static Future<void> followUnfollowUser(
+      {required bool isFollowing, required UserModel user}) async {
     var url = (isFollowing
         ? user.isPrivate
-        ? NetworkConstantsUtil.followRequest
-        : NetworkConstantsUtil.followUser
+            ? NetworkConstantsUtil.followRequest
+            : NetworkConstantsUtil.followUser
         : NetworkConstantsUtil.unfollowUser);
 
     await ApiWrapper().postApi(url: url, param: {
@@ -114,63 +115,110 @@ class UsersApi {
     });
   }
 
-  static Future<void> blockUser(
+  static Future<bool> blockUser(
       {required int userId, required VoidCallback resultCallback}) async {
     var url = NetworkConstantsUtil.blockUser;
     EasyLoading.show(status: loadingString.tr);
 
-    await ApiWrapper().postApi(
-        url: url, param: {"blocked_user_id": userId.toString()}).then((result) {
+    try {
+      final result = await ApiWrapper()
+          .postApi(url: url, param: {"blocked_user_id": userId.toString()});
+
       EasyLoading.dismiss();
 
       if (result?.success == true) {
+        AppUtil.showToast(
+            message: 'User is blocked successfully'.tr, isSuccess: true);
         resultCallback();
-        return;
+        return true;
       }
-    });
+
+      AppUtil.showToast(
+          message: result?.message ?? 'Something went wrong'.tr,
+          isSuccess: false);
+      return false;
+    } catch (error) {
+      EasyLoading.dismiss();
+      AppUtil.showToast(message: error.toString(), isSuccess: false);
+      return false;
+    }
   }
 
-  static Future<void> unBlockUser(
+  static Future<bool> unBlockUser(
       {required int userId, required VoidCallback resultCallback}) async {
     var url = NetworkConstantsUtil.unBlockUser;
     EasyLoading.show(status: loadingString.tr);
 
-    await ApiWrapper().postApi(
-        url: url, param: {"blocked_user_id": userId.toString()}).then((result) {
+    try {
+      final result = await ApiWrapper()
+          .postApi(url: url, param: {"blocked_user_id": userId.toString()});
+
       EasyLoading.dismiss();
 
       if (result?.success == true) {
         resultCallback();
-        return;
+        return true;
       }
-    });
+
+      AppUtil.showToast(
+          message: result?.message ?? 'Something went wrong'.tr,
+          isSuccess: false);
+      return false;
+    } catch (error) {
+      EasyLoading.dismiss();
+      AppUtil.showToast(message: error.toString(), isSuccess: false);
+      return false;
+    }
   }
 
-  static Future<void> getBlockedUsers(
+  static Future<bool> getBlockedUsers(
       {required int page,
-      required Function(List<UserModel>, APIMetaData) resultCallback}) async{
+      required Function(List<UserModel>, APIMetaData) resultCallback}) async {
     var url = '${NetworkConstantsUtil.blockedUsers}&page=$page';
 
     EasyLoading.show(status: loadingString.tr);
-    await ApiWrapper().getApi(url: url).then((result) {
+    try {
+      final result = await ApiWrapper().getApi(url: url);
       EasyLoading.dismiss();
+
       if (result?.success == true) {
-        var blockedUser = result!.data['blockedUser']['items'];
+        final blockedUserNode = result!.data['blockedUser'];
+        final blockedUserItems =
+            blockedUserNode is Map ? blockedUserNode['items'] : null;
 
-        var items = (blockedUser as List<dynamic>)
-            .where((element) => element['blockedUserDetail'] != null)
-            .map((e) => e['blockedUserDetail'])
-            .toList();
+        final items = blockedUserItems is List
+            ? blockedUserItems
+                .where((element) =>
+                    element is Map && element['blockedUserDetail'] != null)
+                .map((e) => e['blockedUserDetail'])
+                .toList()
+            : [];
 
-        // resultCallback(
-        //     List<UserModel>.from(items.map((x) => UserModel.fromJson(x))),
-        //     APIMetaData.fromJson(result.data['blockedUser']['_meta']));
+        final meta = blockedUserNode is Map && blockedUserNode['_meta'] is Map
+            ? APIMetaData.fromJson(
+                Map<String, dynamic>.from(blockedUserNode['_meta']))
+            : APIMetaData(
+                totalCount: items.length,
+                pageCount: page,
+                currentPage: page,
+                perPage: 20,
+              );
 
         resultCallback(
             List<UserModel>.from(items.map((x) => UserModel.fromJson(x))),
-            APIMetaData.fromJson(result.data['blockedUser']['_meta']));
+            meta);
+        return true;
       }
-    });
+
+      AppUtil.showToast(
+          message: result?.message ?? 'Something went wrong'.tr,
+          isSuccess: false);
+      return false;
+    } catch (error) {
+      EasyLoading.dismiss();
+      AppUtil.showToast(message: error.toString(), isSuccess: false);
+      return false;
+    }
   }
 
   static Future<void> getFollowerUsers(

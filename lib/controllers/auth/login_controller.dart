@@ -2,13 +2,13 @@ import 'package:foap/helper/imports/common_import.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../api_handler/apis/auth_api.dart';
-import '../../screens/login_sign_up/set_user_name.dart';
 import '../../screens/login_sign_up/verify_phone_login_otp.dart';
 import '../../util/shared_prefs.dart';
 import 'dart:async';
 import 'package:foap/manager/socket_manager.dart';
 import 'package:foap/util/form_validator.dart';
 import 'package:foap/screens/dashboard/dashboard_screen.dart';
+import 'package:foap/screens/login_sign_up/signup_profile_setup.dart';
 import 'package:foap/screens/settings_menu/settings_controller.dart';
 import 'package:foap/screens/login_sign_up/reset_password.dart';
 
@@ -33,7 +33,20 @@ class LoginController extends GetxController {
   RegExp numReg = RegExp(r".*[0-9].*");
   RegExp letterReg = RegExp(r".*[A-Za-z].*");
 
-  Future<void> _completeFirebaseOnlySession(User firebaseUser) async {
+  Future<void> _routeAfterAuthenticated({required bool isNewSignup}) async {
+    final user = _userProfileManager.user.value;
+    if (isNewSignup || (user?.requiresSignupProfileSetup ?? false)) {
+      await SharedPrefs().setSignupProfileSetupPending(true);
+      Get.offAll(() => const SignupProfileSetup());
+      return;
+    }
+
+    Get.offAll(() => const DashboardScreen());
+    getIt<SocketManager>().connect();
+  }
+
+  Future<void> _completeFirebaseOnlySession(User firebaseUser,
+      {bool isNewSignup = false}) async {
     final localPart = (firebaseUser.email ?? '').split('@').first;
     final fallbackName = localPart.isNotEmpty ? localPart : 'user';
     final normalizedUserName = fallbackName.replaceAll(' ', '_');
@@ -50,25 +63,29 @@ class LoginController extends GetxController {
 
     await SharedPrefs().setAuthorizationKey('firebase_${firebaseUser.uid}');
     EasyLoading.dismiss();
-    Get.offAll(() => const DashboardScreen());
+    await _routeAfterAuthenticated(isNewSignup: isNewSignup);
   }
 
   Future<void> completeFirebaseLogin(User firebaseUser,
-      {String? socialTypeOverride}) async {
+      {String? socialTypeOverride, bool isNewSignup = false}) async {
     if (AppConfigConstants.requireBackendSessionAfterFirebaseAuth) {
       try {
         final authKey = await AuthApi.loginWithFirebaseUser(
           firebaseUser: firebaseUser,
           socialTypeOverride: socialTypeOverride,
+          showErrorToast: false,
         );
 
         if (authKey == null) {
+          final backendReason = AuthApi.lastFirebaseBridgeError?.trim();
           if (AppConfigConstants.allowFirebaseLoginWithoutBackendSession) {
             AppUtil.showToast(
-                message:
-                    'Signed in with Firebase. Backend is unavailable, so some features may not work yet.',
+                message: backendReason != null && backendReason.isNotEmpty
+                    ? 'Signed in with Firebase. Backend session failed: $backendReason'
+                    : 'Signed in with Firebase. Backend is unavailable, so some features may not work yet.',
                 isSuccess: true);
-            await _completeFirebaseOnlySession(firebaseUser);
+            await _completeFirebaseOnlySession(firebaseUser,
+                isNewSignup: isNewSignup);
             return;
           }
 
@@ -89,37 +106,36 @@ class LoginController extends GetxController {
           return;
         }
 
-        if (_userProfileManager.user.value!.userName.isEmpty) {
-          isLoginFirstTime = true;
-          Get.offAll(() => const SetUserName());
-        } else {
-          Get.offAll(() => const DashboardScreen());
-          getIt<SocketManager>().connect();
-        }
+        await _routeAfterAuthenticated(isNewSignup: isNewSignup);
         EasyLoading.dismiss();
         return;
       } catch (e, st) {
         debugPrint('[Auth] Backend bridge failed after Firebase sign-in: $e');
         debugPrint(st.toString());
+        final detailedError =
+            (AuthApi.lastFirebaseBridgeError ?? e.toString()).trim();
 
         if (AppConfigConstants.allowFirebaseLoginWithoutBackendSession) {
           AppUtil.showToast(
-              message:
-                  'Signed in with Firebase. Backend host is unreachable, so some features may be limited.',
+              message: detailedError.isNotEmpty
+                  ? 'Signed in with Firebase. Backend session failed: $detailedError'
+                  : 'Signed in with Firebase. Backend session failed, so some features may be limited.',
               isSuccess: true);
-          await _completeFirebaseOnlySession(firebaseUser);
+          await _completeFirebaseOnlySession(firebaseUser,
+              isNewSignup: isNewSignup);
           return;
         }
 
         EasyLoading.dismiss();
         await FirebaseAuth.instance.signOut();
-        showErrorMessage(
-            'Login succeeded, but backend is unreachable. Please try again later.');
+        showErrorMessage(detailedError.isNotEmpty
+            ? 'Login succeeded, but backend session failed: $detailedError'
+            : 'Login succeeded, but backend session failed. Please try again later.');
       }
       return;
     }
 
-    await _completeFirebaseOnlySession(firebaseUser);
+    await _completeFirebaseOnlySession(firebaseUser, isNewSignup: isNewSignup);
   }
 
   void login(String email, String password) {
@@ -165,12 +181,8 @@ class LoginController extends GetxController {
             await _settingsController.getSettings();
             getIt<SocketManager>().connect();
 
-            if (_userProfileManager.user.value!.userName.isEmpty) {
-              Get.to(() => const SetUserName())!.then((value) {});
-            } else {
-              Get.offAll(() => const DashboardScreen());
-              getIt<SocketManager>().connect();
-            }
+            Get.offAll(() => const DashboardScreen());
+            getIt<SocketManager>().connect();
           },
           verifyOtpCallback: (token) {
             Get.to(() => VerifyRegistrationOTP(
@@ -303,10 +315,12 @@ class LoginController extends GetxController {
           }
           await firebaseUser.updateDisplayName(name.trim());
           await firebaseUser.reload();
-          final reloadedUser = FirebaseAuth.instance.currentUser ?? firebaseUser;
+          final reloadedUser =
+              FirebaseAuth.instance.currentUser ?? firebaseUser;
           EasyLoading.dismiss();
           await completeFirebaseLogin(reloadedUser,
-              socialTypeOverride: AppConfigConstants.firebaseBackendSocialType);
+              socialTypeOverride: AppConfigConstants.firebaseBackendSocialType,
+              isNewSignup: true);
         }).catchError((error) {
           EasyLoading.dismiss();
           if (error is FirebaseAuthException) {
@@ -327,6 +341,7 @@ class LoginController extends GetxController {
                   // isVerifyingEmail: true,
                   // isVerifyingPhone: false,
                   token: token,
+                  isFromSignup: true,
                 ));
           });
     }
@@ -438,16 +453,12 @@ class LoginController extends GetxController {
               await _userProfileManager.refreshProfile();
               await _settingsController.getSettings();
               if (_userProfileManager.user.value != null) {
-                if (_userProfileManager.user.value!.userName.isEmpty) {
-                  isLoginFirstTime = true;
-                  Get.offAll(() => const SetUserName());
-                } else {
-                  // ask for location
-                  // AppUtil.showToast(
-                  //     message: registeredSuccessFully,
-                  //     isSuccess: true);
-                  Get.to(() => const DashboardScreen());
-                }
+                // ask for location
+                // AppUtil.showToast(
+                //     message: registeredSuccessFully,
+                //     isSuccess: true);
+                await SharedPrefs().setSignupProfileSetupPending(true);
+                Get.offAll(() => const SignupProfileSetup());
               }
             });
           });
@@ -482,12 +493,7 @@ class LoginController extends GetxController {
             await _settingsController.getSettings();
 
             if (_userProfileManager.user.value != null) {
-              if (_userProfileManager.user.value!.userName.isEmpty) {
-                isLoginFirstTime = true;
-                Get.offAll(() => const SetUserName());
-              } else {
-                Get.to(() => const DashboardScreen());
-              }
+              Get.to(() => const DashboardScreen());
             }
           });
         });
@@ -509,8 +515,7 @@ class LoginController extends GetxController {
 
   void forgotPassword({required String email}) {
     if (FormValidator().isTextEmpty(email)) {
-      AppUtil.showToast(
-          message: pleaseEnterEmailString.tr, isSuccess: false);
+      AppUtil.showToast(message: pleaseEnterEmailString.tr, isSuccess: false);
     } else if (FormValidator().isNotValidEmail(email)) {
       AppUtil.showToast(
           message: pleaseEnterValidEmailString.tr, isSuccess: false);

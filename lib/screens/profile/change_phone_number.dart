@@ -67,6 +67,7 @@ class ChangePhoneNumberState extends State<ChangePhoneNumber> {
       height: 50,
       child: AppMobileTextField(
         onChanged: (value) {},
+        countryCodeText: countryCode,
         countryCodeValueChanged: (value) {
           countryCode = value;
           setState(() {});

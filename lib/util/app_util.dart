@@ -150,8 +150,8 @@ class AppUtil {
                   spacing: 20,
                   children: [
                     BodyLargeText(
-                      okString,
-                      color: AppColorConstants.subHeadingTextColor,
+                      okString.tr,
+                      color: Colors.white,
                     )
                         .makeChip(
                             backGroundColor: AppColorConstants.mainTextColor)
@@ -160,7 +160,7 @@ class AppUtil {
                       okHandler();
                     }),
                     BodyLargeText(
-                      cancelString,
+                      cancelString.tr,
                       color: Colors.white,
                     )
                         .makeChip(backGroundColor: AppColorConstants.red)

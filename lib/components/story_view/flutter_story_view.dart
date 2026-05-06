@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:foap/components/story_view/models/story_item.dart';
@@ -22,19 +23,19 @@ import 'package:foap/components/story_view/widgets/story_video.dart';
 /// displayed item changes.
 
 /// [OnPageChanged] is called when a story item changes
-typedef OnPageChanged(int);
+typedef OnPageChanged = void Function(int index);
 
 class FlutterStoryViewController {
   AnimationController? animationController;
   VideoPlayerController? videoController;
 
   void pause() {
-    animationController!.stop();
+    animationController?.stop();
     videoController?.pause();
   }
 
   void resume() {
-    animationController!.forward();
+    animationController?.forward();
     videoController?.play();
   }
 }
@@ -79,7 +80,8 @@ class FlutterStoryView extends StatefulWidget {
   // Padding of indicator
   final EdgeInsets? indicatorPadding;
 
-  const FlutterStoryView({super.key, 
+  const FlutterStoryView({
+    super.key,
     required this.onComplete,
     required this.onPageChanged,
     required this.controller,
@@ -97,7 +99,7 @@ class FlutterStoryView extends StatefulWidget {
   });
 
   @override
-  _FlutterStoryViewState createState() => _FlutterStoryViewState();
+  State<FlutterStoryView> createState() => _FlutterStoryViewState();
 }
 
 class _FlutterStoryViewState extends State<FlutterStoryView>
@@ -120,14 +122,22 @@ class _FlutterStoryViewState extends State<FlutterStoryView>
   /// long or less than this. So that we can find out to go to Next story or
   /// just hide the top and bottom menu on hold.
   Timer? _timer;
+  Timer? _videoTimeoutTimer;
 
   bool _isVideoLoading = false;
+  bool _hasLoadError = false;
+  String? _loadErrorMessage;
 
   bool _isPaused = false;
 
   @override
   void initState() {
     super.initState();
+
+    if (widget.storyItems.isEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => widget.onComplete());
+      return;
+    }
 
     /// Start playing the story by calling _playStory method
     _playStory(currentItemIndex);
@@ -139,6 +149,20 @@ class _FlutterStoryViewState extends State<FlutterStoryView>
   void _playStory(int index) {
     /// If story is video
     var story = widget.storyItems[index];
+    _videoTimeoutTimer?.cancel();
+    widget.controller.animationController?.dispose();
+    _hasLoadError = false;
+    _loadErrorMessage = null;
+
+    if (story.url.trim().isEmpty) {
+      debugPrint(
+          '[FlutterStoryView] Empty story media URL at index=$index type=${story.type.name}');
+      _markLoadError('Story media is unavailable.');
+      _startAnimation(index);
+      return;
+    }
+
+    _preloadNextStory(index);
 
     if (story.type == StoryItemType.video) {
       /// Dispose the previous _videoController (if any) before initializing new one.
@@ -149,47 +173,95 @@ class _FlutterStoryViewState extends State<FlutterStoryView>
       });
       // Check if the URL is an asset or a network URL
       bool isAsset = story.url.startsWith('assets/');
+      if (!isAsset && Uri.tryParse(story.url)?.hasScheme != true) {
+        debugPrint('[FlutterStoryView] Invalid video URL: ${story.url}');
+        _markLoadError('Video is unavailable.');
+        _startAnimation(index);
+        return;
+      }
 
       widget.controller.videoController = isAsset
           ? VideoPlayerController.asset(story.url)
           : VideoPlayerController.networkUrl(Uri.parse(story.url));
 
-      widget.controller.videoController!
-        ..initialize().then((_) {
-          setState(() {
-            _isVideoLoading = false;
-            _isPaused = false;
-          });
-          widget.controller.videoController!.play();
+      _videoTimeoutTimer = Timer(const Duration(seconds: 12), () {
+        if (!mounted || currentItemIndex != index || !_isVideoLoading) return;
+        debugPrint('[FlutterStoryView] Video load timed out: ${story.url}');
+        widget.controller.videoController?.dispose();
+        widget.controller.videoController = null;
+        _markLoadError('Video could not be loaded.');
+        _startAnimation(index);
+      });
 
-          // Limit video duration to 30 seconds
-          if (widget.controller.videoController!.value.duration.inSeconds >
-              30) {
-            widget.controller.videoController!
-                .setLooping(false); // Disable looping
-            Timer(const Duration(seconds: 30), () {
-              _onAnimationCompleted();
-              widget.controller.videoController!.pause();
-            });
-          } else {
-            widget.controller.videoController!
-                .setLooping(true); // Enable looping
-          }
-
-          Duration clampedDuration =
-              widget.controller.videoController!.value.duration.inSeconds > 30
-                  ? const Duration(seconds: 30)
-                  : widget.controller.videoController!.value.duration;
-          _startAnimation(index, duration: clampedDuration);
+      widget.controller.videoController!.initialize().then((_) {
+        if (!mounted || currentItemIndex != index) return;
+        _videoTimeoutTimer?.cancel();
+        setState(() {
+          _isVideoLoading = false;
+          _isPaused = false;
         });
+        widget.controller.videoController!.play();
+
+        // Limit video duration to 30 seconds
+        if (widget.controller.videoController!.value.duration.inSeconds > 30) {
+          widget.controller.videoController!
+              .setLooping(false); // Disable looping
+          Timer(const Duration(seconds: 30), () {
+            _onAnimationCompleted();
+            widget.controller.videoController!.pause();
+          });
+        } else {
+          widget.controller.videoController!.setLooping(true); // Enable looping
+        }
+
+        Duration clampedDuration =
+            widget.controller.videoController!.value.duration.inSeconds > 30
+                ? const Duration(seconds: 30)
+                : widget.controller.videoController!.value.duration;
+        _startAnimation(index, duration: clampedDuration);
+      }).catchError((error) {
+        if (!mounted || currentItemIndex != index) return;
+        _videoTimeoutTimer?.cancel();
+        debugPrint(
+            '[FlutterStoryView] Video initialize failed: ${story.url} error=$error');
+        widget.controller.videoController?.dispose();
+        widget.controller.videoController = null;
+        _markLoadError('Video could not be loaded.');
+        _startAnimation(index);
+      });
     } else {
       _startAnimation(index); // Pass index without video duration
     }
   }
 
+  void _markLoadError(String message) {
+    if (!mounted) return;
+    setState(() {
+      _isVideoLoading = false;
+      _isPaused = false;
+      _hasLoadError = true;
+      _loadErrorMessage = message;
+    });
+  }
+
+  void _preloadNextStory(int index) {
+    if (index >= widget.storyItems.length - 1) return;
+    final next = widget.storyItems[index + 1];
+    if (next.type == StoryItemType.image && next.url.trim().isNotEmpty) {
+      precacheImage(CachedNetworkImageProvider(next.url), context)
+          .catchError((error) {
+        debugPrint(
+            '[FlutterStoryView] Image preload failed: ${next.url} error=$error');
+      });
+    }
+  }
+
   void _startAnimation(int index, {Duration? duration}) {
-    Duration storyDuration =
-        duration ?? Duration(seconds: widget.storyItems[index].duration!);
+    final itemDuration = widget.storyItems[index].duration;
+    Duration storyDuration = duration ??
+        Duration(
+            seconds:
+                itemDuration == null || itemDuration <= 0 ? 3 : itemDuration);
 
     widget.controller.animationController = AnimationController(
       vsync: this,
@@ -234,14 +306,14 @@ class _FlutterStoryViewState extends State<FlutterStoryView>
   // Handles tap action to go to the next story item
   void _onTapNext() {
     // To prevent moving to the next story if the video is still loading
-    if (_isVideoLoading) return;
+    if (_isVideoLoading && !_hasLoadError) return;
 
     if (currentItemIndex == widget.storyItems.length - 1) {
       widget.onComplete();
     } else {
       currentItemIndex++;
       widget.onPageChanged(currentItemIndex);
-      widget.controller.animationController!.dispose();
+      widget.controller.animationController?.dispose();
       setState(() {
         _progress = 0.0; // Reset progress value to 0 when tapping next
       });
@@ -256,7 +328,7 @@ class _FlutterStoryViewState extends State<FlutterStoryView>
     } else {
       currentItemIndex--;
       widget.onPageChanged(currentItemIndex);
-      widget.controller.animationController!.dispose();
+      widget.controller.animationController?.dispose();
       setState(() {
         _progress = 0.0; // Reset progress value to 0 when tapping next
       });
@@ -282,6 +354,7 @@ class _FlutterStoryViewState extends State<FlutterStoryView>
   void dispose() {
     widget.controller.animationController?.dispose();
     _timer?.cancel();
+    _videoTimeoutTimer?.cancel();
     widget.controller.videoController?.dispose();
     super.dispose();
   }
@@ -370,7 +443,8 @@ class _FlutterStoryViewState extends State<FlutterStoryView>
                     (widget.controller.videoController == null ||
                         !widget
                             .controller.videoController!.value.isInitialized) &&
-                    _isVideoLoading,
+                    _isVideoLoading &&
+                    !_hasLoadError,
                 child: Container(
                   color: Colors.grey[600],
                   child: const Center(
@@ -380,6 +454,10 @@ class _FlutterStoryViewState extends State<FlutterStoryView>
                   ),
                 ),
               ),
+
+              if (currentItemIndex == widget.storyItems.indexOf(story) &&
+                  _hasLoadError)
+                _storyErrorFallback(_loadErrorMessage ?? 'Story unavailable.'),
 
               _switchStoryItemIsVideoOrImage(
                 story.url,
@@ -522,6 +600,32 @@ class _FlutterStoryViewState extends State<FlutterStoryView>
       // case StoryItemType.text:
       //   return StoryText.url(url, controller);
     }
+  }
+
+  Widget _storyErrorFallback(String message) {
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      color: Colors.grey.shade900,
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 28),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.broken_image_outlined,
+                  color: Colors.white70, size: 42),
+              const SizedBox(height: 12),
+              Text(
+                message,
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: Colors.white70, fontSize: 15),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
 

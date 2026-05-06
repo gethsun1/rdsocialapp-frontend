@@ -16,7 +16,8 @@ class _SetUserNameState extends State<SetUserName> {
   @override
   void initState() {
     super.initState();
-    userName.text = _userProfileManager.user.value!.userName ;
+    userName.text = _userProfileManager.user.value!.userName;
+    profileController.verifyUsername(userName: userName.text);
   }
 
   @override
@@ -26,8 +27,10 @@ class _SetUserNameState extends State<SetUserName> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Heading3Text(setUserNameString.tr,
-             weight: TextWeight.medium,),
+          Heading3Text(
+            setUserNameString.tr,
+            weight: TextWeight.medium,
+          ),
           const SizedBox(
             height: 20,
           ),
@@ -41,9 +44,7 @@ class _SetUserNameState extends State<SetUserName> {
               AppTextField(
                 controller: userName,
                 onChanged: (value) {
-                  if (value.length > 3) {
-                    profileController.verifyUsername(userName: value);
-                  }
+                  profileController.verifyUsername(userName: value);
                 },
               ),
               Positioned(
@@ -74,9 +75,9 @@ class _SetUserNameState extends State<SetUserName> {
               text: submitString.tr,
               onPress: () {
                 profileController.updateUserName(
-                    userName: userName.text,
-                    isSigningUp: true,
-                    );
+                  userName: userName.text.trim().toLowerCase(),
+                  isSigningUp: true,
+                );
               })
         ],
       ).hp(DesignConstants.horizontalPadding),

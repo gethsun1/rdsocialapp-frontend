@@ -54,8 +54,19 @@ class PostController extends GetxController {
     this.totalPages = totalPages ?? 100;
 
     posts.addAll(postsList);
+    sortPostsForDisplay();
     posts.unique((e) => e.id);
     update();
+  }
+
+  void sortPostsForDisplay() {
+    posts.sort((a, b) {
+      if (a.isPinned != b.isPinned) {
+        return a.isPinned ? -1 : 1;
+      }
+      return b.createDate!.compareTo(a.createDate!);
+    });
+    posts.refresh();
   }
 
   void setPostSearchQuery(
@@ -105,10 +116,9 @@ class PostController extends GetxController {
           page: postDataWrapper.page,
           resultCallback: (result, metadata) {
             posts.addAll(result);
-            posts.sort((a, b) => b.createDate!.compareTo(a.createDate!));
+            sortPostsForDisplay();
             posts.unique((e) => e.id);
             postDataWrapper.processCompletedWithData(metadata);
-            print('posts ${posts.map((e) => e.id)}');
 
             callback();
 
@@ -136,13 +146,13 @@ class PostController extends GetxController {
           page: videosDataWrapper.page,
           resultCallback: (result, metadata) {
             posts.addAll(result);
-            posts.sort((a, b) => b.createDate!.compareTo(a.createDate!));
+            sortPostsForDisplay();
             posts.unique((e) => e.id);
             videosDataWrapper.isLoading.value = false;
 
             videosDataWrapper.totalRecords.value = metadata.totalCount;
             videosDataWrapper.haveMoreData.value =
-                metadata.pageCount >= metadata.currentPage;
+                metadata.currentPage < metadata.pageCount;
 
             videosDataWrapper.page += 1;
 
@@ -159,16 +169,13 @@ class PostController extends GetxController {
     if (mentionsDataWrapper.haveMoreData.value) {
       PostApi.getMentionedPosts(
           userId: mentionedPostSearchQuery!.userId,
+          page: mentionsDataWrapper.page,
           resultCallback: (result, metadata) {
             mentionsDataWrapper.isLoading.value = false;
             mentions.addAll(result.reversed.toList());
             mentions.unique((e) => e.id);
 
-            mentionsDataWrapper.totalRecords.value = metadata.totalCount;
-
-            mentionsDataWrapper.page += 1;
-            mentionsDataWrapper.haveMoreData.value =
-                metadata.pageCount >= metadata.currentPage;
+            mentionsDataWrapper.processCompletedWithData(metadata);
 
             update();
           });
@@ -206,7 +213,7 @@ class PostController extends GetxController {
 
             postLikedByDataWrapper.totalRecords.value = metadata.totalCount;
             postLikedByDataWrapper.haveMoreData.value =
-                metadata.pageCount >= metadata.currentPage;
+                metadata.currentPage < metadata.pageCount;
 
             postLikedByDataWrapper.page += 1;
 

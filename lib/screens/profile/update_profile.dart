@@ -1,5 +1,8 @@
+import 'dart:typed_data';
+
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/profile_imports.dart';
+import 'package:foap/screens/profile/cover_image_adjust_screen.dart';
 import 'package:foap/screens/login_sign_up/set_profile_category_type.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -101,35 +104,64 @@ class UpdateProfileState extends State<UpdateProfile> {
                     ],
                   ),
                   divider().vP16,
-                  if (profileController.user.value!.accountCreatedWith == 1)
-                      Column(
-                        children:[
-                          Row(
-                            children: [
-                              BodyLargeText(
-                                passwordString.tr,
-                                weight: TextWeight.medium,
-                              ),
-                              const Spacer(),
-                              const BodyMediumText(
-                                '********',
-                              ),
-                              const SizedBox(
-                                width: 20,
-                              ),
-                              ThemeIconWidget(
-                                ThemeIcon.edit,
-                                color: AppColorConstants.iconColor,
-                                size: 15,
-                              ).ripple(() {
-                                Get.to(() => const ChangePassword());
-                              })
-                            ],
-                          ),
-                          divider().vP16,
-                        ]
+                  Row(
+                    children: [
+                      BodyLargeText(
+                        bioString.tr,
+                        weight: TextWeight.medium,
                       ),
-
+                      const Spacer(),
+                      Expanded(
+                        flex: 2,
+                        child: Obx(() => profileController.user.value != null
+                            ? BodyMediumText(
+                                profileController.user.value!.bio ?? '',
+                                maxLines: 1,
+                                textAlign: TextAlign.right,
+                              )
+                            : Container()),
+                      ),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      ThemeIconWidget(
+                        ThemeIcon.edit,
+                        color: AppColorConstants.iconColor,
+                        size: 15,
+                      ).ripple(() {
+                        Get.to(() => const ChangeBio())!.then((value) {
+                          reloadData();
+                        });
+                      })
+                    ],
+                  ),
+                  divider().vP16,
+                  if (profileController.user.value!.accountCreatedWith == 1)
+                    Column(children: [
+                      Row(
+                        children: [
+                          BodyLargeText(
+                            passwordString.tr,
+                            weight: TextWeight.medium,
+                          ),
+                          const Spacer(),
+                          const BodyMediumText(
+                            '********',
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          ThemeIconWidget(
+                            ThemeIcon.edit,
+                            color: AppColorConstants.iconColor,
+                            size: 15,
+                          ).ripple(() {
+                            Get.to(() => const ChangePassword());
+                          })
+                        ],
+                      ),
+                      divider().vP16,
+                    ]),
                   Row(
                     children: [
                       BodyLargeText(
@@ -240,7 +272,7 @@ class UpdateProfileState extends State<UpdateProfile> {
                                         width: Get.width,
                                         height: 320,
                                         color: AppColorConstants.themeColor
-                                            .withOpacity(0.2),
+                                            .withValues(alpha: 0.2),
                                       ).bottomRounded(40),
                           ),
                           Positioned(
@@ -308,6 +340,19 @@ class UpdateProfileState extends State<UpdateProfile> {
         });
   }
 
+  Future<void> _handlePickedImage(XFile pickedFile, bool isCoverImage) async {
+    if (!isCoverImage) {
+      profileController.editProfileImageAction(pickedFile, isCoverImage);
+      return;
+    }
+
+    final adjustedImageData = await Get.to<Uint8List?>(
+        () => CoverImageAdjustScreen(imageFile: pickedFile));
+    if (adjustedImageData == null) return;
+
+    profileController.editProfileCoverImageData(adjustedImageData);
+  }
+
   void openImagePickingPopup({required bool isCoverImage}) {
     showModalBottomSheet(
         context: context,
@@ -333,8 +378,7 @@ class UpdateProfileState extends State<UpdateProfile> {
                             .pickImage(source: ImageSource.camera)
                             .then((pickedFile) {
                           if (pickedFile != null) {
-                            profileController.editProfileImageAction(
-                                pickedFile, isCoverImage);
+                            _handlePickedImage(pickedFile, isCoverImage);
                           } else {}
                         });
                       }),
@@ -349,8 +393,7 @@ class UpdateProfileState extends State<UpdateProfile> {
                             .pickImage(source: ImageSource.gallery)
                             .then((pickedFile) {
                           if (pickedFile != null) {
-                            profileController.editProfileImageAction(
-                                pickedFile, isCoverImage);
+                            _handlePickedImage(pickedFile, isCoverImage);
                           } else {}
                         });
                       }),

@@ -17,8 +17,7 @@ class NotificationsScreen extends StatefulWidget {
 }
 
 class _NotificationsScreenState extends State<NotificationsScreen> {
-  final NotificationController _notificationController =
-      NotificationController();
+  final NotificationController _notificationController = Get.find();
   final ProfileController _profileController = Get.find();
 
   @override
@@ -48,7 +47,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 ? Container()
                 : Container(
                     height: 80,
-                    color: AppColorConstants.themeColor.withOpacity(0.1),
+                    color: AppColorConstants.themeColor.withValues(alpha: 0.1),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -89,10 +88,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                       .groupedNotifications.keys.isNotEmpty
                   ? ListView.separated(
                       padding: EdgeInsets.only(
-                          top: 20,
-                          left: 0,
-                          right: 0,
-                          bottom: 50),
+                          top: 20, left: 0, right: 0, bottom: 50),
                       itemCount: _notificationController
                           .groupedNotifications.keys.length,
                       itemBuilder: (BuildContext context, int index) {
@@ -100,8 +96,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                             .groupedNotifications.keys
                             .toList()[index];
                         List<NotificationModel> notifications =
-                            _notificationController
-                                    .groupedNotifications[key] ??
+                            _notificationController.groupedNotifications[key] ??
                                 [];
 
                         return Column(
@@ -121,8 +116,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                   NotificationTile(
                                     notification: notification,
                                     followBackUserHandler: () {
-                                      _profileController.followUser(
-                                          notification.actionBy!);
+                                      _profileController
+                                          .followUser(notification.actionBy!);
                                       _notificationController
                                           .getNotifications();
                                     },
@@ -257,8 +252,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                           : ThemeIcon.circleOutline)
                     ],
                   )).ripple(() {
-                _notificationController.selectNotificationType(
-                    SMNotificationType.clubInvitation);
+                _notificationController
+                    .selectNotificationType(SMNotificationType.clubInvitation);
               }),
               const SizedBox(
                 height: 20,
@@ -272,8 +267,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                       ),
                       ThemeIconWidget(_notificationController
                               .selectedNotificationsTypes
-                              .contains(
-                                  SMNotificationType.competitionAdded)
+                              .contains(SMNotificationType.competitionAdded)
                           ? ThemeIcon.checkMarkWithCircle
                           : ThemeIcon.circleOutline)
                     ],
@@ -301,9 +295,11 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     _notificationController.markNotificationAsRead(notification.id);
 
     if (notification.type == SMNotificationType.follow) {
+      if (notification.actionBy == null) return;
       int userId = notification.actionBy!.id;
       Get.to(() => OtherUserProfile(userId: userId));
     } else if (notification.type == SMNotificationType.comment) {
+      if (notification.post == null) return;
       int postId = notification.post!.id;
       Get.to(() => CommentsScreen(
             postId: postId,
@@ -313,8 +309,10 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
             commentDeletedCallback: () {},
           ));
     } else if (notification.type == SMNotificationType.like) {
+      if (notification.post == null) return;
       Get.to(() => SinglePostDetail(postId: notification.post!.id));
     } else if (notification.type == SMNotificationType.competitionAdded) {
+      if (notification.competition == null) return;
       int competitionId = notification.competition!.id;
       Get.to(() => CompetitionDetailScreen(
             competitionId: competitionId,

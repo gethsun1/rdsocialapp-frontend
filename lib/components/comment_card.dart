@@ -10,7 +10,7 @@ import '../../screens/home_feed/post_media_full_screen.dart';
 import '../../screens/profile/other_user_profile.dart';
 
 class CommentTile extends StatefulWidget {
-  final PostModel post;
+  final PostModel? post;
   final CommentModel model;
   final Function(CommentModel) replyActionHandler;
   final Function(CommentModel) deleteActionHandler;
@@ -81,7 +81,7 @@ class _CommentTileState extends State<CommentTile> {
                             widget.model.commentTime,
                             weight: TextWeight.semiBold,
                             color: AppColorConstants.subHeadingTextColor
-                                .withOpacity(0.5),
+                                .withValues(alpha: 0.5),
                           ),
                         ],
                       ).ripple(() {
@@ -106,8 +106,7 @@ class _CommentTileState extends State<CommentTile> {
                                 widget.model.isPinned = false;
                                 MiscController controller = Get.find();
                                 controller.removeFromPin(
-                                    PinContentType.comment,
-                                    widget.model.id);
+                                    PinContentType.comment, widget.model.id);
                               });
                             }),
                             const SizedBox(
@@ -123,12 +122,11 @@ class _CommentTileState extends State<CommentTile> {
                       ).ripple(() {
                         setState(() {
                           isFavourite = !isFavourite;
-                          widget.model.isFavourite =
-                              !widget.model.isFavourite;
+                          widget.model.isFavourite = !widget.model.isFavourite;
                         });
                         widget.favActionHandler(widget.model);
                       }),
-                      if (widget.post.user.isMe == true &&
+                      if (widget.post?.user.isMe == true &&
                           widget.model.canReply)
                         Row(
                           children: [

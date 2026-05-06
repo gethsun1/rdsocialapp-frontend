@@ -1,6 +1,7 @@
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../components/post_card/post_card.dart';
+import '../../controllers/post/archived_post_controller.dart';
 import '../../controllers/post/post_controller.dart';
 import '../../controllers/post/saved_post_controller.dart';
 import '../../controllers/post/watch_videos_controller.dart';
@@ -11,8 +12,15 @@ class PostList extends StatelessWidget {
       RefreshController(initialRefresh: false);
 
   final PostSource postSource;
+  final String? emptyTitleOverride;
+  final String emptySubtitleOverride;
 
-  PostList({super.key, required this.postSource});
+  PostList({
+    super.key,
+    required this.postSource,
+    this.emptyTitleOverride,
+    this.emptySubtitleOverride = '',
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +28,9 @@ class PostList extends StatelessWidget {
         ? videosPosts()
         : postSource == PostSource.saved
             ? savedPosts()
-            : posts();
+            : postSource == PostSource.archived
+                ? archivedPosts()
+                : posts();
   }
 
   Widget posts() {
@@ -32,8 +42,7 @@ class PostList extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 20, bottom: 100),
                     itemCount: _postController.posts.length,
                     shrinkWrap: true,
-                    itemBuilder: (BuildContext context, int index) =>
-                        PostCard(
+                    itemBuilder: (BuildContext context, int index) => PostCard(
                       model: _postController.posts[index],
                       removePostHandler: () {},
                       blockUserHandler: () {},
@@ -51,7 +60,8 @@ class PostList extends StatelessWidget {
                 : SizedBox(
                     height: Get.size.height * 0.5,
                     child: emptyPost(
-                        title: noPostFoundString.tr, subTitle: ''),
+                        title: emptyTitleOverride ?? noPostFoundString.tr,
+                        subTitle: emptySubtitleOverride),
                   )));
   }
 
@@ -66,11 +76,10 @@ class PostList extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 20, bottom: 100),
                     itemCount: savedPostController.posts.length,
                     shrinkWrap: true,
-                    itemBuilder: (BuildContext context, int index) =>
-                        PostCard(
-                            model: savedPostController.posts[index],
-                            removePostHandler: () {},
-                            blockUserHandler: () {}),
+                    itemBuilder: (BuildContext context, int index) => PostCard(
+                        model: savedPostController.posts[index],
+                        removePostHandler: () {},
+                        blockUserHandler: () {}),
                     separatorBuilder: (BuildContext context, int index) =>
                         divider(height: 10).vP16,
                   ).addPullToRefresh(
@@ -90,7 +99,54 @@ class PostList extends StatelessWidget {
                 : SizedBox(
                     height: Get.size.height * 0.5,
                     child: emptyPost(
-                        title: noPostFoundString.tr, subTitle: ''),
+                        title: emptyTitleOverride ?? noPostFoundString.tr,
+                        subTitle: emptySubtitleOverride),
+                  )));
+  }
+
+  Widget archivedPosts() {
+    final ArchivedPostController archivedPostController = Get.find();
+
+    return Obx(() => Container(
+        child: archivedPostController.postDataWrapper.isLoading.value
+            ? const PostBoxShimmer()
+            : archivedPostController.posts.isNotEmpty
+                ? ListView.separated(
+                    padding: const EdgeInsets.only(top: 20, bottom: 100),
+                    itemCount: archivedPostController.posts.length,
+                    shrinkWrap: true,
+                    itemBuilder: (BuildContext context, int index) {
+                      final post = archivedPostController.posts[index];
+                      return PostCard(
+                          model: post,
+                          removePostHandler: () {
+                            archivedPostController.posts
+                                .removeWhere((item) => item.id == post.id);
+                            archivedPostController.posts.refresh();
+                          },
+                          blockUserHandler: () {});
+                    },
+                    separatorBuilder: (BuildContext context, int index) =>
+                        divider(height: 10).vP16,
+                  ).addPullToRefresh(
+                    refreshController: _refreshController,
+                    onRefresh: () {
+                      archivedPostController.refreshData(() {
+                        _refreshController.refreshCompleted();
+                      });
+                    },
+                    onLoading: () {
+                      archivedPostController.loadMore(() {
+                        _refreshController.loadComplete();
+                      });
+                    },
+                    enablePullUp: true,
+                    enablePullDown: true)
+                : SizedBox(
+                    height: Get.size.height * 0.5,
+                    child: emptyPost(
+                        title: emptyTitleOverride ?? noPostFoundString.tr,
+                        subTitle: emptySubtitleOverride),
                   )));
   }
 
@@ -105,11 +161,10 @@ class PostList extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 20, bottom: 100),
                     itemCount: watchVideosController.videos.length,
                     shrinkWrap: true,
-                    itemBuilder: (BuildContext context, int index) =>
-                        PostCard(
-                            model: watchVideosController.videos[index],
-                            removePostHandler: () {},
-                            blockUserHandler: () {}),
+                    itemBuilder: (BuildContext context, int index) => PostCard(
+                        model: watchVideosController.videos[index],
+                        removePostHandler: () {},
+                        blockUserHandler: () {}),
                     separatorBuilder: (BuildContext context, int index) =>
                         divider(height: 10).vP16,
                   ).addPullToRefresh(
@@ -128,8 +183,8 @@ class PostList extends StatelessWidget {
                     enablePullDown: true)
                 : SizedBox(
                     height: Get.size.height * 0.5,
-                    child: emptyPost(
-                        title: noVideoFoundString.tr, subTitle: ''),
+                    child:
+                        emptyPost(title: noVideoFoundString.tr, subTitle: ''),
                   )));
   }
 }

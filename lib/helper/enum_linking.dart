@@ -199,11 +199,11 @@ int uploadMediaTypeId(UploadMediaType type) {
     case UploadMediaType.club:
       return 5;
     case UploadMediaType.post:
-      return 7;
+      // Django VPS backend contract currently expects post uploads with type=2.
+      return 2;
     case UploadMediaType.verification:
       return 12;
   }
-  return 1;
 }
 
 int liveViewerRole(LiveUserRole role) {
@@ -216,7 +216,6 @@ int liveViewerRole(LiveUserRole role) {
       return 1;
   }
 }
-
 
 SMSGateway smsGatewayType(int id) {
   switch (id) {
@@ -243,8 +242,6 @@ SubscribedStatus subscribedStatusType(int id) {
       return SubscribedStatus.notSubscribed;
   }
 }
-
-
 
 int pinContentTypeId(PinContentType type) {
   switch (type) {
@@ -284,4 +281,3 @@ int collaborationStatusTypeId(CollaborationStatusType type) {
       return 3;
   }
 }
-

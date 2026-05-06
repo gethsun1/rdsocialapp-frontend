@@ -18,15 +18,34 @@ class ChatRoomMember {
     required this.userDetail,
   });
 
-  factory ChatRoomMember.fromJson(Map<String, dynamic> jsonData) =>
-      ChatRoomMember(
-          id: jsonData["id"],
-          roomId: jsonData["room_id"],
-          userId: jsonData["user_id"],
-          isAdmin: jsonData["is_admin"],
-          userDetail: UserModel.fromJson(jsonData['user'] is String
-              ? json.decode(jsonData['user'])
-              : jsonData['user']));
+  static int _readInt(dynamic value, {int fallback = 0}) {
+    if (value == null) return fallback;
+    if (value is int) return value;
+    if (value is double) return value.toInt();
+    return int.tryParse(value.toString()) ?? fallback;
+  }
+
+  factory ChatRoomMember.fromJson(Map<String, dynamic> jsonData) {
+    final userJson = jsonData['user'] ??
+        jsonData['userDetail'] ??
+        jsonData['user_detail'] ??
+        jsonData['memberDetail'];
+    final parsedUserJson =
+        userJson is String ? json.decode(userJson) : userJson;
+    final fallbackUser = {
+      'id': jsonData['user_id'] ?? jsonData['userId'],
+      'username': '',
+      'name': '',
+      'picture': ''
+    };
+
+    return ChatRoomMember(
+        id: _readInt(jsonData["id"]),
+        roomId: _readInt(jsonData["room_id"] ?? jsonData["room"]),
+        userId: _readInt(jsonData["user_id"] ?? jsonData["userId"]),
+        isAdmin: _readInt(jsonData["is_admin"] ?? jsonData["isAdmin"]),
+        userDetail: UserModel.fromJson(parsedUserJson ?? fallbackUser));
+  }
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -83,39 +102,76 @@ class ChatRoomModel {
     required this.chatGroupOwner,
   });
 
-  factory ChatRoomModel.fromJson(dynamic jsonData) => ChatRoomModel(
-      id: jsonData['id'],
-      lastMessageId: jsonData['last_message_id'],
-      name: jsonData['title'] ?? 'No Group name added',
-      status: jsonData['status'],
-      createdAt:
-          jsonData['created_at'] ?? DateTime.now().millisecondsSinceEpoch,
-      updatedAt: jsonData['updated_at'],
-      createdBy: jsonData['created_by'],
-      isOnline: jsonData['is_chat_user_online'] == 1,
-      isGroupChat: jsonData['type'] != 1,
-      type: jsonData['type'],
-      image: jsonData['imageUrl'],
-      description: jsonData['description'],
-      groupAccess: jsonData['chat_access_group'] ?? 1,
-      chatGroupOwner: UserModel.fromJson(
-          jsonData['createdByUser'] is String
-              ? json.decode(jsonData['createdByUser'])
-              : jsonData['createdByUser']),
-      roomMembers: jsonData['chatRoomUser'] != null
-          ? jsonData['chatRoomUser'] is String
-              ? (json.decode(jsonData['chatRoomUser']) as List<dynamic>)
-                  .map((e) => ChatRoomMember.fromJson(
-                      e is String ? json.decode(e) : e))
-                  .toList()
-              : (jsonData['chatRoomUser'] as List<dynamic>)
-                  .map((e) => ChatRoomMember.fromJson(
-                      e is String ? json.decode(e) : e))
-                  .toList()
-          : [],
-      lastMessage: jsonData['lastMessage'] == null
-          ? null
-          : ChatMessageModel.fromJson(jsonData['lastMessage']));
+  static bool _readBool(dynamic value, {bool fallback = false}) {
+    if (value == null) return fallback;
+    if (value is bool) return value;
+    if (value is num) return value != 0;
+    final normalized = value.toString().trim().toLowerCase();
+    if (normalized == 'true' || normalized == '1') return true;
+    if (normalized == 'false' || normalized == '0') return false;
+    return fallback;
+  }
+
+  static List<ChatRoomMember> _readMembers(dynamic value) {
+    if (value == null) return [];
+    final items = value is String ? json.decode(value) : value;
+    if (items is! List) return [];
+
+    return items
+        .where((e) => e != null)
+        .map((e) => ChatRoomMember.fromJson(
+            Map<String, dynamic>.from(e is String ? json.decode(e) : e)))
+        .toList();
+  }
+
+  factory ChatRoomModel.fromJson(dynamic jsonData) {
+    if (jsonData is! Map) {
+      jsonData = <String, dynamic>{};
+    }
+
+    final map = Map<String, dynamic>.from(jsonData);
+    final type = ChatRoomMember._readInt(map['type'], fallback: 1);
+    final createdBy = ChatRoomMember._readInt(
+        map['created_by'] ?? map['createdBy'] ?? map['created_by_id']);
+    final ownerJson = map['createdByUser'] ??
+        map['created_by_user'] ??
+        map['createdBy'] ??
+        {'id': createdBy};
+    final parsedOwnerJson =
+        ownerJson is String ? json.decode(ownerJson) : ownerJson;
+    final lastMessage = map['lastMessage'] ?? map['last_message'];
+
+    return ChatRoomModel(
+        id: ChatRoomMember._readInt(map['id']),
+        lastMessageId:
+            (map['last_message_id'] ?? map['lastMessageId'])?.toString(),
+        name: (map['title'] ?? map['name'] ?? 'No Group name added').toString(),
+        status: ChatRoomMember._readInt(map['status']),
+        createdAt: ChatMessageModel.readEpochSeconds(
+            map['created_at'] ?? map['createdAt']),
+        updatedAt: map['updated_at'] == null && map['updatedAt'] == null
+            ? null
+            : ChatMessageModel.readEpochSeconds(
+                map['updated_at'] ?? map['updatedAt']),
+        createdBy: createdBy,
+        isOnline: _readBool(map['is_chat_user_online'] ?? map['isOnline']),
+        isGroupChat: type != 1,
+        type: type,
+        image:
+            (map['imageUrl'] ?? map['image_url'] ?? map['image'])?.toString(),
+        description: map['description']?.toString(),
+        groupAccess: ChatRoomMember._readInt(
+            map['chat_access_group'] ?? map['chatAccessGroup'],
+            fallback: 2),
+        chatGroupOwner: UserModel.fromJson(parsedOwnerJson),
+        roomMembers: _readMembers(map['chatRoomUser'] ??
+            map['chat_room_user'] ??
+            map['members'] ??
+            map['roomMembers']),
+        lastMessage: lastMessage == null
+            ? null
+            : ChatMessageModel.fromJson(lastMessage));
+  }
 
   Map<String, dynamic> toJson() {
     // print(users.first.toJson());
@@ -130,8 +186,8 @@ class ChatRoomModel {
       'imageUrl': image,
       'description': description,
       'chat_access_group': groupAccess,
-      'chatRoomUser': json.encode(
-          roomMembers.map((e) => json.encode(e.toJson())).toList()),
+      'chatRoomUser':
+          json.encode(roomMembers.map((e) => json.encode(e.toJson())).toList()),
       'createdByUser': json.encode(chatGroupOwner.toJson()),
       // 'unreadMessages': unreadMessages,
     };
@@ -148,8 +204,7 @@ class ChatRoomModel {
 
   bool get amIGroupAdmin {
     return roomMembers
-        .where(
-            (element) => element.isAdmin == 1 && element.userDetail.isMe)
+        .where((element) => element.isAdmin == 1 && element.userDetail.isMe)
         .toList()
         .isNotEmpty;
   }

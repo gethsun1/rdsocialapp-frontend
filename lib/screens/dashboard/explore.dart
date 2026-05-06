@@ -22,6 +22,81 @@ class _ExploreState extends State<Explore> {
   final ExploreController exploreController = ExploreController();
   final PostController postController = Get.find();
 
+  final List<QuickLink> exploreQuickLinks = [
+    QuickLink(
+      icon: 'assets/stories.png',
+      heading: 'Story',
+      subHeading: 'Story',
+      linkType: QuickLinkType.story,
+    ),
+    QuickLink(
+      icon: 'assets/highlights.png',
+      heading: 'Highlights',
+      subHeading: 'Highlights',
+      linkType: QuickLinkType.highlights,
+    ),
+    QuickLink(
+      icon: 'assets/live_users.png',
+      heading: 'Live Users',
+      subHeading: 'Live Users',
+      linkType: QuickLinkType.liveUsers,
+    ),
+    QuickLink(
+      icon: 'assets/competitions.png',
+      heading: 'Competitions',
+      subHeading: 'Competitions',
+      linkType: QuickLinkType.competition,
+    ),
+    QuickLink(
+      icon: 'assets/club_colored.png',
+      heading: 'Clubs',
+      subHeading: 'Clubs',
+      linkType: QuickLinkType.clubs,
+    ),
+    QuickLink(
+      icon: 'assets/tv/tv.png',
+      heading: "TV's",
+      subHeading: "TV's",
+      linkType: QuickLinkType.tv,
+    ),
+    QuickLink(
+      icon: 'assets/chat_colored.png',
+      heading: 'Incognito Chat',
+      subHeading: 'Incognito Chat',
+      linkType: QuickLinkType.randomChat,
+    ),
+    QuickLink(
+      icon: 'assets/podcast.png',
+      heading: 'Pod Cast',
+      subHeading: 'Pod Cast',
+      linkType: QuickLinkType.podcast,
+    ),
+    QuickLink(
+      icon: 'assets/events.png',
+      heading: 'Events',
+      subHeading: 'Events',
+      linkType: QuickLinkType.events,
+    ),
+    QuickLink(
+      icon: 'assets/dating.png',
+      heading: 'Dating',
+      subHeading: 'Dating',
+      linkType: QuickLinkType.dating,
+    ),
+    QuickLink(
+      icon: 'assets/reel.png',
+      heading: 'Reels',
+      subHeading: 'Reels',
+      linkType: QuickLinkType.reel,
+    ),
+    QuickLink(
+      icon: 'assets/ai.png',
+      heading: 'ChatGPT',
+      subHeading: 'ChatGPT',
+      linkType: QuickLinkType.chatGPT,
+    ),
+  ];
+
   List<String> segments = [
     postsString.tr,
     accountString.tr,
@@ -104,7 +179,10 @@ class _ExploreState extends State<Explore> {
                     child: Obx(() => exploreController.searchText.isNotEmpty
                         ? Column(
                             children: [
-                              SMTabBar(tabs: segments,canScroll: true,),
+                              SMTabBar(
+                                tabs: segments,
+                                canScroll: true,
+                              ),
                               // segmentView(),
                               // divider(height: 0.2),
                               Expanded(
@@ -121,6 +199,7 @@ class _ExploreState extends State<Explore> {
                           )
                         : QuickLinkWidget(
                             callback: () {},
+                            links: exploreQuickLinks,
                           )))),
           ],
         )),

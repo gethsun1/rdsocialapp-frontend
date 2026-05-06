@@ -11,6 +11,7 @@ import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import '../../helper/permission_utils.dart';
 import '../../main.dart';
 import '../../manager/socket_manager.dart';
+import '../../screens/calling/accept_call.dart';
 import '../../screens/settings_menu/settings_controller.dart';
 import '../../util/ad_helper.dart';
 import '../../util/constant_util.dart';
@@ -40,6 +41,7 @@ class AgoraCallController extends GetxController {
 
   late String localCallId;
   UserModel? opponent;
+  Call? activeCall;
 
   String get _resolvedAgoraAppId {
     final String? key = _settingsController.setting.value?.agoraApiKey?.trim();
@@ -75,15 +77,100 @@ class AgoraCallController extends GetxController {
         ({
           CallArgParams.senderId: _userProfileManager.user.value!.id,
           CallArgParams.receiverId: call.opponent.id,
+          'receiverId': call.opponent.id,
           CallArgParams.callType: call.callType,
           CallArgParams.localCallId: localCallId,
           // CallArgParams.channelName: channelName
         }));
   }
 
+  int _readInt(dynamic value) {
+    if (value is int) return value;
+    if (value is double) return value.toInt();
+    return int.tryParse(value?.toString() ?? '') ?? 0;
+  }
+
+  String _readString(dynamic value) => value?.toString() ?? '';
+
+  Map<String, dynamic> _asMap(dynamic value) {
+    if (value is Map<String, dynamic>) return value;
+    if (value is Map) return Map<String, dynamic>.from(value);
+    return <String, dynamic>{};
+  }
+
+  UserModel _readCaller(Map<String, dynamic> data) {
+    final callerNode = data['callerDetail'] ??
+        data['caller'] ??
+        data['user'] ??
+        data['sender'];
+    if (callerNode is Map) {
+      return UserModel.fromJson(Map<String, dynamic>.from(callerNode));
+    }
+
+    final user = UserModel();
+    user.id = _readInt(data['callerId'] ??
+        data['caller_id'] ??
+        data['userId'] ??
+        data['created_by']);
+    user.userName = _readString(data['callerName'] ??
+        data['caller_name'] ??
+        data['username'] ??
+        data['userName'] ??
+        data['name']);
+    user.picture = _readString(data['callerImage'] ??
+        data['caller_image'] ??
+        data['userImageUrl'] ??
+        data['image']);
+    return user;
+  }
+
+  void incomingCallReceived(dynamic response) async {
+    final data = _asMap(response);
+    if (data.isEmpty) return;
+
+    final caller = _readCaller(data);
+    if (caller.id == _userProfileManager.user.value!.id) return;
+
+    final call = Call(
+      uuid: _readString(data['uuid'] ?? data['callUuid'] ?? data['call_uuid']),
+      callId: _readInt(data['id'] ?? data['callId'] ?? data['call_id']),
+      channelName: _readString(
+          data['channelName'] ?? data['channel_name'] ?? data['channel']),
+      isOutGoing: false,
+      token: _readString(
+          data['token'] ?? data['agoraToken'] ?? data['agora_token']),
+      callType: _readInt(data['callType'] ?? data['call_type']),
+      opponent: caller,
+    );
+
+    if (call.uuid.isEmpty ||
+        call.callId == 0 ||
+        call.channelName.isEmpty ||
+        call.token.isEmpty ||
+        call.callType == 0) {
+      debugPrint('[AgoraCallController] Invalid incoming call payload: $data');
+      return;
+    }
+
+    final voipController = Get.find<VoipController>();
+    final didShowSystemCallUi = await voipController.incomingCall(call);
+    if (didShowSystemCallUi) return;
+
+    await player.stop();
+    await player.setAsset('assets/ringtone.mp3');
+    await player.play();
+
+    if (Get.context != null) {
+      Get.to(() => AcceptCallScreen(call: call),
+          transition: Transition.noTransition);
+    }
+  }
+
   Future<void> initializeCalling({
     required Call call,
   }) async {
+    activeCall = call;
+    await player.stop();
     // logFile.writeAsStringSync('initializeCalling \n', mode: FileMode.append);
     if (_resolvedAgoraAppId.isEmpty) {
       // logFile.writeAsStringSync('initializeCalling agora key empty\n', mode: FileMode.append);
@@ -192,7 +279,7 @@ class AgoraCallController extends GetxController {
             debugPrint("remote user $remoteUid joined");
             remoteJoined.value = true;
             remoteUserId.value = remoteUid;
-            print('remoteJoined ${remoteJoined.value}');
+            debugPrint('remoteJoined ${remoteJoined.value}');
             update();
           },
           onUserOffline: (RtcConnection connection, int remoteUid,
@@ -201,6 +288,10 @@ class AgoraCallController extends GetxController {
 
             remoteUserId.value = 0;
             update();
+            final call = activeCall;
+            if (call != null) {
+              receivedEndCallNotification(call);
+            }
           },
           onTokenPrivilegeWillExpire: (RtcConnection connection, String token) {
             debugPrint(
@@ -225,12 +316,60 @@ class AgoraCallController extends GetxController {
   }
 
   // call
-  void callStatusUpdateReceived(Map<String, dynamic> updatedData) {
+  void callStatusUpdateReceived(dynamic response) {
+    final updatedData = _asMap(response);
+    if (updatedData.isEmpty) return;
+
     final VoipController voipController = Get.find();
-    int callId = updatedData['id'];
-    int status = updatedData['status'];
-    int callerId = updatedData['callerId'];
+    int callId = _readInt(
+        updatedData['id'] ?? updatedData['callId'] ?? updatedData['call_id']);
+    int status = _readInt(updatedData['status']);
+    int callerId = _readInt(updatedData['callerId'] ??
+        updatedData['caller_id'] ??
+        updatedData['userId']);
     int myUserId = _userProfileManager.user.value!.id;
+    final call = activeCall ??
+        Call(
+            uuid: _readString(
+                updatedData['uuid'] ?? updatedData['callUuid'] ?? ''),
+            channelName: '',
+            isOutGoing: myUserId == callerId,
+            opponent: opponent ?? UserModel(),
+            token: '',
+            callType: _readInt(updatedData['callType'] ??
+                updatedData['call_type'] ??
+                activeCall?.callType),
+            callId: callId);
+
+    if (status == 4) {
+      player.stop();
+      voipController.callConnected(call);
+      return;
+    }
+
+    if (status == 5) {
+      if (Platform.isIOS) {
+        voipController.endCallByOpponent(call);
+      }
+      receivedEndCallNotification(call);
+      return;
+    }
+
+    if (status == 2 || status == 3) {
+      player.stop();
+      if (Platform.isIOS) {
+        voipController.declinedByOpponent(call);
+      }
+      if (myUserId == callerId) {
+        receivedDeclinedCallNotification(call);
+      } else {
+        clearCall();
+        if (Get.isOverlaysOpen || Get.key.currentState?.canPop() == true) {
+          Get.back();
+        }
+      }
+      return;
+    }
 
     final CallHistoryController callHistoryController = CallHistoryController();
     callHistoryController.callDetail(
@@ -300,6 +439,9 @@ class AgoraCallController extends GetxController {
   }
 
   void acceptCall({required Call call}) {
+    activeCall = call;
+    player.stop();
+    Get.find<VoipController>().callConnected(call);
     getIt<SocketManager>().emit(SocketConstants.onAcceptCall, {
       'uuid': call.uuid,
       'userId': _userProfileManager.user.value!.id,
@@ -311,7 +453,6 @@ class AgoraCallController extends GetxController {
     initializeCalling(
       call: call,
     );
-    player.stop();
   }
 
   void initiateAcceptCall({required Call call}) async {
@@ -342,9 +483,10 @@ class AgoraCallController extends GetxController {
 
   void clearCall() {
     player.stop();
-    if (remoteJoined.value == true) {
-      engine?.leaveChannel();
+    activeCall = null;
+    engine?.leaveChannel();
 
+    if (remoteJoined.value == true) {
       clear();
     }
     // callId = 0;

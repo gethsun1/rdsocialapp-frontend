@@ -26,7 +26,9 @@ enum QuickLinkType {
   goLive,
   liveUsers,
   chatGPT,
-  reel
+  reel,
+  events,
+  dating,
 }
 
 class QuickLink {
@@ -44,8 +46,9 @@ class QuickLink {
 
 class QuickLinkWidget extends StatefulWidget {
   final VoidCallback callback;
+  final List<QuickLink>? links;
 
-  const QuickLinkWidget({super.key, required this.callback});
+  const QuickLinkWidget({super.key, required this.callback, this.links});
 
   @override
   State<QuickLinkWidget> createState() => _QuickLinkWidgetState();
@@ -56,79 +59,91 @@ class _QuickLinkWidgetState extends State<QuickLinkWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => GridView(
-            padding: EdgeInsets.only(
-                left: DesignConstants.horizontalPadding,
-                right: DesignConstants.horizontalPadding,
-                top: 20,
-                bottom: 100),
-            // spacing: 10,
-            // runSpacing: 10,
-            clipBehavior: Clip.hardEdge,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 10.0,
-                mainAxisSpacing: 10.0,
-                childAspectRatio: 1.1),
-            children: [
-              for (QuickLink link in _homeController.quickLinks)
-                quickLinkView(link).ripple(() {
-                  widget.callback();
+    final links = widget.links;
 
-                  if (link.linkType == QuickLinkType.competition) {
-                    Get.to(() => const CompetitionsScreen());
-                  } else if (link.linkType == QuickLinkType.randomChat) {
-                    if (AppConfigConstants.isDemoApp) {
-                      AppUtil.showDemoAppConfirmationAlert(
-                          title: 'Demo app',
-                          subTitle:
-                              'This is demo app so might not find online user to test it',
-                          okHandler: () {
-                            Get.to(() => const ChooseProfileCategory(
-                                  isCalling: false,
-                                ));
-                          });
-                      return;
-                    } else {
-                      Get.to(() => const ChooseProfileCategory(
-                            isCalling: false,
-                          ));
-                    }
-                  } else if (link.linkType == QuickLinkType.randomCall) {
-                    Get.to(() => const ChooseProfileCategory(
-                          isCalling: true,
-                        ));
-                  } else if (link.linkType == QuickLinkType.clubs) {
-                    Get.to(() => const ExploreClubs());
-                  } else if (link.linkType == QuickLinkType.pages) {
-                  } else if (link.linkType == QuickLinkType.goLive) {
-                    // Get.to(() => CheckingLiveFeasibility(
-                    //       successCallbackHandler: () {},
-                    //     ));
+    if (links != null) {
+      return quickLinksGrid(links);
+    }
 
-                    Future.delayed(
-                      Duration.zero,
-                          () => showGeneralDialog(
-                          context: context,
-                          pageBuilder:
-                              (context, animation, secondaryAnimation) =>
-                          const ContentCreatorView()),
-                    );
-                  } else if (link.linkType == QuickLinkType.story) {
-                    openStoryUploader();
-                  } else if (link.linkType == QuickLinkType.highlights) {
-                    Get.to(() => const ChooseStoryForHighlights());
-                  } else if (link.linkType == QuickLinkType.tv) {
-                    Get.to(() => const TvDashboardScreen());
-                  } else if (link.linkType == QuickLinkType.liveUsers) {
-                    Get.to(() => const LiveUserScreen());
-                  } else if (link.linkType == QuickLinkType.podcast) {
-                    Get.to(() => const PodcastListDashboard());
-                  } else if (link.linkType == QuickLinkType.chatGPT) {
-                    Get.to(() => const ChatGPT());
-                  }
-                })
-            ]));
+    return Obx(() => quickLinksGrid(_homeController.quickLinks));
+  }
+
+  Widget quickLinksGrid(List<QuickLink> links) {
+    return GridView(
+        padding: EdgeInsets.only(
+            left: DesignConstants.horizontalPadding,
+            right: DesignConstants.horizontalPadding,
+            top: 20,
+            bottom: 100),
+        // spacing: 10,
+        // runSpacing: 10,
+        clipBehavior: Clip.hardEdge,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 10.0,
+            mainAxisSpacing: 10.0,
+            childAspectRatio: 1.1),
+        children: [
+          for (QuickLink link in links)
+            quickLinkView(link).ripple(() {
+              widget.callback();
+
+              if (link.linkType == QuickLinkType.competition) {
+                Get.to(() => const CompetitionsScreen());
+              } else if (link.linkType == QuickLinkType.randomChat) {
+                if (AppConfigConstants.isDemoApp) {
+                  AppUtil.showDemoAppConfirmationAlert(
+                      title: 'Demo app',
+                      subTitle:
+                          'This is demo app so might not find online user to test it',
+                      okHandler: () {
+                        Get.to(() => const ChooseProfileCategory(
+                              isCalling: false,
+                            ));
+                      });
+                  return;
+                } else {
+                  Get.to(() => const ChooseProfileCategory(
+                        isCalling: false,
+                      ));
+                }
+              } else if (link.linkType == QuickLinkType.randomCall) {
+                Get.to(() => const ChooseProfileCategory(
+                      isCalling: true,
+                    ));
+              } else if (link.linkType == QuickLinkType.clubs) {
+                Get.to(() => const ExploreClubs());
+              } else if (link.linkType == QuickLinkType.pages) {
+              } else if (link.linkType == QuickLinkType.goLive) {
+                // Get.to(() => CheckingLiveFeasibility(
+                //       successCallbackHandler: () {},
+                //     ));
+
+                Future.delayed(
+                  Duration.zero,
+                  () {
+                    if (!mounted) return;
+                    showGeneralDialog(
+                        context: context,
+                        pageBuilder: (context, animation, secondaryAnimation) =>
+                            const ContentCreatorView());
+                  },
+                );
+              } else if (link.linkType == QuickLinkType.story) {
+                openStoryUploader();
+              } else if (link.linkType == QuickLinkType.highlights) {
+                Get.to(() => const ChooseStoryForHighlights());
+              } else if (link.linkType == QuickLinkType.tv) {
+                Get.to(() => const TvDashboardScreen());
+              } else if (link.linkType == QuickLinkType.liveUsers) {
+                Get.to(() => const LiveUserScreen());
+              } else if (link.linkType == QuickLinkType.podcast) {
+                Get.to(() => const PodcastListDashboard());
+              } else if (link.linkType == QuickLinkType.chatGPT) {
+                Get.to(() => const ChatGPT());
+              }
+            })
+        ]);
   }
 
   Widget quickLinkView(QuickLink link) {

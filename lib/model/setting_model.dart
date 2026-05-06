@@ -71,6 +71,7 @@ class SettingModel {
   String? textColorForLightTheme;
   String? textColorForDarkTheme;
   String? font;
+  bool darkLightModeSwitchEnabled;
   List<FeatureModel> features = [];
   String? iosAppLink;
   String? androidAppLink;
@@ -127,73 +128,185 @@ class SettingModel {
       required this.bgColorForDarkTheme,
       required this.textColorForLightTheme,
       required this.textColorForDarkTheme,
+      required this.darkLightModeSwitchEnabled,
       required this.features,
       this.iosAppLink,
       this.androidAppLink});
 
+  static String? _readString(Map<String, dynamic> json, List<String> keys) {
+    for (final key in keys) {
+      final value = json[key];
+      if (value == null) continue;
+      final normalized = value.toString().trim();
+      if (normalized.isNotEmpty && normalized.toLowerCase() != 'null') {
+        return normalized;
+      }
+    }
+    return null;
+  }
+
+  static int _readInt(Map<String, dynamic> json, List<String> keys,
+      {int fallback = 0}) {
+    for (final key in keys) {
+      final value = json[key];
+      if (value == null) continue;
+      if (value is int) return value;
+      if (value is double) return value.toInt();
+      if (value is String) {
+        final parsed = int.tryParse(value.trim());
+        if (parsed != null) return parsed;
+      }
+    }
+    return fallback;
+  }
+
+  static double _readDouble(Map<String, dynamic> json, List<String> keys,
+      {double fallback = 0.0}) {
+    for (final key in keys) {
+      final value = json[key];
+      if (value == null) continue;
+      if (value is double) return value;
+      if (value is int) return value.toDouble();
+      if (value is String) {
+        final parsed = double.tryParse(value.trim());
+        if (parsed != null) return parsed;
+      }
+    }
+    return fallback;
+  }
+
+  static List<FeatureModel> _readFeatures(dynamic rawFeatureList) {
+    if (rawFeatureList is List) {
+      return rawFeatureList
+          .whereType<Map<String, dynamic>>()
+          .map((e) => FeatureModel.fromJson(e))
+          .toList();
+    }
+
+    if (rawFeatureList is Map<String, dynamic>) {
+      return rawFeatureList.entries
+          .map((entry) => FeatureModel(
+                featureKey: entry.key,
+                isActive: entry.value == true || entry.value == 1,
+              ))
+          .toList();
+    }
+
+    return [];
+  }
+
+  static bool _readBool(Map<String, dynamic> json, List<String> keys,
+      {bool fallback = false}) {
+    for (final key in keys) {
+      final value = json[key];
+      if (value == null) continue;
+      if (value is bool) return value;
+      if (value is num) return value != 0;
+      if (value is String) {
+        final normalized = value.trim().toLowerCase();
+        if (normalized == 'true' || normalized == '1' || normalized == 'yes') {
+          return true;
+        }
+        if (normalized == 'false' || normalized == '0' || normalized == 'no') {
+          return false;
+        }
+      }
+    }
+    return fallback;
+  }
+
   factory SettingModel.fromJson(Map<String, dynamic> json) => SettingModel(
-      email: json["email"],
-      phone: json["phone"],
-      facebook: json["facebook"],
-      youtube: json["youtube"],
-      twitter: json["twitter"],
-      linkedin: json["linkedin"],
-      pinterest: json["pinterest"],
-      instagram: json["instagram"],
-      latestVersion: json["release_version"],
-      watchVideoRewardCoins: json["each_view_coin"] ?? 0,
-      minWithdrawLimit: json["min_widhdraw_price"] ?? 0,
-      minCoinsWithdrawLimit: json["min_coin_redeem"] ?? 0,
-      coinsValue: double.parse(json["per_coin_value"].toString()),
-      pid: json["user_p_id"],
-      siteName: json["site_name"],
-      inAppPurchaseId: json["in_app_purchase_id"],
-      isUploadImage: json["is_upload_image"],
-      isUploadVideo: json["is_upload_video"],
-      uploadMaxFile: json["upload_max_file"],
-      siteUrl: json["site_url"],
-      maximumVideoDurationAllowed: json["maximum_video_duration_allowed"],
-      freeLiveTvDurationToView: json["free_live_tv_duration_to_view"],
-      latestAppDownloadLink: json["latest_app_download_link"],
-      disclaimerUrl: json["disclaimer_url"],
-      privacyPolicyUrl: json["privacy_policy_url"],
-      termsOfServiceUrl: json["terms_of_service_url"],
-      giphyApiKey: json["giphy_api_key"],
-      agoraApiKey: json["agora_api_key"],
+      email: _readString(json, ["email"]),
+      phone: _readString(json, ["phone"]),
+      facebook: _readString(json, ["facebook"]),
+      youtube: _readString(json, ["youtube"]),
+      twitter: _readString(json, ["twitter"]),
+      linkedin: _readString(json, ["linkedin"]),
+      pinterest: _readString(json, ["pinterest"]),
+      instagram: _readString(json, ["instagram"]),
+      latestVersion: _readString(json, ["release_version", "version"]),
+      watchVideoRewardCoins: _readInt(json, ["each_view_coin"]),
+      minWithdrawLimit: _readInt(json, ["min_widhdraw_price"]),
+      minCoinsWithdrawLimit: _readInt(json, ["min_coin_redeem"]),
+      coinsValue: _readDouble(json, ["per_coin_value"], fallback: 0.0),
+      pid: _readString(json, ["user_p_id"]),
+      siteName: _readString(json, ["site_name", "app_name"]),
+      inAppPurchaseId: _readString(json, ["in_app_purchase_id"]),
+      isUploadImage: _readInt(json, ["is_upload_image"], fallback: 0),
+      isUploadVideo: _readInt(json, ["is_upload_video"], fallback: 0),
+      uploadMaxFile: _readInt(json, ["upload_max_file"], fallback: 0),
+      siteUrl: _readString(json, ["site_url"]),
+      maximumVideoDurationAllowed:
+          _readString(json, ["maximum_video_duration_allowed"]),
+      freeLiveTvDurationToView:
+          _readString(json, ["free_live_tv_duration_to_view"]),
+      latestAppDownloadLink: _readString(json, ["latest_app_download_link"]),
+      disclaimerUrl: _readString(json, ["disclaimer_url"]),
+      privacyPolicyUrl: _readString(json, ["privacy_policy_url"]),
+      termsOfServiceUrl: _readString(json, ["terms_of_service_url"]),
+      giphyApiKey: _readString(json, ["giphy_api_key"]),
+      agoraApiKey: _readString(json, ["agora_api_key"]),
 // googleMapApiKey: json["google_map_api_key"],
       interstitialAdUnitIdForAndroid:
-          json["interstitial_ad_unit_id_for_android"],
-      interstitialAdUnitIdForiOS: json["interstitial_ad_unit_id_for_IOS"],
+          _readString(json, ["interstitial_ad_unit_id_for_android"]),
+      interstitialAdUnitIdForiOS:
+          _readString(json, ["interstitial_ad_unit_id_for_IOS"]),
       rewardInterstitlAdUnitIdForAndroid:
-          json["reward_Interstitl_ad_unit_id_for_android"],
+          _readString(json, ["reward_Interstitl_ad_unit_id_for_android"]),
       rewardInterstitialAdUnitIdForiOS:
-          json["reward_interstitial_ad_unit_id_for_IOS"],
-      bannerAdUnitIdForAndroid: json["banner_ad_unit_id_for_android"],
-      bannerAdUnitIdForiOS: json["banner_ad_unit_id_for_IOS"],
+          _readString(json, ["reward_interstitial_ad_unit_id_for_IOS"]),
+      bannerAdUnitIdForAndroid:
+          _readString(json, ["banner_ad_unit_id_for_android"]),
+      bannerAdUnitIdForiOS: _readString(json, ["banner_ad_unit_id_for_IOS"]),
       fbInterstitialAdUnitIdForAndroid:
-          json["fb_interstitial_ad_unit_id_for_android"],
-      fbInterstitialAdUnitIdForiOS: json["fb_interstitial_ad_unit_id_for_IOS"],
+          _readString(json, ["fb_interstitial_ad_unit_id_for_android"]),
+      fbInterstitialAdUnitIdForiOS:
+          _readString(json, ["fb_interstitial_ad_unit_id_for_IOS"]),
       fbRewardInterstitialAdUnitIdForAndroid:
-          json["fb_reward_interstitial_ad_unit_id_for_android"],
+          _readString(json, ["fb_reward_interstitial_ad_unit_id_for_android"]),
       fbRewardInterstitialAdUnitIdForiOS:
-          json["fb_reward_interstitial_ad_unit_id_for_IOS"],
-      networkToUse: json["network_to_use"],
-      serviceFee: json["serviceFee"] ?? 5,
-      stripePublishableKey: json["stripe_publishable_key"],
-      razorpayKey: json["razorpay_api_key"],
-      themeColor: json["theme_color"] ?? 'E64EA6',
-      bgColorForLightTheme: json["theme_light_background_color"] ?? 'F8FBFF',
-      bgColorForDarkTheme: json["theme_dark_background_color"] ?? '01041C',
-      textColorForLightTheme: json["theme_light_text_color"] ?? '000000',
-      textColorForDarkTheme: json["theme_dark_text_color"] ?? 'FFFFFF',
-      font: json["theme_font"],
-      chatGPTKey: json["chat_gpt_key"],
-      imglyApiKey: json["imgly_key"],
-      iosAppLink: json["iosAppLink"] ?? 'ios app link',
-      androidAppLink: json["androidAppLink"] ?? 'android app ink',
-      features: (json["featureList"] as List)
-          .map((e) => FeatureModel.fromJson(e))
-          .toList());
+          _readString(json, ["fb_reward_interstitial_ad_unit_id_for_IOS"]),
+      networkToUse: _readString(json, ["network_to_use"]),
+      serviceFee: _readDouble(json, ["serviceFee"], fallback: 5),
+      stripePublishableKey: _readString(json, ["stripe_publishable_key"]),
+      razorpayKey: _readString(json, ["razorpay_api_key"]),
+      themeColor: _readString(json, ["theme_color", "themeColor"]) ?? '003366',
+      bgColorForLightTheme: _readString(json, [
+            "bg_color_for_light_theme",
+            "bgColorForLightTheme",
+            "theme_light_background_color"
+          ]) ??
+          'F8FBFF',
+      bgColorForDarkTheme: _readString(json, [
+            "bg_color_for_dark_theme",
+            "bgColorForDarkTheme",
+            "theme_dark_background_color"
+          ]) ??
+          '01041C',
+      textColorForLightTheme: _readString(json, [
+            "text_color_for_light_theme",
+            "textColorForLightTheme",
+            "theme_light_text_color"
+          ]) ??
+          '101426',
+      textColorForDarkTheme: _readString(json, [
+            "text_color_for_dark_theme",
+            "textColorForDarkTheme",
+            "theme_dark_text_color"
+          ]) ??
+          'FFFFFF',
+      font: _readString(json, ["theme_font"]),
+      chatGPTKey: _readString(json, ["chat_gpt_key"]),
+      imglyApiKey: _readString(json, ["imgly_key"]),
+      iosAppLink: _readString(json, ["iosAppLink"]) ?? 'ios app link',
+      androidAppLink:
+          _readString(json, ["androidAppLink"]) ?? 'android app link',
+      darkLightModeSwitchEnabled: _readBool(json, [
+        "enable_dark_light_mode_switch",
+        "enableDarkLightModeSwitch",
+        "enable_dark_light_mode_switching"
+      ]),
+      features: _readFeatures(json["featureList"]));
 
   bool getFeatureAvailabilityStatus(String featureName) {
     UserProfileManager userProfileManager = Get.find();
@@ -300,17 +413,17 @@ class SettingModel {
 
   bool get enableAudioCalling {
     return getFeatureAvailabilityStatus('enable_audio_calling') &&
-        agoraApiKey!.isNotEmpty;
+        (agoraApiKey?.isNotEmpty ?? false);
   }
 
   bool get enableVideoCalling {
     return getFeatureAvailabilityStatus('enable_video_calling') &&
-        agoraApiKey!.isNotEmpty;
+        (agoraApiKey?.isNotEmpty ?? false);
   }
 
   bool get enableLive {
     return getFeatureAvailabilityStatus('enable_live') &&
-        agoraApiKey!.isNotEmpty;
+        (agoraApiKey?.isNotEmpty ?? false);
   }
 
   bool get enableClubs {
@@ -334,7 +447,8 @@ class SettingModel {
   }
 
   bool get enableDarkLightModeSwitch {
-    return getFeatureAvailabilityStatus('enable_dark_light_mode_switching');
+    return darkLightModeSwitchEnabled ||
+        getFeatureAvailabilityStatus('enable_dark_light_mode_switching');
   }
 
   bool get enableWatchTv {

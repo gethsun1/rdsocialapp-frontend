@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:foap/api_handler/apis/auth_api.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/screens/login_sign_up/phone_login.dart';
-import 'package:foap/screens/login_sign_up/set_user_name.dart';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:foap/helper/imports/login_signup_imports.dart';
@@ -51,7 +50,7 @@ class _SocialLoginState extends State<SocialLogin> {
             ? Container(
                 height: 40,
                 width: 40,
-                color: AppColorConstants.themeColor.withOpacity(0.2),
+                color: AppColorConstants.themeColor.withValues(alpha: 0.2),
                 child: Center(
                     child: Image.asset(
                   'assets/phone.png',
@@ -64,7 +63,7 @@ class _SocialLoginState extends State<SocialLogin> {
             : Container(
                 height: 40,
                 width: 40,
-                color: AppColorConstants.themeColor.withOpacity(0.2),
+                color: AppColorConstants.themeColor.withValues(alpha: 0.2),
                 child: Center(
                     child: Image.asset(
                   'assets/email.png',
@@ -77,7 +76,7 @@ class _SocialLoginState extends State<SocialLogin> {
         Container(
             height: 40,
             width: 40,
-            color: AppColorConstants.themeColor.withOpacity(0.2),
+            color: AppColorConstants.themeColor.withValues(alpha: 0.2),
             child: Center(
                 child: Image.asset(
               'assets/google.png',
@@ -90,7 +89,7 @@ class _SocialLoginState extends State<SocialLogin> {
           Container(
               height: 40,
               width: 40,
-              color: AppColorConstants.themeColor.withOpacity(0.2),
+              color: AppColorConstants.themeColor.withValues(alpha: 0.2),
               child: Center(
                   child: Image.asset(
                 'assets/apple.png',
@@ -106,7 +105,7 @@ class _SocialLoginState extends State<SocialLogin> {
           Container(
               height: 40,
               width: 40,
-              color: AppColorConstants.themeColor.withOpacity(0.2),
+              color: AppColorConstants.themeColor.withValues(alpha: 0.2),
               child: Center(
                   child: Image.asset(
                 'assets/facebook.png',
@@ -203,7 +202,7 @@ class _SocialLoginState extends State<SocialLogin> {
 
       await _loginController.completeFirebaseLogin(
         firebaseUser,
-        socialTypeOverride: 'google',
+        socialTypeOverride: AppConfigConstants.firebaseBackendSocialType,
       );
     } catch (error, stackTrace) {
       EasyLoading.dismiss();
@@ -264,23 +263,23 @@ class _SocialLoginState extends State<SocialLogin> {
         socialType: type,
         socialId: userId,
         email: email,
-        successCallback: (authKey) async {
+        successCallback: (authKey, isNewUser) async {
           EasyLoading.dismiss();
           await SharedPrefs().setAuthorizationKey(authKey);
           await _userProfileManager.refreshProfile();
           await _settingsController.getSettings();
 
           if (_userProfileManager.user.value != null) {
-            if (_userProfileManager.user.value!.userName.isEmpty) {
-              isLoginFirstTime = true;
-              Get.offAll(() => const SetUserName());
+            // ask for location
+            if (isNewUser) {
+              await SharedPrefs().setSignupProfileSetupPending(true);
+              Get.offAll(() => const SignupProfileSetup());
             } else {
-              // ask for location
               isLoginFirstTime = false;
               getIt<LocationManager>().postLocation();
               Get.offAll(() => const DashboardScreen());
+              getIt<SocketManager>().connect();
             }
-            getIt<SocketManager>().connect();
           }
         });
   }

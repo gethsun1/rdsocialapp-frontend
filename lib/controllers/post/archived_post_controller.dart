@@ -1,10 +1,11 @@
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/list_extension.dart';
 import 'package:foap/model/data_wrapper.dart';
+
 import '../../api_handler/apis/post_api.dart';
 import '../../model/post_model.dart';
 
-class SavedPostController extends GetxController {
+class ArchivedPostController extends GetxController {
   RxList<PostModel> posts = <PostModel>[].obs;
   DataWrapper postDataWrapper = DataWrapper();
 
@@ -36,22 +37,17 @@ class SavedPostController extends GetxController {
   void getPosts(VoidCallback callback) async {
     postDataWrapper.isLoading.value = true;
     PostApi.getPosts(
-        isSaved: 1,
+        isMine: 1,
+        isArchived: 1,
         page: postDataWrapper.page,
         resultCallback: (result, metadata) {
           for (final post in result) {
-            post.isSaved = true;
+            post.isArchived = true;
           }
           posts.addAll(result);
           posts.sort((a, b) => b.createDate!.compareTo(a.createDate!));
           posts.unique((e) => e.id);
-          postDataWrapper.isLoading.value = false;
-
-          postDataWrapper.totalRecords.value = metadata.totalCount;
-          postDataWrapper.haveMoreData.value =
-              metadata.currentPage < metadata.pageCount;
-
-          postDataWrapper.page += 1;
+          postDataWrapper.processCompletedWithData(metadata);
 
           callback();
           update();

@@ -25,7 +25,7 @@ class _VoiceRecordState extends State<VoiceRecord> {
   final record = AudioRecorder();
 
   int _seconds = 0;
-  late Timer _timer;
+  Timer? _timer;
 
   // final FlutterSoundRecorderSettings settings = FlutterSoundRecorderSettings();
 
@@ -64,11 +64,11 @@ class _VoiceRecordState extends State<VoiceRecord> {
     await session.configure(AudioSessionConfiguration(
       avAudioSessionCategory: AVAudioSessionCategory.playAndRecord,
       avAudioSessionCategoryOptions:
-      AVAudioSessionCategoryOptions.allowBluetooth |
-      AVAudioSessionCategoryOptions.defaultToSpeaker,
+          AVAudioSessionCategoryOptions.allowBluetooth |
+              AVAudioSessionCategoryOptions.defaultToSpeaker,
       avAudioSessionMode: AVAudioSessionMode.spokenAudio,
       avAudioSessionRouteSharingPolicy:
-      AVAudioSessionRouteSharingPolicy.defaultPolicy,
+          AVAudioSessionRouteSharingPolicy.defaultPolicy,
       avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
       androidAudioAttributes: const AndroidAudioAttributes(
         contentType: AndroidAudioContentType.speech,
@@ -89,19 +89,30 @@ class _VoiceRecordState extends State<VoiceRecord> {
   }
 
   void _stopTimer() {
-    _timer.cancel();
+    _timer?.cancel();
+    _timer = null;
   }
 
   @override
-  void dispose() async {
-    bool isRecording = await record.isRecording();
-    if (isRecording) {
-      await record.stop();
-    }
+  void dispose() {
+    _stopTimer();
+    record.isRecording().then((isRecording) async {
+      if (isRecording) {
+        await record.stop();
+      }
+      await record.dispose();
+    });
     // setState(() {
     //   _seconds = 0;
     // });
     super.dispose();
+  }
+
+  Future<void> _discardRecording() async {
+    if (await record.isRecording()) {
+      await record.stop();
+    }
+    _stopTimer();
   }
 
   @override
@@ -180,7 +191,7 @@ class _VoiceRecordState extends State<VoiceRecord> {
                     ),
                   ),
                 ).circular.ripple(() {
-                  Get.back();
+                  _discardRecording().then((_) => Get.back());
                 })
               ],
             ),

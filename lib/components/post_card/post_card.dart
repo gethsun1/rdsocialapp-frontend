@@ -4,6 +4,7 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flare_flutter/flare_controls.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
+import 'package:foap/components/post_card/post_text_widget.dart';
 import 'package:foap/components/post_card/post_user_info.dart';
 import 'package:foap/components/post_card/reshare_post.dart';
 import 'package:foap/components/post_card_controller.dart';
@@ -32,6 +33,7 @@ import '../../screens/live/gifts_list.dart';
 import '../../screens/post/edit_post.dart';
 import '../../screens/post/liked_by_users.dart';
 import '../../screens/post/received_gifts.dart';
+import '../../screens/post/single_post_detail.dart';
 import '../../screens/post/view_post_insight.dart';
 import '../../screens/profile/my_profile.dart';
 import '../../screens/profile/other_user_profile.dart';
@@ -54,6 +56,13 @@ class PostMediaTile extends StatelessWidget {
   }
 
   Widget mediaTile() {
+    if (model.gallery.isEmpty &&
+        model.contentType != PostContentType.competitionAdded &&
+        model.contentType != PostContentType.competitionResultDeclared &&
+        model.contentType != PostContentType.club) {
+      return Container();
+    }
+
     if (model.gallery.length > 1) {
       return SizedBox(
         height: 350,
@@ -83,11 +92,11 @@ class PostMediaTile extends StatelessWidget {
                       return DotsIndicator(
                         dotsCount: model.gallery.length,
                         position: (postCardController
-                                .postScrollIndexMapping[model.id] ??
-                            0).toDouble(),
+                                    .postScrollIndexMapping[model.id] ??
+                                0)
+                            .toDouble(),
                         decorator: DotsDecorator(
-                            activeColor:
-                                Theme.of(Get.context!).primaryColor),
+                            activeColor: Theme.of(Get.context!).primaryColor),
                       );
                     },
                   ),
@@ -99,13 +108,10 @@ class PostMediaTile extends StatelessWidget {
       return model.contentType == PostContentType.media
           ? model.gallery.first.isVideoPost == true
               ? videoPostTile(
-                  media: model.gallery.first,
-                  isReshared: isSharedPostMedia)
-              : SizedBox(
-                  height: 350, child: photoPostTile(model.gallery.first))
+                  media: model.gallery.first, isReshared: isSharedPostMedia)
+              : SizedBox(height: 350, child: photoPostTile(model.gallery.first))
           : model.contentType == PostContentType.competitionAdded ||
-                  model.contentType ==
-                      PostContentType.competitionResultDeclared
+                  model.contentType == PostContentType.competitionResultDeclared
               ? CompetitionPostTile(
                   post: model,
                   isResharedPost: isSharedPostMedia,
@@ -129,8 +135,7 @@ class PostMediaTile extends StatelessWidget {
     }).toList();
   }
 
-  Widget videoPostTile(
-      {required PostGallery media, required bool isReshared}) {
+  Widget videoPostTile({required PostGallery media, required bool isReshared}) {
     return VisibilityDetector(
       key: Key(media.id.toString()),
       onVisibilityChanged: (visibilityInfo) {
@@ -146,8 +151,7 @@ class PostMediaTile extends StatelessWidget {
             isLocalFile: false,
             play: homeController.currentVisibleVideoId.value == media.id,
             width: isReshared
-                ? Get.width -
-                    ((DesignConstants.horizontalPadding * 3) + 10)
+                ? Get.width - ((DesignConstants.horizontalPadding * 3) + 10)
                 : Get.width,
             onTapActionHandler: () {},
           )),
@@ -159,8 +163,7 @@ class PostMediaTile extends StatelessWidget {
       imageUrl: media.filePath,
       fit: BoxFit.cover,
       width: Get.width,
-      placeholder: (context, url) =>
-          AppUtil.addProgressIndicator(size: 100),
+      placeholder: (context, url) => AppUtil.addProgressIndicator(size: 100),
       errorWidget: (context, url, error) => const Icon(Icons.error),
     );
   }
@@ -204,6 +207,8 @@ class PostCardState extends State<PostCard> {
 
   @override
   Widget build(BuildContext context) {
+    final sharedPost = widget.model.sharedPost;
+
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       PostUserInfo(
         post: widget.model,
@@ -233,23 +238,12 @@ class PostCardState extends State<PostCard> {
                         left: DesignConstants.horizontalPadding,
                         right: DesignConstants.horizontalPadding,
                         bottom: 25),
-                  // if (widget.model.gallery.isNotEmpty)
-                  PostMediaTile(
-                    model: widget.model,
-                    isSharedPostMedia: widget.model.sharedPost != null,
-                  ),
-                  if (widget.model.isMyPost)
-                    Container(
-                      color: AppColorConstants.cardColor,
-                      height: 50,
-                      width: double.infinity,
-                      child: BodyLargeText(
-                        viewInsightsString.tr,
-                        weight: TextWeight.semiBold,
-                      ).p16.ripple(() {
-                        Get.to(() => ViewPostInsights(post: widget.model));
-                      }),
-                    )
+                  sharedPost == null
+                      ? PostMediaTile(
+                          model: widget.model,
+                          isSharedPostMedia: false,
+                        )
+                      : resharedPostPreview(sharedPost),
                 ],
               ),
               Obx(() => Positioned(
@@ -310,8 +304,7 @@ class PostCardState extends State<PostCard> {
   Widget commentsCountWidget() {
     return InkWell(
         onTap: () => openComments(),
-        child:
-            Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+        child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
           widget.model.totalComment > 0 && widget.model.commentsEnabled
               ? BodySmallText(
                   '$viewString ${widget.model.totalComment} $commentsString',
@@ -323,89 +316,95 @@ class PostCardState extends State<PostCard> {
   }
 
   Widget commentAndLikeWidget() {
-    return Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-      Obx(() => InkWell(
-          onTap: () {
-            postCardController.likeUnlikePost(
-              post: widget.model,
-            );
-            // widget.likeTapHandler();
-          },
-          child: ThemeIconWidget(
-            postCardController.likedPosts.contains(widget.model) ||
-                    widget.model.isLike
-                ? ThemeIcon.favFilled
-                : ThemeIcon.fav,
-            color: postCardController.likedPosts.contains(widget.model) ||
-                    widget.model.isLike
-                ? AppColorConstants.red
-                : AppColorConstants.iconColor,
-          ))),
-      const SizedBox(
-        width: 5,
+    return Row(children: [
+      Expanded(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Obx(() {
+              final isLiked =
+                  postCardController.likedPosts.contains(widget.model) ||
+                      widget.model.isLike;
+              int totalLikes = widget.model.totalLike;
+              if (postCardController.likedPosts.contains(widget.model)) {
+                PostModel post = postCardController.likedPosts
+                    .where((e) => e.id == widget.model.id)
+                    .first;
+                totalLikes = post.totalLike;
+              }
+
+              return Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _postActionIcon(
+                    icon: isLiked ? ThemeIcon.favFilled : ThemeIcon.fav,
+                    color: isLiked
+                        ? AppColorConstants.red
+                        : AppColorConstants.iconColor,
+                    onTap: () {
+                      postCardController.likeUnlikePost(post: widget.model);
+                    },
+                  ),
+                  if (totalLikes > 0)
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const SizedBox(width: 4),
+                        BodyLargeText(
+                          '$totalLikes',
+                          weight: TextWeight.bold,
+                        ).ripple(() {
+                          Get.to(() => LikedByUsers(
+                                postId: widget.model.id,
+                              ));
+                        }),
+                      ],
+                    )
+                ],
+              );
+            }),
+            _postActionIcon(
+              icon: ThemeIcon.chat,
+              color: AppColorConstants.rdSecondary,
+              onTap: openComments,
+            ),
+            _postActionIcon(
+              icon: ThemeIcon.repost,
+              color: widget.model.isReposted
+                  ? AppColorConstants.green
+                  : AppColorConstants.iconColor,
+              onTap: openRepostComposer,
+            ),
+            _postActionIcon(
+              icon: ThemeIcon.share,
+              color: const Color(0xFF5A67D8),
+              onTap: () {
+                showModalBottomSheet(
+                    backgroundColor: Colors.transparent,
+                    context: context,
+                    isScrollControlled: true,
+                    builder: (context) => FractionallySizedBox(
+                        heightFactor: 0.95, child: sharePost()));
+              },
+            ),
+            _postActionIcon(
+              icon: ThemeIcon.gift,
+              color: const Color(0xFFE59F00),
+              onTap:
+                  widget.model.isMyPost ? openReceivedGifts : openSendGiftSheet,
+            ),
+            if (widget.model.isMyPost)
+              _postActionIcon(
+                icon: ThemeIcon.insights,
+                color: AppColorConstants.themeColor,
+                onTap: () {
+                  Get.to(() => ViewPostInsights(post: widget.model));
+                },
+              ),
+          ],
+        ),
       ),
-      Obx(() {
-        int totalLikes = 0;
-        if (postCardController.likedPosts.contains(widget.model)) {
-          PostModel post = postCardController.likedPosts
-              .where((e) => e.id == widget.model.id)
-              .first;
-          totalLikes = post.totalLike;
-        } else {
-          totalLikes = widget.model.totalLike;
-        }
-        return totalLikes > 0
-            ? BodyLargeText(
-                '${widget.model.totalLike}',
-                weight: TextWeight.bold,
-              ).ripple(() {
-                Get.to(() => LikedByUsers(
-                      postId: widget.model.id,
-                    ));
-              })
-            : Container();
-      }),
-      const SizedBox(
-        width: 20,
-      ),
-      ThemeIconWidget(
-        ThemeIcon.chat,
-        color: AppColorConstants.iconColor,
-      ).ripple(() {
-        openComments();
-      }),
-      const SizedBox(
-        width: 20,
-      ),
-      ThemeIconWidget(
-        ThemeIcon.share,
-        color: AppColorConstants.iconColor,
-      ).ripple(() {
-        showModalBottomSheet(
-            backgroundColor: Colors.transparent,
-            context: context,
-            isScrollControlled: true,
-            builder: (context) => FractionallySizedBox(
-                heightFactor: 0.95, child: sharePost()));
-      }),
-      if (!widget.model.isMyPost)
-        const ThemeIconWidget(
-          ThemeIcon.gift,
-        ).hp(20).ripple(() {
-          showModalBottomSheet<void>(
-              context: context,
-              builder: (BuildContext context) {
-                return FractionallySizedBox(
-                    heightFactor: 0.8,
-                    child: GiftsPageView(giftSelectedCompletion: (gift) {
-                      Get.back();
-                      homeController.sendPostGift(
-                          gift, widget.model.user.id, widget.model.id);
-                      Get.back();
-                    }));
-              });
-        }),
-      const Spacer(),
+      const SizedBox(width: 12),
       if (widget.model.contentType == PostContentType.competitionAdded)
         Row(
           children: [
@@ -426,8 +425,7 @@ class PostCardState extends State<PostCard> {
               competitionId: widget.model.competition!.id,
               refreshPreviousScreen: () {}));
         }),
-      if (widget.model.contentType ==
-          PostContentType.competitionResultDeclared)
+      if (widget.model.contentType == PostContentType.competitionResultDeclared)
         Row(
           children: [
             const ThemeIconWidget(
@@ -460,60 +458,112 @@ class PostCardState extends State<PostCard> {
           ],
         ).ripple(() {
           ClubsController clubController = Get.find();
-          clubController.getClubDetail(widget.model.createdClub!.id!,
-              (club) {
+          clubController.getClubDetail(widget.model.createdClub!.id!, (club) {
             Get.to(() => ClubDetail(
                   club: club,
                   needRefreshCallback: () {},
                   deleteCallback: (club) {},
                 ));
           });
-        }),
-      const SizedBox(
-        width: 20,
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          SizedBox(
-            height: 20,
-            width: 20,
-            child: Obx(() => ThemeIconWidget(
-                  postCardController.savedPosts.contains(widget.model) ||
-                          widget.model.isSaved
-                      ? ThemeIcon.bookMarked
-                      : ThemeIcon.bookMark,
-                  color: widget.model.isSaved ||
-                          postCardController.savedPosts
-                              .contains(widget.model)
-                      ? AppColorConstants.themeColor
-                      : AppColorConstants.iconColor,
-                  // size: 25,
-                )),
-          ).ripple(() {
-            postCardController.saveUnSavePost(post: widget.model);
-          }),
-          if (widget.model.isMyPost)
-            BodyLargeText(
-              viewGiftString.tr,
-              // weight: TextWeight.regular,
-            ).lp(20).ripple(() {
-              showModalBottomSheet<void>(
-                  backgroundColor: Colors.transparent,
-                  context: context,
-                  builder: (context) {
-                    _postGiftController
-                        .fetchReceivedTimelineStickerGift(widget.model.id);
-                    return FractionallySizedBox(
-                        heightFactor: 1.5,
-                        child: ReceivedGiftsList(
-                          postId: widget.model.id,
-                        ));
-                  });
-            }),
-        ],
-      )
+        })
     ]);
+  }
+
+  Widget _postActionIcon({
+    required ThemeIcon icon,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    return SizedBox(
+      height: 36,
+      width: 36,
+      child: Center(
+        child: ThemeIconWidget(
+          icon,
+          color: color,
+          size: 22,
+        ),
+      ),
+    ).ripple(onTap);
+  }
+
+  void openSendGiftSheet() {
+    showModalBottomSheet<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return FractionallySizedBox(
+              heightFactor: 0.8,
+              child: GiftsPageView(giftSelectedCompletion: (gift) {
+                Get.back();
+                homeController.sendPostGift(
+                    gift, widget.model.user.id, widget.model.id);
+                Get.back();
+              }));
+        });
+  }
+
+  void openReceivedGifts() {
+    showModalBottomSheet<void>(
+        backgroundColor: Colors.transparent,
+        context: context,
+        builder: (context) {
+          _postGiftController.fetchReceivedTimelineStickerGift(widget.model.id);
+          return FractionallySizedBox(
+              heightFactor: 1.5,
+              child: ReceivedGiftsList(
+                postId: widget.model.id,
+              ));
+        });
+  }
+
+  void openRepostComposer() {
+    showModalBottomSheet(
+        backgroundColor: Colors.transparent,
+        context: context,
+        isScrollControlled: true,
+        builder: (context) => FractionallySizedBox(
+              heightFactor: 0.42,
+              child: Container(
+                color: AppColorConstants.cardColor,
+                child: ReSharePost(
+                  post: widget.model,
+                  repostCompleted: () {
+                    setState(() {
+                      widget.model.isReposted = true;
+                      widget.model.totalShare += 1;
+                    });
+                  },
+                ).p(DesignConstants.horizontalPadding),
+              ).topRounded(40),
+            ));
+  }
+
+  Widget resharedPostPreview(PostModel sharedPost) {
+    return Container(
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        PostUserInfo(
+          post: sharedPost,
+          removePostHandler: () {},
+          blockUserHandler: () {},
+          isResharedPost: true,
+        ),
+        if (sharedPost.postTitle.isNotEmpty)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 4),
+              RichTextPostTitle(model: sharedPost),
+              const SizedBox(height: 10),
+            ],
+          ),
+        PostMediaTile(
+          model: sharedPost,
+          isSharedPostMedia: true,
+        ),
+      ]).p(DesignConstants.horizontalPadding),
+    ).borderWithRadius(value: 1, radius: 10).ripple(() {
+      Get.to(() => SinglePostDetail(postId: sharedPost.id));
+    });
   }
 
   Widget sharePost() {
@@ -592,8 +642,7 @@ class PostCardState extends State<PostCard> {
                     BodySmallText(copyLinkString.tr)
                   ],
                 ).ripple(() async {
-                  AppUtil.showToast(
-                      message: copiedString.tr, isSuccess: true);
+                  AppUtil.showToast(message: copiedString.tr, isSuccess: true);
 
                   await Clipboard.setData(
                       ClipboardData(text: widget.model.shareLink));
@@ -617,8 +666,7 @@ class PostCardState extends State<PostCard> {
       final filter = ProfanityFilter();
       bool hasProfanity = filter.hasProfanity(commentInputField.text);
       if (hasProfanity) {
-        AppUtil.showToast(
-            message: notAllowedMessageString.tr, isSuccess: true);
+        AppUtil.showToast(message: notAllowedMessageString.tr, isSuccess: true);
         return;
       }
 
@@ -692,8 +740,7 @@ class PostCardState extends State<PostCard> {
             .where((element) => element.userName == userTag)
             .first
             .id;
-        Get.to(() => OtherUserProfile(userId: mentionedUserId))!
-            .then((value) {
+        Get.to(() => OtherUserProfile(userId: mentionedUserId))!.then((value) {
           _postController.getPosts(() {});
         });
       } else {

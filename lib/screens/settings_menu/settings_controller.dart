@@ -59,8 +59,7 @@ class SettingsController extends GetxController {
 
   Future<void> loadSettings() async {
     bool isDarkTheme = await SharedPrefs().isDarkMode();
-    bioMetricAuthStatus.value =
-        await SharedPrefs().getBioMetricAuthStatus();
+    bioMetricAuthStatus.value = await SharedPrefs().getBioMetricAuthStatus();
     shareLocation.value = _userProfileManager.user.value!.latitude != null;
     isPrivateAccount.value = _userProfileManager.user.value!.isPrivate;
     isShareOnlineStatus.value =
@@ -94,12 +93,12 @@ class SettingsController extends GetxController {
   Future<void> getSettings() async {
     await MiscApi.getSettings(resultCallback: (result) async {
       setting.value = result;
+      final latestVersion = setting.value?.latestVersion;
 
-      if (setting.value?.latestVersion! !=
-          AppConfigConstants.currentVersion) {
-        forceUpdate.value = true;
-        forceUpdate.value = false;
-      }
+      forceUpdate.value = AppConfigConstants.enforceForceUpdateGate &&
+          latestVersion != null &&
+          latestVersion.isNotEmpty &&
+          latestVersion != AppConfigConstants.currentVersion;
 
       update();
     });
@@ -144,8 +143,7 @@ class SettingsController extends GetxController {
   void deleteAccount() {
     AuthApi.deleteAccount(successCallback: () {
       _userProfileManager.logout();
-      AppUtil.showToast(
-          message: accountIsDeletedString.tr, isSuccess: true);
+      AppUtil.showToast(message: accountIsDeletedString.tr, isSuccess: true);
     });
   }
 

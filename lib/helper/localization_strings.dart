@@ -1,6 +1,9 @@
 String helpString = 'Help';
 String backString = 'Back';
 String aboutString = 'About';
+String bioString = 'Bio';
+String bioHintString = 'Tell people a little about yourself';
+String bioLimitHintString = 'Up to 160 characters';
 String okString = 'Ok';
 String submitString = 'Submit';
 String doneString = 'Done';
@@ -114,8 +117,7 @@ String helpToGetAccountString = "Let’s help you get back your account";
 String pleaseEnterOtpSentToYourPhoneString =
     "Please enter the one time password sent to your phone number to verify your phone number";
 
-String helpToChangePhoneNumberString =
-    "Let’s help you to change phone number";
+String helpToChangePhoneNumberString = "Let’s help you to change phone number";
 
 String didntReceivedCodeString = "If you didn’t receive code,";
 
@@ -200,8 +202,7 @@ String categoriesString = 'Categories';
 
 String notAllowedMessageString = 'Such kind of messages are not allowed';
 
-String errorMessageString =
-    'There is some problem, Please try again later';
+String errorMessageString = 'There is some problem, Please try again later';
 
 String cameraString = 'Camera';
 String photoString = 'Photo';
@@ -223,6 +224,9 @@ String gifString = 'Gif';
 String sentAGifString = 'Sent a Gif';
 
 String audioString = 'Audio';
+String voiceString = 'Voice';
+String audioCallString = 'Audio call';
+String videoCallString = 'Video call';
 String sentAnAudioString = 'Sent an Audio';
 
 String contactString = 'Contact';
@@ -525,6 +529,10 @@ String pleaseAuthenticateToRemoveBiometricString =
 
 String deletePostString = 'Delete Post';
 String editPostString = 'Edit Post';
+String archivePostString = 'Archive Post';
+String unarchivePostString = 'Unarchive Post';
+String archivedPostsString = 'Archived Posts';
+String editingLockedString = 'Editing locked';
 
 String postingString = 'Posting...';
 String postFailedString = 'Failed posting';
@@ -533,8 +541,7 @@ String retryString = 'Retry';
 String discardString = 'Discard';
 
 String pleaseEnterGroupNameString = 'Please enter group name';
-String pleaseSelectUsersString =
-    'Please select some users to create group';
+String pleaseSelectUsersString = 'Please select some users to create group';
 String groupNameString = 'Group name';
 
 String shareAppSubtitleString = 'Share the app with your friends';
@@ -558,7 +565,7 @@ String usingOlderVersionMessageString =
 
 String copyString = 'Copy';
 
-String strangerChatString = 'Stranger chat';
+String strangerChatString = 'Incognito chat';
 String haveFunByRandomChattingString =
     'Have fun by chatting with random peoples';
 String tvsString = 'Tvs';
@@ -602,8 +609,7 @@ String originalAudioString = 'Original audio';
 String useString = 'Use';
 String viewGiftString = 'View Gift';
 
-String anyoneCanSeeClubString =
-    'Anyone can see this club and join the club';
+String anyoneCanSeeClubString = 'Anyone can see this club and join the club';
 String onlyMembersCanSeeClubString =
     'Only requested member or joined member can see it';
 String communicationString = 'Communication';
@@ -662,14 +668,11 @@ String liveChatString = 'Live chat';
 String subscribeChannelToViewString = 'Subscribe channel to view';
 String subscribeUsingString = 'Subscribe using';
 
-String youAreSubscribedNowString =
-    'You are subscribed to this channel now';
+String youAreSubscribedNowString = 'You are subscribed to this channel now';
 String redeemString = 'Redeem';
-String minCoinsRedeemLimitString =
-    'Minimum {{coins}} coins required to redeem';
+String minCoinsRedeemLimitString = 'Minimum {{coins}} coins required to redeem';
 String minWithdrawLimitString = 'Minimum withdrawal limit is {{cash}}\$';
-String enterValidAmountOfCoinsString =
-    'Please enter valid amount of coins';
+String enterValidAmountOfCoinsString = 'Please enter valid amount of coins';
 String enterNumberOfCoinsString = 'Enter number of coins to redeem';
 
 String liveHistoryString = 'Live History';
@@ -678,6 +681,7 @@ String startedAtString = 'Started at';
 
 String requestVerificationString = 'Request Verification';
 String applyVerificationString = 'Apply Verification';
+String getVerifiedBadgeString = 'Get verified badge';
 String verifiedString = 'Verified';
 String youAreVerifiedNowString = 'Your profile is verified now';
 String profileIsVerifiedOnString = 'Verified on ';
@@ -703,11 +707,9 @@ String passportString = 'Passport';
 String panCardString = 'Pan card';
 String otherString = 'Other';
 String messageToReviewerString = 'Message to reviewer';
-String uploadFrontAndBackString =
-    'Upload both front and back side of document';
+String uploadFrontAndBackString = 'Upload both front and back side of document';
 
-String youCanUploadMaximumTwoImagesString =
-    'You can upload maximum 2 images';
+String youCanUploadMaximumTwoImagesString = 'You can upload maximum 2 images';
 
 String paymentAndCoinsString = 'Payment and coins';
 String changeLanguageString = 'Change Language';
@@ -789,6 +791,7 @@ String ratingsString = 'Ratings';
 
 String noViewString = 'No view';
 String savedPostsString = 'Saved Posts';
+String postBookmarkedString = 'Post bookmarked successfully';
 String videosString = 'Videos';
 String noVideoFoundString = 'No video found';
 
@@ -815,8 +818,7 @@ String congratsYourVerificationIsApprovedString =
     'Congratulations, Your verification request has been approved.';
 
 String followRequestsString = 'Follow requests';
-String acceptFollowRequestsString =
-    'Accept reject the pending Follow requests';
+String acceptFollowRequestsString = 'Accept reject the pending Follow requests';
 String deletedString = 'Deleted';
 String postedString = 'Posted';
 
@@ -839,8 +841,7 @@ String removeFromModeratorString = 'Remove from moderator';
 String banForOneHourString = "Ban for 60 minute";
 String permanentBanString = "Permanent ban";
 
-String notAllowedToJoinLiveString =
-    'You are not allowed to join this live';
+String notAllowedToJoinLiveString = 'You are not allowed to join this live';
 
 String isModeratorNowString = 'is a moderator now';
 String isRemovedFromModeratorString = 'is removed from moderators';
@@ -882,9 +883,6 @@ String searchSomeUserToAddAsCollaborator =
     'Search some user to add as collaborator';
 String max5CollaboratorsInPostString =
     'Maximum 5 collaborators can be added in a post';
-String invitedYouToCollaborateString =
-    "Invited you to collaborate on post";
+String invitedYouToCollaborateString = "Invited you to collaborate on post";
 
 String withdrawCollaborationString = 'Withdraw collaboration';
-
-

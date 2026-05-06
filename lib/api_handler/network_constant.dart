@@ -29,8 +29,7 @@ class NetworkConstantsUtil {
       'users/profile?expand=totalFollowing,totalFollower,totalActivePost,userLiveDetail,giftSummary,userSetting,interest,language,featureList';
   static String updateUserProfile = 'users/profile-update';
   static String updateProfileImage = 'users/update-profile-image';
-  static String updateProfileCoverImage =
-      'users/update-profile-cover-image';
+  static String updateProfileCoverImage = 'users/update-profile-cover-image';
   static String updatePassword = 'users/update-password';
   static String updatePhone = 'users/update-mobile';
   static String updateLocation = 'users/update-location';
@@ -77,8 +76,7 @@ class NetworkConstantsUtil {
 
   static String getSettings = 'settings?expand=featureList';
   static String updateAccountPrivacy = 'users/profile-visibility';
-  static String updateOnlineStatusSetting =
-      'users/show-chat-online-status';
+  static String updateOnlineStatusSetting = 'users/show-chat-online-status';
 
   static String followRequests =
       'followers/my-received-following-request?expand=followerUserDetail,followerUserDetail.isFollowing,followerUserDetail.isFollower';
@@ -121,7 +119,7 @@ class NetworkConstantsUtil {
       'posts/view-by-unique-id?expand=isPin,audio,collaborate.collaboratorDetail,contentReferenceDetail.categoryDetails,contentReferenceDetail.pollOptions,user.isFollowing,user.userLiveDetail,clubDetail.createdByUser,clubDetail.totalJoinedUser,originPost.user,isFavorite,originPost,pollDetails,pollDetails.pollOptions,giftSummary&unique_id=';
 
   static String mentionedPosts =
-      'posts/my-post-mention-user?expand=user,isPin&user_id=';
+      'posts/my-post-mention-user?expand=isPin,user,user.userLiveDetail,isFavorite,pollDetails,pollDetails.pollOptions&user_id=';
 
   static String likePost = 'posts/like';
   static String unlikePost = 'posts/unlike';
@@ -139,6 +137,8 @@ class NetworkConstantsUtil {
 
   static String reportPost = 'posts/report-post';
   static String deletePost = 'posts/{{id}}';
+  static String archivePost = 'posts/archive';
+  static String unarchivePost = 'posts/unarchive';
   static String postInsight = 'posts/insight?post_id=';
 
   static String addCollaborate = 'collaborates';
@@ -173,20 +173,18 @@ class NetworkConstantsUtil {
       'chats/call-history?expand=callerDetail,receiverDetail,receiverDetail.userLiveDetail';
   static String chatHistory =
       'chats/chat-message?expand=chatMessageUser,user&room_id={{room_id}}&last_message_id={{last_message_id}}';
-  static String callDetail = 'chats/call-detail?call_id={{call_id}}&expand=callerDetail,receiverDetail,callerDetail.userLiveDetail,receiverDetail.userLiveDetail';
+  static String callDetail =
+      'chats/call-detail?call_id={{call_id}}&expand=callerDetail,receiverDetail,callerDetail.userLiveDetail,receiverDetail.userLiveDetail';
 
   //***********live TVs***********//
   static String getTVCategories =
       'categories/live-tv?expand=liveTv,liveTv.currentViewer';
-  static String getTVShows =
-      'live-tvs/tv-shows?expand=tvShowEpisode,rating';
-  static String getTVShowById =
-      'tv-shows/tv-show-details?expand=tvShowEpisode';
+  static String getTVShows = 'live-tvs/tv-shows?expand=tvShowEpisode,rating';
+  static String getTVShowById = 'tv-shows/tv-show-details?expand=tvShowEpisode';
   static String getTVShowEpisodes = 'tv-shows/tv-show-episodes?';
   static String tvBanners = 'tv-banners';
   static String liveTvs = 'live-tvs?expand=currentViewer';
-  static String getTVChannel =
-      'live-tvs/tv-channel-details?id={{channel_id}}';
+  static String getTVChannel = 'live-tvs/tv-channel-details?id={{channel_id}}';
 
   static String favTv = 'live-tvs/add-favorite';
   static String unfavTv = 'live-tvs/remove-favorite';
@@ -219,8 +217,7 @@ class NetworkConstantsUtil {
 
   //*********** Relations ***********//
   static String relationshipNames = 'relations';
-  static String myRelations =
-      'relations/my-relation?expand=user,realationShip';
+  static String myRelations = 'relations/my-relation?expand=user,realationShip';
   static String myInvitations =
       'relations/my-invitation?expand=relationShip, createdBy';
   static String postInviteUnInvite = 'relations/invite';
@@ -288,8 +285,7 @@ class NetworkConstantsUtil {
   //***********random live and chat***********//
   // static String randomLives =
   //     'chats/live-streaming-user?name=&profile_category_type=&is_following=';
-  static String randomOnlineUser =
-      'chats/online-user?profile_category_type=';
+  static String randomOnlineUser = 'chats/online-user?profile_category_type=';
   static String liveUsers = 'chats/live-streaming-user';
   static String liveDetailById =
       'user-live-histories/{{live_id}}?expand=giftSummary,userdetails,totalJoinedUsers';
@@ -352,8 +348,7 @@ class NetworkConstantsUtil {
   static String ratingList =
       'ratings?type={{type}}&reference_id={{reference_id}}&expand=user';
   static String notificationInformation = 'notifications/information';
-  static String markNotificationAsRead =
-      'notifications/update-read-status';
+  static String markNotificationAsRead = 'notifications/update-read-status';
   //*********** Subscription ***********//
   static String getSubscriptionPlans = "subscriptions/subscription-plan";
   static String setSubscriptionPlanCost = "subscriptions/add-plan";

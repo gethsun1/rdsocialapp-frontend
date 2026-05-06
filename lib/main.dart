@@ -11,10 +11,11 @@ import 'package:foap/helper/imports/common_import.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:foap/controllers/live/live_users_controller.dart';
 import 'package:foap/helper/imports/reel_imports.dart';
-import 'package:foap/screens/login_sign_up/ask_to_follow.dart';
+import 'package:foap/screens/dashboard/loading.dart';
 import 'package:foap/screens/post/content_creator_view.dart';
 import 'package:foap/screens/settings_menu/help_support_contorller.dart';
 import 'package:foap/screens/settings_menu/mercadopago_payment_controller.dart';
+import 'package:foap/theme/theme.dart';
 import 'package:foap/util/constant_util.dart';
 
 import 'components/giphy/src/l10n/l10n.dart';
@@ -232,7 +233,7 @@ Future<void> main() async {
 
   runApp(Phoenix(
       child: const RDApp(
-    startScreen: AskToFollow(),
+    startScreen: LoadingScreen(),
   )));
 
   unawaited(_finishStartupAfterFirstFrame());
@@ -272,9 +273,9 @@ class _RDAppState extends State<RDApp> {
                   // navigatorKey: navigationKey,
                   home: widget.startScreen,
                   builder: EasyLoading.init(),
-                  // theme: AppTheme.lightTheme,
-                  // darkTheme: AppTheme.darkTheme,
-                  themeMode: ThemeMode.dark,
+                  theme: AppTheme.lightTheme,
+                  darkTheme: AppTheme.darkTheme,
+                  themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
                   // localizationsDelegates: context.localizationDelegates,
                   localizationsDelegates: [
                     GlobalMaterialLocalizations.delegate,
@@ -318,7 +319,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     );
   }
 
-  print('message.data ${message.data}');
+  debugPrint('message.data ${message.data}');
   try {
     Get.put(DashboardController());
     Get.put(UserProfileManager());

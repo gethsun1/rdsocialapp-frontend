@@ -48,26 +48,31 @@ class UserProfileManager extends GetxController {
   }
 
   Future refreshProfile() async {
+    String? authKey = await SharedPrefs().getAuthorizationKey();
+
+    final bool hasBackendAuthKey =
+        authKey != null && !authKey.startsWith('firebase_');
+    final bool shouldLoadBackendProfile = hasBackendAuthKey &&
+        (!AppConfigConstants.useFirebaseAuthForEmailPassword ||
+            AppConfigConstants.requireBackendSessionAfterFirebaseAuth);
+
+    if (shouldLoadBackendProfile) {
+      await ProfileApi.getMyProfile(resultCallback: (result) {
+        user.value = result;
+        if (user.value != null) {
+          setupSocketServiceLocator1();
+        }
+        return;
+      });
+      return;
+    }
+
     if (AppConfigConstants.useFirebaseAuthForEmailPassword) {
       final firebaseUser = FirebaseAuth.instance.currentUser;
       if (firebaseUser != null) {
         user.value = _buildUserFromFirebase(firebaseUser);
       }
       return;
-    }
-
-    String? authKey = await SharedPrefs().getAuthorizationKey();
-
-    if (authKey != null) {
-      await ProfileApi.getMyProfile(resultCallback: (result) {
-        user.value = result;
-
-        print('user.value ${user.value!.isShareOnlineStatus}');
-        if (user.value != null) {
-          setupSocketServiceLocator1();
-        }
-        return;
-      });
     } else {
       return;
       // print('no auth token found');

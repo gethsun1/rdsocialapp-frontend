@@ -25,14 +25,17 @@ class EnterGroupInfoController extends GetxController {
       {required String name,
       required String? description,
       required String image,
-        required bool isPublicGroup,
-
-        required List<UserModel> users}) {
+      required bool isPublicGroup,
+      required List<UserModel> users}) {
     EasyLoading.show(
         status: loadingString.tr, maskType: EasyLoadingMaskType.black);
 
     if (image.isEmpty) {
-      publishGroup(name: name,isPublicGroup:isPublicGroup, description: description, users: users);
+      publishGroup(
+          name: name,
+          isPublicGroup: isPublicGroup,
+          description: description,
+          users: users);
     } else {
       // EasyLoading.show(status: loadingString.tr);
       MiscApi.uploadFile(image,
@@ -41,7 +44,7 @@ class EnterGroupInfoController extends GetxController {
         publishGroup(
             name: name,
             image: filename,
-            isPublicGroup:isPublicGroup,
+            isPublicGroup: isPublicGroup,
             description: description,
             users: users);
       });
@@ -86,16 +89,18 @@ class EnterGroupInfoController extends GetxController {
   void publishGroup(
       {required String name,
       required String? description,
-        required bool isPublicGroup,
-
-        String? image,
+      required bool isPublicGroup,
+      String? image,
       required List<UserModel> users}) {
     ChatApi.createGroupChatRoom(
         image: image,
         description: description,
-        isPublicGroup:isPublicGroup,
+        isPublicGroup: isPublicGroup,
         title: name,
-        resultCallback: (roomId) {
+        resultCallback: (roomId) async {
+          await ChatApi.updateGroupChatRoom(
+              roomId, name, image, description, '2');
+
           String allUsersIds = users.map((e) => e.id.toString()).join(',');
           allUsersIds =
               '${_userProfileManager.user.value!.id.toString()},$allUsersIds';

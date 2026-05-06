@@ -26,6 +26,8 @@ class PostModel {
 
   bool isReported = false;
   bool isSharePost = false;
+  bool isReposted = false;
+  bool isArchived = false;
 
   List<PostGallery> gallery = [];
   List<String> tags = [];
@@ -49,30 +51,92 @@ class PostModel {
 
   PostModel();
 
+  static int _readInt(dynamic value, {int fallback = 0}) {
+    if (value == null) return fallback;
+    if (value is int) return value;
+    if (value is double) return value.toInt();
+    return int.tryParse(value.toString()) ?? fallback;
+  }
+
+  static bool _readBool(dynamic value, {bool fallback = false}) {
+    if (value == null) return fallback;
+    if (value is bool) return value;
+    if (value is num) return value != 0;
+
+    final normalized = value.toString().trim().toLowerCase();
+    if (normalized == 'true' || normalized == '1') return true;
+    if (normalized == 'false' || normalized == '0') return false;
+    return fallback;
+  }
+
+  static DateTime? _readCreatedAt(dynamic value) {
+    if (value == null) return null;
+
+    if (value is num) {
+      final timestamp = value.toInt();
+      final milliseconds =
+          timestamp > 1000000000000 ? timestamp : timestamp * 1000;
+      return DateTime.fromMillisecondsSinceEpoch(milliseconds).toUtc();
+    }
+
+    final text = value.toString().trim();
+    final numeric = num.tryParse(text);
+    if (numeric != null) {
+      return _readCreatedAt(numeric);
+    }
+
+    return DateTime.tryParse(text)?.toUtc();
+  }
+
   factory PostModel.fromJson(dynamic json) {
     PostModel model = PostModel();
-    model.id = json['id'];
-    model.title = json['title'] ?? 'No title';
-    model.type = json['type'];
+    if (json is! Map) {
+      return model;
+    }
 
-    model.user =
-        json['user'] == null ? UserModel() : UserModel.fromJson(json['user']);
+    model.id = _readInt(json['id']);
+    model.title = json['title'] ?? json['content'] ?? 'No title';
+    model.type = _readInt(json['type'], fallback: 1);
+
+    final userJson = json['user'] ??
+        json['createdByUser'] ??
+        json['userDetail'] ??
+        json['created_by_user'];
+    model.user = userJson == null ? UserModel() : UserModel.fromJson(userJson);
     model.competitionId = json['competition_id'];
-    model.totalView = json['total_view'] ?? 0;
-    model.totalLike = json['total_like'] ?? 0;
-    model.totalComment = json['total_comment'] ?? 0;
-    model.totalShare = json['total_share'] ?? 0;
-    model.isWinning = json['is_winning'] ?? 0;
+    model.totalView = _readInt(json['total_view'] ?? json['totalView']);
+    model.totalLike = _readInt(json['total_like'] ?? json['totalLike']);
+    model.totalComment =
+        _readInt(json['total_comment'] ?? json['totalComment']);
+    model.totalShare = _readInt(json['total_share'] ?? json['totalShare']);
+    model.isWinning = _readInt(json['is_winning'] ?? json['isWinning']);
 
-    model.isLike = json['is_like'] == 1;
-    model.isReported = json['is_reported'] == 1;
-    model.isSharePost = json['is_share_post'] == 1;
-    model.isSaved = json['isFavorite'] == 1;
-    model.commentsEnabled = json['is_comment_enable'] == 1;
-    model.shareLink = json['share_link'] ?? '';
-    model.contentType = json['post_content_type'] == null
+    model.isLike = _readBool(json['is_like'] ?? json['isLike']);
+    model.isReported = _readBool(json['is_reported'] ?? json['isReported']);
+    model.isSharePost = _readBool(json['is_share_post'] ?? json['isSharePost']);
+    model.isArchived = _readBool(json['is_archive'] ??
+        json['isArchive'] ??
+        json['is_archived'] ??
+        json['isArchived'] ??
+        json['archived']);
+    model.isReposted = _readBool(json['is_reposted'] ??
+        json['isReposted'] ??
+        json['is_reshared'] ??
+        json['isReshared'] ??
+        json['has_reposted'] ??
+        json['hasReposted'] ??
+        json['has_reshared'] ??
+        json['hasReshared']);
+    model.isSaved = _readBool(json['isFavorite'] ?? json['is_favorite']);
+    model.commentsEnabled = _readBool(
+        json['is_comment_enable'] ?? json['isCommentEnable'],
+        fallback: true);
+    model.shareLink = json['share_link'] ?? json['shareLink'] ?? '';
+    final postContentType =
+        json['post_content_type'] ?? json['postContentType'];
+    model.contentType = postContentType == null
         ? PostContentType.text
-        : postContentTypeValueFrom(json['post_content_type']);
+        : postContentTypeValueFrom(_readInt(postContentType));
 
     if (model.contentType == PostContentType.competitionAdded ||
         model.contentType == PostContentType.competitionResultDeclared) {
@@ -88,9 +152,13 @@ class PostModel {
       model.tags = List<String>.from(json['hashtags'].map((x) => '#$x'));
     }
 
-    if (json['postGallary'] != null && json['postGallary'].length > 0) {
+    final galleryJson = json['postGallary'] ??
+        json['postGallery'] ??
+        json['gallery'] ??
+        json['gallary'];
+    if (galleryJson is List && galleryJson.isNotEmpty) {
       model.gallery = List<PostGallery>.from(
-          json['postGallary'].map((x) => PostGallery.fromJson(x)));
+          galleryJson.map((x) => PostGallery.fromJson(x)));
     }
 
     if (json['mentionUsers'] != null && json['mentionUsers'].length > 0) {
@@ -101,10 +169,9 @@ class PostModel {
       model.collaborations = List<CollaborationModel>.from(
           json['collaborate'].map((x) => CollaborationModel.fromJson(x)));
     }
-    model.createDate = json['created_at'] == null
-        ? null
-        : DateTime.fromMillisecondsSinceEpoch(json['created_at'] * 1000)
-            .toUtc();
+    model.createDate = _readCreatedAt(json['created_at']) ??
+        _readCreatedAt(json['created_at_str']) ??
+        DateTime.now().toUtc();
 
     model.postTime = model.createDate != null
         ? model.createDate!.getTimeAgo
@@ -114,11 +181,29 @@ class PostModel {
     model.postedInClub = json['clubDetail'] == null
         ? null
         : ClubModel.fromJson(json['clubDetail']);
-    model.sharedPost = json['originPost'] == null
-        ? null
-        : PostModel.fromJson(json['originPost']);
-    model.pinId = json['isPin'] == null ? null : json['isPin']['id'];
-    model.isPinned = json['isPin'] != null;
+    final originPostJson = json['originPost'] ??
+        json['origin_post'] ??
+        json['originalPost'] ??
+        json['original_post'] ??
+        json['sharedPost'] ??
+        json['shared_post'] ??
+        (model.type == postTypeValueFrom(PostType.reshare)
+            ? json['contentReferenceDetail']
+            : null);
+    model.sharedPost =
+        originPostJson == null ? null : PostModel.fromJson(originPostJson);
+    final pinJson = json['isPin'] ?? json['is_pin'] ?? json['pin'];
+    if (pinJson is Map) {
+      model.pinId = _readInt(pinJson['id'], fallback: 0);
+      if (model.pinId == 0) {
+        model.pinId = null;
+      }
+      model.isPinned = true;
+    } else {
+      model.pinId = null;
+      model.isPinned =
+          _readBool(json['isPinned'] ?? json['is_pinned'] ?? json['pinned']);
+    }
     return model;
   }
 
@@ -132,22 +217,31 @@ class PostModel {
     return user.id == userProfileManager.user.value!.id;
   }
 
+  bool get isEditable {
+    if (!isMyPost || createDate == null) {
+      return false;
+    }
+
+    final minutesSincePosting =
+        DateTime.now().toUtc().difference(createDate!).inMinutes;
+    return minutesSincePosting < 60;
+  }
+
   bool get isReel {
     return type == 4;
   }
 
-
   bool get amICollaborator {
     return collaborations
-        .where((e) =>
-    e.user!.isMe && e.status == CollaborationStatusType.accepted)
+        .where(
+            (e) => e.user!.isMe && e.status == CollaborationStatusType.accepted)
         .isNotEmpty;
   }
 
   bool get isPendingCollaborationRequest {
     return collaborations
-        .where((e) =>
-    e.user!.isMe && e.status == CollaborationStatusType.pending)
+        .where(
+            (e) => e.user!.isMe && e.status == CollaborationStatusType.pending)
         .isNotEmpty;
   }
 
@@ -178,7 +272,6 @@ class PostModel {
         collaborations.where((e) => e.id == collaboration.id).first;
     matchedCollaboration.status = CollaborationStatusType.cancelled;
   }
-
 
   String get postTitle {
     if (contentType == PostContentType.text ||

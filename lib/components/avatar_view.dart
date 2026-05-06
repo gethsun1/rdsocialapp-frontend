@@ -76,7 +76,7 @@ class UserAvatarView extends StatelessWidget {
   Widget build(BuildContext context) {
     final UserProfileManager userProfileManager = Get.find();
 
-    return SizedBox(
+    final avatar = SizedBox(
       height: size ?? 60,
       width: size ?? 60,
       child: Stack(
@@ -84,11 +84,7 @@ class UserAvatarView extends StatelessWidget {
           user.liveCallDetail != null && hideLiveIndicator == false
               ? liveUserWidget(
             size: size ?? 60,
-          ).ripple(() {
-            if (onTapHandler != null) {
-              onTapHandler!();
-            }
-          })
+          )
               : userPictureView(
             size: size ?? 60,
           ),
@@ -118,6 +114,8 @@ class UserAvatarView extends StatelessWidget {
         ],
       ),
     );
+
+    return onTapHandler == null ? avatar : avatar.ripple(onTapHandler!);
   }
 
   Widget userPictureView({

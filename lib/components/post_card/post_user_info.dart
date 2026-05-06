@@ -1,7 +1,6 @@
 import 'package:foap/controllers/clubs/clubs_controller.dart';
 import 'package:foap/helper/imports/common_import.dart';
 import 'package:foap/helper/imports/models.dart';
-import '../../controllers/misc/misc_controller.dart';
 import '../../controllers/post/add_post_controller.dart';
 import '../../model/collaboration_model.dart';
 import '../../screens/club/club_detail.dart';
@@ -78,7 +77,6 @@ class _PostUserInfoState extends State<PostUserInfo> {
                   )
               ],
             ),
-
           ],
         )),
         if (!widget.isResharedPost)
@@ -96,12 +94,28 @@ class _PostUserInfoState extends State<PostUserInfo> {
                         size: 25,
                       ),
                     ).ripple(() {
-                      setState(() {
-                        widget.post.isPinned = false;
-                        MiscController controller = Get.find();
-                        controller.removeFromPin(
-                            PinContentType.post, widget.post.id);
-                      });
+                      _togglePin();
+                    }),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                  ],
+                ),
+              if (widget.post.isMyPost)
+                Row(
+                  children: [
+                    SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: ThemeIconWidget(
+                        ThemeIcon.archive,
+                        color: widget.post.isArchived
+                            ? AppColorConstants.themeColor
+                            : AppColorConstants.iconColor,
+                        size: 25,
+                      ),
+                    ).ripple(() {
+                      _toggleArchive();
                     }),
                     const SizedBox(
                       width: 20,
@@ -112,8 +126,7 @@ class _PostUserInfoState extends State<PostUserInfo> {
                 height: 20,
                 width: 20,
                 child: Obx(() => ThemeIconWidget(
-                      postCardController.savedPosts
-                                  .contains(widget.post) ||
+                      postCardController.savedPosts.contains(widget.post) ||
                               widget.post.isSaved
                           ? ThemeIcon.bookMarked
                           : ThemeIcon.bookMark,
@@ -162,9 +175,7 @@ class _PostUserInfoState extends State<PostUserInfo> {
 
     clubsController.getClubDetail(widget.post.postedInClub!.id!, (club) {
       Get.to(() => ClubDetail(
-          club: club,
-          needRefreshCallback: () {},
-          deleteCallback: (club) {}));
+          club: club, needRefreshCallback: () {}, deleteCallback: (club) {}));
     });
   }
 
@@ -175,9 +186,7 @@ class _PostUserInfoState extends State<PostUserInfo> {
           user.userName,
           weight: TextWeight.medium,
         ).ripple(() {
-          if (user.role != UserRole.admin) {
-            openProfile(user);
-          }
+          openProfile(user);
         }),
         if (user.isVerified) verifiedUserTag().rP8,
       ],
@@ -284,16 +293,26 @@ class _PostUserInfoState extends State<PostUserInfo> {
       child: widget.post.user.isMe
           ? Wrap(
               children: [
-                ListTile(
-                    title: Center(
-                        child: Heading6Text(
-                      editPostString.tr,
-                      weight: TextWeight.semiBold,
-                    )),
-                    onTap: () async {
-                      Get.back();
-                      Get.to(() => EditPostScreen(post: widget.post));
-                    }),
+                widget.post.isEditable
+                    ? ListTile(
+                        title: Center(
+                            child: Heading6Text(
+                          editPostString.tr,
+                          weight: TextWeight.semiBold,
+                        )),
+                        onTap: () async {
+                          Get.back();
+                          Get.to(() => EditPostScreen(post: widget.post));
+                        })
+                    : ListTile(
+                        title: Center(
+                            child: Heading6Text(
+                          editingLockedString.tr,
+                          weight: TextWeight.semiBold,
+                          color: AppColorConstants.disabledColor,
+                        )),
+                        onTap: null,
+                      ),
                 divider(),
                 ListTile(
                     title: Center(
@@ -313,26 +332,25 @@ class _PostUserInfoState extends State<PostUserInfo> {
                 ListTile(
                     title: Center(
                         child: Heading6Text(
+                      widget.post.isArchived
+                          ? unarchivePostString.tr
+                          : archivePostString.tr,
+                      weight: TextWeight.semiBold,
+                    )),
+                    onTap: () async {
+                      Get.back();
+                      await _toggleArchive();
+                    }),
+                divider(),
+                ListTile(
+                    title: Center(
+                        child: Heading6Text(
                       widget.post.isPinned ? unPinString.tr : pinString.tr,
                       weight: TextWeight.semiBold,
                     )),
                     onTap: () async {
                       Get.back();
-                      MiscController miscController = Get.find();
-
-                      setState(() {
-                        if (widget.post.isPinned) {
-                          miscController.removeFromPin(
-                              PinContentType.post, widget.post.pinId!);
-                          widget.post.isPinned = false;
-                        } else {
-                          miscController.addToPin(
-                              PinContentType.post, widget.post.id, (id) {
-                            widget.post.pinId = id;
-                          });
-                          widget.post.isPinned = true;
-                        }
-                      });
+                      _togglePin();
                     }),
                 divider(),
                 ListTile(
@@ -435,6 +453,25 @@ class _PostUserInfoState extends State<PostUserInfo> {
             ),
     ).topRounded(40));
   }
+
+  Future<void> _togglePin() async {
+    final success = await postCardController.pinUnpinPost(post: widget.post);
+    if (success && mounted) {
+      setState(() {});
+    }
+  }
+
+  Future<void> _toggleArchive() async {
+    await postCardController.archiveUnarchivePost(
+      post: widget.post,
+      callback: () {
+        widget.removePostHandler();
+      },
+    );
+    if (mounted) {
+      setState(() {});
+    }
+  }
 }
 
 class CollaboratorsListModal extends StatefulWidget {
@@ -450,8 +487,7 @@ class CollaboratorsListModal extends StatefulWidget {
   });
 
   @override
-  State<CollaboratorsListModal> createState() =>
-      _CollaboratorsListModalState();
+  State<CollaboratorsListModal> createState() => _CollaboratorsListModalState();
 }
 
 class _CollaboratorsListModalState extends State<CollaboratorsListModal> {
@@ -487,8 +523,8 @@ class _CollaboratorsListModalState extends State<CollaboratorsListModal> {
                         profile: collaborator.user!,
                         viewCallback: () {
                           Get.back();
-                          Get.to(() => OtherUserProfile(
-                              userId: collaborator.user!.id));
+                          Get.to(() =>
+                              OtherUserProfile(userId: collaborator.user!.id));
                         },
                       ).vP8;
               }).toList(),

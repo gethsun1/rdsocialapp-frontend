@@ -51,12 +51,13 @@ class MiscController extends GetxController {
     }
   }
 
-  void addToPin(PinContentType type, int refId, Function(int) successHandler) {
-    MiscApi.pinContent(
+  Future<int?> addToPin(
+      PinContentType type, int refId, Function(int) successHandler) {
+    return MiscApi.pinContent(
         type: type, refId: refId, successHandler: successHandler);
   }
 
-  void removeFromPin(PinContentType type, int refId) {
-    MiscApi.removePinContent(type: type, refId: refId);
+  Future<bool> removeFromPin(PinContentType type, int refId) {
+    return MiscApi.removePinContent(type: type, refId: refId);
   }
 }

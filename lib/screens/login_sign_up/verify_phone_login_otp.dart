@@ -4,8 +4,13 @@ import '../../controllers/auth/login_controller.dart';
 
 class VerifyRegistrationOTP extends StatefulWidget {
   final String token;
+  final bool isFromSignup;
 
-  const VerifyRegistrationOTP({super.key, required this.token});
+  const VerifyRegistrationOTP({
+    super.key,
+    required this.token,
+    this.isFromSignup = false,
+  });
 
   @override
   VerifyRegistrationOTPState createState() => VerifyRegistrationOTPState();
@@ -53,7 +58,8 @@ class VerifyRegistrationOTPState extends State<VerifyRegistrationOTP> {
                 highlightColor: Colors.blue,
                 defaultBorderColor: Colors.transparent,
                 hasTextBorderColor: Colors.transparent,
-                pinBoxColor: AppColorConstants.themeColor.withOpacity(0.5),
+                pinBoxColor:
+                    AppColorConstants.themeColor.withValues(alpha: 0.5),
                 highlightPinBoxColor: AppColorConstants.themeColor,
                 // highlightPinBoxColor: Colors.orange,
                 maxLength: loginController.pinLength,
@@ -85,7 +91,9 @@ class VerifyRegistrationOTPState extends State<VerifyRegistrationOTP> {
                   BodyLargeText(
                     didntReceivedCodeString.tr,
                   ),
-                  const SizedBox(width: 5,),
+                  const SizedBox(
+                    width: 5,
+                  ),
                   BodyLargeText(
                     resendOTPString.tr,
                     weight: TextWeight.bold,
@@ -94,8 +102,7 @@ class VerifyRegistrationOTPState extends State<VerifyRegistrationOTP> {
                         : AppColorConstants.themeColor,
                   ).ripple(() {
                     if (loginController.canResendOTP.value == true) {
-                      loginController.resendOTP(
-                          token: widget.token);
+                      loginController.resendOTP(token: widget.token);
                     }
                   }),
                   loginController.canResendOTP.value == false
@@ -134,10 +141,19 @@ class VerifyRegistrationOTPState extends State<VerifyRegistrationOTP> {
   AppThemeButton addSubmitBtn() {
     return AppThemeButton(
       onPress: () {
-        loginController.callVerifyOTPForPhoneLogin(
-          otp: controller.text,
-          token: widget.token,
-        );
+        if (widget.isFromSignup) {
+          loginController.callVerifyOTP(
+            isVerifyingEmail: true,
+            isVerifyingPhone: false,
+            otp: controller.text,
+            token: widget.token,
+          );
+        } else {
+          loginController.callVerifyOTPForPhoneLogin(
+            otp: controller.text,
+            token: widget.token,
+          );
+        }
       },
       text: verifyString.tr,
     );

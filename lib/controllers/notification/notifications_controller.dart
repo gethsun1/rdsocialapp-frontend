@@ -28,8 +28,7 @@ class NotificationController extends GetxController {
   void filterNotifications() {
     if (selectedNotificationsTypes.isNotEmpty) {
       filteredNotifications = allNotification
-          .where((element) =>
-          selectedNotificationsTypes.contains(element.type))
+          .where((element) => selectedNotificationsTypes.contains(element.type))
           .toList();
     } else {
       filteredNotifications = allNotification;
@@ -55,6 +54,7 @@ class NotificationController extends GetxController {
   void getNotifications() {
     MiscApi.getNotifications(resultCallback: (result, metadata) {
       allNotification = result;
+      _syncUnreadCountFromLoadedNotifications();
       filterNotifications();
     });
   }
@@ -65,20 +65,47 @@ class NotificationController extends GetxController {
     });
   }
 
-  void markNotificationAsRead(int id) {
-    MiscApi.markNotificationAsRead(
-        id: id,
-        resultCallback: () {
-          getNotificationInfo();
+  Future<void> markNotificationAsRead(int id) async {
+    final matched =
+        allNotification.where((notification) => notification.id == id).toList();
+    if (matched.isEmpty || matched.first.readStatus) return;
 
-          for (var element in allNotification) {
-            if (element.id == id) {
-              element.readStatus = true;
-            }
-          }
+    final notification = matched.first;
+    notification.readStatus = true;
+    _syncUnreadCountFromLoadedNotifications();
+    filterNotifications();
 
-          filterNotifications();
-        });
+    final success = await MiscApi.markNotificationAsRead(id: id);
+    if (success) {
+      getNotificationInfo();
+    } else {
+      debugPrint(
+          '[NotificationController] Failed to mark notification $id read');
+    }
+  }
+
+  void markAllLoadedNotificationsAsRead() {
+    final unreadIds = allNotification
+        .where((notification) => !notification.readStatus)
+        .map((notification) => notification.id)
+        .toList();
+    if (unreadIds.isEmpty) return;
+
+    for (final notification in allNotification) {
+      notification.readStatus = true;
+    }
+    _syncUnreadCountFromLoadedNotifications();
+    filterNotifications();
+
+    for (final id in unreadIds) {
+      MiscApi.markNotificationAsRead(id: id);
+    }
+  }
+
+  void _syncUnreadCountFromLoadedNotifications() {
+    unreadNotificationCount.value = allNotification
+        .where((notification) => !notification.readStatus)
+        .length;
   }
 
   void selectNotificationType(SMNotificationType type) {

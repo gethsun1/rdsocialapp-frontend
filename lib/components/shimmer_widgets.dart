@@ -248,11 +248,11 @@ class PostCardShimmer extends StatelessWidget {
               .addShimmer(),
           const SizedBox(width: 5),
           Expanded(
-              child: BodyLargeText(
-            'Adam',
-            weight: TextWeight.bold,
-            color: AppColorConstants.themeColor,
-          ).addShimmer()),
+              child: Container(
+            height: 14,
+            width: 120,
+            color: AppColorConstants.cardColor,
+          ).round(4).addShimmer()),
         ],
       ),
       const SizedBox(
@@ -261,9 +261,8 @@ class PostCardShimmer extends StatelessWidget {
       SizedBox(
         height: 280,
         width: double.infinity,
-        child: Image.asset(
-          'assets/tutorial1.jpg',
-          fit: BoxFit.cover,
+        child: Container(
+          color: AppColorConstants.cardColor,
         ).addShimmer(),
       ).round(20),
       Row(mainAxisAlignment: MainAxisAlignment.start, children: [
@@ -293,12 +292,19 @@ class PostCardShimmer extends StatelessWidget {
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const BodyLargeText(
-              'Lorem ipsum dolor sit amet. Et ipsa libero est dolor facilis qui distinctio neque. Sed dolorum accusamus qui tempora doloremque et suscipit quidem et voluptate'),
+          Container(
+            height: 12,
+            width: double.infinity,
+            color: AppColorConstants.cardColor,
+          ).round(4),
           const SizedBox(
-            height: 10,
+            height: 8,
           ),
-          BodyMediumText('10 min ago', weight: TextWeight.medium),
+          Container(
+            height: 12,
+            width: 220,
+            color: AppColorConstants.cardColor,
+          ).round(4),
         ],
       ).addShimmer()
     ]);
@@ -361,13 +367,16 @@ class ShimmerUsers extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Heading5Text(
-                      'Adam',
-                      weight: TextWeight.medium,
-                    ).bP4,
-                    const BodyLargeText(
-                      'Canada',
-                    )
+                    Container(
+                      height: 12,
+                      width: 100,
+                      color: AppColorConstants.cardColor,
+                    ).round(4).bP4,
+                    Container(
+                      height: 12,
+                      width: 70,
+                      color: AppColorConstants.cardColor,
+                    ).round(4)
                   ],
                 ).lP16.addShimmer(),
               ],

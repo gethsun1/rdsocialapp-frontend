@@ -1,4 +1,4 @@
-class Hindi{
+class Hindi {
   static var data = {
     "Help": "मदद",
     "Back": "पीछे",
@@ -56,15 +56,19 @@ class Hindi{
     "No...": "नहीं...",
     "Yes...": "हाँ...",
     "Next": "अगला",
-    "Please grant the required permission from settings to access this feature.": "कृपया इस सुविधा तक पहुंचने के लिए सेटिंग्स से आवश्यक अनुमति प्रदान करें।",
+    "Please grant the required permission from settings to access this feature.":
+        "कृपया इस सुविधा तक पहुंचने के लिए सेटिंग्स से आवश्यक अनुमति प्रदान करें।",
     "No data found": "डाटा प्राप्त नहीं हुआ",
     "Watch Ads": "विज्ञापन देखें",
-    "By watching Ads, you get to earn coins_value Coin per advert you watch. Click the button to start earning! ": "विज्ञापन देखकर, आप प्रति विज्ञापन देखने पर coin_value कॉइन अर्जित कर सकते हैं।  ",
+    "By watching Ads, you get to earn coins_value Coin per advert you watch. Click the button to start earning! ":
+        "विज्ञापन देखकर, आप प्रति विज्ञापन देखने पर coin_value कॉइन अर्जित कर सकते हैं।  ",
     "No product is available": "कोई उत्पाद उपलब्ध नहीं है",
-    "Some error occurred while performing purchase, please try again later.": "खरीदारी करते समय कुछ त्रुटि हुई, कृपया बाद में पुनः प्रयास करें।",
+    "Some error occurred while performing purchase, please try again later.":
+        "खरीदारी करते समय कुछ त्रुटि हुई, कृपया बाद में पुनः प्रयास करें।",
     "Store is not available.": "स्टोर उपलब्ध नहीं है.",
     "Cancelled by user": "उपयोगकर्ता द्वारा रद्द किया गया",
-    "By signing up, you are acknowledging that you have read, understood and accept our": "साइन अप करके, आप स्वीकार कर रहे हैं कि आपने हमारा पढ़ा, समझा और स्वीकार किया है",
+    "By signing up, you are acknowledging that you have read, understood and accept our":
+        "साइन अप करके, आप स्वीकार कर रहे हैं कि आपने हमारा पढ़ा, समझा और स्वीकार किया है",
     "Terms of Service": "सेवा की शर्तें",
     "Welcome": "स्वागत",
     "Profile": "प्रोफ़ाइल",
@@ -83,12 +87,17 @@ class Hindi{
     "Email or username": "ईमेल या उपयोगकर्ता का नाम",
     "Login another account": "दूसरा खाता लॉगिन करें",
     "Forgot Password?": "पासवर्ड भूल गए?",
-    "Your password has been changed successfully": "तुम्हारा पासवर्ड सफलतापूर्वक बदल दिया गया है",
+    "Your password has been changed successfully":
+        "तुम्हारा पासवर्ड सफलतापूर्वक बदल दिया गया है",
     "Resend OTP": "ओटीपी दोबारा भेजें",
-    "Please enter the one time password sent to your email to verify your account and change your password": "कृपया अपने खाते को सत्यापित करने और अपना पासवर्ड बदलने के लिए अपने ईमेल पर भेजा गया वन टाइम पासवर्ड दर्ज करें",
-    "Let’s help you get back your account": "आइए आपका खाता वापस पाने में आपकी सहायता करें",
-    "Please enter the one time password sent to your phone number to verify your phone number": "कृपया अपना फ़ोन नंबर सत्यापित करने के लिए अपने फ़ोन नंबर पर भेजा गया वन टाइम पासवर्ड दर्ज करें",
-    "Let’s help you to change phone number": "आइए फ़ोन नंबर बदलने में आपकी सहायता करें",
+    "Please enter the one time password sent to your email to verify your account and change your password":
+        "कृपया अपने खाते को सत्यापित करने और अपना पासवर्ड बदलने के लिए अपने ईमेल पर भेजा गया वन टाइम पासवर्ड दर्ज करें",
+    "Let’s help you get back your account":
+        "आइए आपका खाता वापस पाने में आपकी सहायता करें",
+    "Please enter the one time password sent to your phone number to verify your phone number":
+        "कृपया अपना फ़ोन नंबर सत्यापित करने के लिए अपने फ़ोन नंबर पर भेजा गया वन टाइम पासवर्ड दर्ज करें",
+    "Let’s help you to change phone number":
+        "आइए फ़ोन नंबर बदलने में आपकी सहायता करें",
     "If you didn’t receive code,": "यदि आपको कोड प्राप्त नहीं हुआ,",
     "Send": "भेजना",
     "Sent": "भेजा",
@@ -132,8 +141,10 @@ class Hindi{
     "Enter old password": "पुराना पासवर्ड डालें",
     "Please enter you password": "कृपया अपना पासवर्ड दर्ज करें",
     "Your password is too short": "आपका पासवर्ड बहुत छोटा है",
-    "Your password is acceptable but not strong": "आपका पासवर्ड स्वीकार्य है लेकिन मजबूत नहीं है",
-    "Your password must contain letter and number": "आपके पासवर्ड में अक्षर और संख्या अवश्य होनी चाहिए",
+    "Your password is acceptable but not strong":
+        "आपका पासवर्ड स्वीकार्य है लेकिन मजबूत नहीं है",
+    "Your password must contain letter and number":
+        "आपके पासवर्ड में अक्षर और संख्या अवश्य होनी चाहिए",
     "Your password is great": "आपका पासवर्ड बढ़िया है",
     "Joined users": "उपयोगकर्ताओं से जुड़े",
     "OR": "या",
@@ -142,9 +153,12 @@ class Hindi{
     "New Password": "नया पासवर्ड",
     "Confirm Password": "पासवर्ड की पुष्टि कीजिये",
     "Categories": "श्रेणियाँ",
-    "Such kind of messages are not allowed": "इस तरह के संदेशों की अनुमति नहीं है",
-    "There is some problem, Please try again later": "कुछ समस्या है, कृपया बाद में पुनः प्रयास करें",
-    "Sorry, but the content you're attempting to upload is not permitted according to our policies.": "क्षमा करें, लेकिन आप जिस सामग्री को अपलोड करने का प्रयास कर रहे हैं उसकी हमारी नीतियों के अनुसार अनुमति नहीं है।",
+    "Such kind of messages are not allowed":
+        "इस तरह के संदेशों की अनुमति नहीं है",
+    "There is some problem, Please try again later":
+        "कुछ समस्या है, कृपया बाद में पुनः प्रयास करें",
+    "Sorry, but the content you're attempting to upload is not permitted according to our policies.":
+        "क्षमा करें, लेकिन आप जिस सामग्री को अपलोड करने का प्रयास कर रहे हैं उसकी हमारी नीतियों के अनुसार अनुमति नहीं है।",
     "Camera": "कैमरा",
     "Photo": "तस्वीर",
     "Sent a Photo": "एक फोटो भेजा",
@@ -201,7 +215,8 @@ class Hindi{
     "Join": "जोड़ना",
     "Fee": "शुल्क",
     "User name is updated": "उपयोगकर्ता नाम अद्यतन किया गया है",
-    "User profile category type is updated": "उपयोगकर्ता प्रोफ़ाइल श्रेणी प्रकार अद्यतन किया गया है",
+    "User profile category type is updated":
+        "उपयोगकर्ता प्रोफ़ाइल श्रेणी प्रकार अद्यतन किया गया है",
     "Phone number": "फ़ोन नंबर",
     "Change Phone number": "फ़ोन नंबर बदलें",
     "Update": "अद्यतन",
@@ -219,7 +234,8 @@ class Hindi{
     "Post is reported successfully": "पोस्ट सफलतापूर्वक रिपोर्ट की गई है",
     "Reel is reported successfully": "रील सफलतापूर्वक रिपोर्ट की गई है",
     "Story is posted successfully": "कहानी सफलतापूर्वक पोस्ट की गई है",
-    "User is blocked successfully": "उपयोगकर्ता को सफलतापूर्वक ब्लॉक कर दिया गया है",
+    "User is blocked successfully":
+        "उपयोगकर्ता को सफलतापूर्वक ब्लॉक कर दिया गया है",
     "Report": "प्रतिवेदन",
     "Block": "अवरोध पैदा करना",
     "Unblock": "अनब्लॉक",
@@ -306,12 +322,15 @@ class Hindi{
     "Invite user": "उपयोगकर्ता को आमंत्रित करें",
     "Invite friends": "मित्रों को आमंत्रित करें",
     "See All": "सभी देखें",
-    "Already invited {{user_name}} in live and waiting for confirmation": "पहले से ही आमंत्रित {{user_name}} लाइव में और पुष्टि की प्रतीक्षा में",
+    "Already invited {{user_name}} in live and waiting for confirmation":
+        "पहले से ही आमंत्रित {{user_name}} लाइव में और पुष्टि की प्रतीक्षा में",
     "Waiting to accept": "स्वीकार करने की प्रतीक्षा कर रहा हूँ",
     "Invitation declined": "निमंत्रण अस्वीकार कर दिया गया",
-    "Your invitation for battle is declined by {{user_name}}": "युद्ध के लिए आपका निमंत्रण अस्वीकार कर दिया गया है {{user_name}}",
+    "Your invitation for battle is declined by {{user_name}}":
+        "युद्ध के लिए आपका निमंत्रण अस्वीकार कर दिया गया है {{user_name}}",
     "No response": "कोई जबाव नहीं",
-    "No response from {{user_name}} on live battle request": "की ओर से कोई प्रतिक्रिया नहीं {{user_name}} लाइव बैटल अनुरोध पर",
+    "No response from {{user_name}} on live battle request":
+        "की ओर से कोई प्रतिक्रिया नहीं {{user_name}} लाइव बैटल अनुरोध पर",
     "Clubs": "क्लब",
     "Top Clubs": "शीर्ष क्लब",
     "Create club": "क्लब बनाएं",
@@ -324,7 +343,8 @@ class Hindi{
     "Edit club info": "क्लब की जानकारी संपादित करें",
     "Edit club image": "क्लब छवि संपादित करें",
     "Delete club": "क्लब हटाएँ",
-    "Are you sure to delete the club?": "क्या आप निश्चित रूप से क्लब को हटाना चाहते हैं?",
+    "Are you sure to delete the club?":
+        "क्या आप निश्चित रूप से क्लब को हटाना चाहते हैं?",
     "Club is deleted successfully": "क्लब सफलतापूर्वक हटा दिया गया है",
     "Participants": "प्रतिभागियों",
     "Add Participants": "प्रतिभागियों को जोड़ें",
@@ -336,17 +356,23 @@ class Hindi{
     "Send Messages": "संदेश भेजें",
     "All Participants": "सभी प्रतिभागी",
     "Only Admins": "केवल व्यवस्थापक",
-    "Follow some user to start chat": "चैट शुरू करने के लिए किसी उपयोगकर्ता का अनुसरण करें",
+    "Follow some user to start chat":
+        "चैट शुरू करने के लिए किसी उपयोगकर्ता का अनुसरण करें",
     "No chat found": "कोई चैट नहीं मिली",
-    "Make some audio/video call with friends": "दोस्तों के साथ कुछ ऑडियो/वीडियो कॉल करें",
+    "Make some audio/video call with friends":
+        "दोस्तों के साथ कुछ ऑडियो/वीडियो कॉल करें",
     "No call found": "कोई कॉल नहीं मिली",
     "No Story found": "कोई कहानी नहीं मिली",
-    "Post some stories to create highlights": "हाइलाइट बनाने के लिए कुछ कहानियाँ पोस्ट करें",
+    "Post some stories to create highlights":
+        "हाइलाइट बनाने के लिए कुछ कहानियाँ पोस्ट करें",
     "No Notification found": "कोई अधिसूचना नहीं मिली",
     "Delete account": "खाता हटा दो",
-    "Are you sure to delete account, Once account is deleted your all data will be deleted": "क्या आप निश्चित रूप से खाता हटाना चाहते हैं, एक बार खाता हटा दिए जाने पर आपका सारा डेटा हटा दिया जाएगा",
-    "Please allow access to camera and microphone to start video call": "कृपया वीडियो कॉल शुरू करने के लिए कैमरे और माइक्रोफ़ोन तक पहुंच की अनुमति दें",
-    "Please allow access to microphone to start audio call": "कृपया ऑडियो कॉल शुरू करने के लिए माइक्रोफ़ोन तक पहुंच की अनुमति दें",
+    "Are you sure to delete account, Once account is deleted your all data will be deleted":
+        "क्या आप निश्चित रूप से खाता हटाना चाहते हैं, एक बार खाता हटा दिए जाने पर आपका सारा डेटा हटा दिया जाएगा",
+    "Please allow access to camera and microphone to start video call":
+        "कृपया वीडियो कॉल शुरू करने के लिए कैमरे और माइक्रोफ़ोन तक पहुंच की अनुमति दें",
+    "Please allow access to microphone to start audio call":
+        "कृपया ऑडियो कॉल शुरू करने के लिए माइक्रोफ़ोन तक पहुंच की अनुमति दें",
     "Star": "तारा",
     "UnStar": "अतारांकित",
     "Starred messages": "तारांकित संदेश",
@@ -366,9 +392,12 @@ class Hindi{
     "Unlock app with Touch ID": "टच आईडी से ऐप अनलॉक करें",
     "Use Face ID": "फेस आईडी का प्रयोग करें",
     "Use Touch ID": "टच आईडी का प्रयोग करें",
-    "Unlock you app with touch id / face id": "टच आईडी/फेस आईडी से अपने ऐप को अनलॉक करें",
-    "Please authenticate to use biometric login into app": "कृपया ऐप में बायोमेट्रिक लॉगिन का उपयोग करने के लिए प्रमाणित करें",
-    "Please authenticate to remove biometric login into app": "कृपया ऐप में बायोमेट्रिक लॉगिन हटाने के लिए प्रमाणित करें",
+    "Unlock you app with touch id / face id":
+        "टच आईडी/फेस आईडी से अपने ऐप को अनलॉक करें",
+    "Please authenticate to use biometric login into app":
+        "कृपया ऐप में बायोमेट्रिक लॉगिन का उपयोग करने के लिए प्रमाणित करें",
+    "Please authenticate to remove biometric login into app":
+        "कृपया ऐप में बायोमेट्रिक लॉगिन हटाने के लिए प्रमाणित करें",
     "Edit Post": "संपादित पोस्ट",
     "Delete Post": "पोस्ट को हटाएं",
     "Posting...": "पोस्ट किया जा रहा है...",
@@ -376,7 +405,8 @@ class Hindi{
     "Retry": "पुन: प्रयास करें",
     "Discard": "खारिज करना",
     "Please enter group name": "कृपया समूह का नाम दर्ज करें",
-    "Please select some users to create group": "कृपया समूह बनाने के लिए कुछ उपयोगकर्ताओं का चयन करें",
+    "Please select some users to create group":
+        "कृपया समूह बनाने के लिए कुछ उपयोगकर्ताओं का चयन करें",
     "Group name": "समूह नाम",
     "Admin": "व्यवस्थापक",
     "You are Admin": "आप एडमिन हैं",
@@ -389,16 +419,19 @@ class Hindi{
     "left the group": "समूह छोड़ दिया",
     "is now admin": "अब व्यवस्थापक है",
     "Time to update app": "ऐप अपडेट करने का समय",
-    "You are using older version of app, You need to update the app to continue": "आप ऐप के पुराने संस्करण का उपयोग कर रहे हैं, जारी रखने के लिए आपको ऐप को अपडेट करना होगा",
+    "You are using older version of app, You need to update the app to continue":
+        "आप ऐप के पुराने संस्करण का उपयोग कर रहे हैं, जारी रखने के लिए आपको ऐप को अपडेट करना होगा",
     "Copy": "प्रतिलिपि",
-    "Stranger chat": "अजनबी चैट",
-    "Have fun by chatting with random peoples": "यादृच्छिक लोगों के साथ चैट करके आनंद लें",
+    "Incognito chat": "इनकॉग्निटो चैट",
+    "Have fun by chatting with random peoples":
+        "यादृच्छिक लोगों के साथ चैट करके आनंद लें",
     "Tvs": "टीवीएस",
     "Checking connection..": "कनेक्शन की जाँच की जा रही है..",
     "Going live": "लाइव होना",
     "Go": "जाना",
     "Do you want to end live call?": "क्या आप लाइव कॉल समाप्त करना चाहते हैं?",
-    "Do you want to end live battle?": "क्या आप लाइव लड़ाई ख़त्म करना चाहते हैं?",
+    "Do you want to end live battle?":
+        "क्या आप लाइव लड़ाई ख़त्म करना चाहते हैं?",
     "Choose battle time": "युद्ध का समय चुनें",
     "Users": "उपयोगकर्ताओं",
     "Network": "नेटवर्क",
@@ -411,8 +444,10 @@ class Hindi{
     "Gift is sent successfully": "उपहार सफलतापूर्वक भेज दिया गया है",
     "Gifts received": "उपहार प्राप्त हुए",
     "Gifts sent": "उपहार भेजे गए",
-    "Join competitions and earn money": "प्रतियोगिताओं में शामिल हों और पैसे कमाएँ",
-    "A place for people of common interest": "सामान्य रुचि के लोगों के लिए एक स्थान",
+    "Join competitions and earn money":
+        "प्रतियोगिताओं में शामिल हों और पैसे कमाएँ",
+    "A place for people of common interest":
+        "सामान्य रुचि के लोगों के लिए एक स्थान",
     "Live Users": "लाइव उपयोगकर्ता",
     "Reel": "रील",
     "Reels": "उत्तर",
@@ -420,15 +455,19 @@ class Hindi{
     "Original audio": "मूल ऑडियो",
     "Use": "उपयोग",
     "View Gift": "उपहार देखें",
-    "Anyone can see this club and join the club": "इस क्लब को कोई भी देख सकता है और क्लब में शामिल हो सकता है",
-    "Only requested member or joined member can see it": "केवल अनुरोधित सदस्य या शामिल सदस्य ही इसे देख सकते हैं",
+    "Anyone can see this club and join the club":
+        "इस क्लब को कोई भी देख सकता है और क्लब में शामिल हो सकता है",
+    "Only requested member or joined member can see it":
+        "केवल अनुरोधित सदस्य या शामिल सदस्य ही इसे देख सकते हैं",
     "Communication": "संचार",
     "Chat group": "चैट समूह",
-    "Create chat group for discussion with club users": "क्लब उपयोगकर्ताओं के साथ चर्चा के लिए चैट समूह बनाएं",
+    "Create chat group for discussion with club users":
+        "क्लब उपयोगकर्ताओं के साथ चर्चा के लिए चैट समूह बनाएं",
     "Basic info": "बुनियादी जानकारी",
     "Club name": "क्लब का नाम",
     "Add Cover Photo": "कवर फ़ोटो जोड़ें",
-    "Give people an idea of what your group is about with a photo": "एक फोटो से लोगों को यह अंदाज़ा दें कि आपका समूह किस बारे में है",
+    "Give people an idea of what your group is about with a photo":
+        "एक फोटो से लोगों को यह अंदाज़ा दें कि आपका समूह किस बारे में है",
     "Cover photo": "कवर फोटो",
     "Leave club": "क्लब छोड़ो",
     "Remove": "निकालना",
@@ -436,13 +475,15 @@ class Hindi{
     "Please enter club description": "कृपया क्लब विवरण दर्ज करें",
     "Please select club image": "कृपया क्लब छवि चुनें",
     "On request": "अनुरोध पर",
-    "Interested users can request to join, admin can approve the request": "इच्छुक उपयोगकर्ता शामिल होने का अनुरोध कर सकते हैं, व्यवस्थापक अनुरोध को मंजूरी दे सकता है",
+    "Interested users can request to join, admin can approve the request":
+        "इच्छुक उपयोगकर्ता शामिल होने का अनुरोध कर सकते हैं, व्यवस्थापक अनुरोध को मंजूरी दे सकता है",
     "Watch Ads to earn coins": "सिक्के कमाने के लिए विज्ञापन देखें",
     "You need": "आप की जरूरत है",
     "To join this competition": "इस प्रतियोगिता में शामिल होने के लिए",
     "Files": "फ़ाइलें",
     "File": "फ़ाइल",
-    "Finding a perfect user to chat": "चैट करने के लिए एक आदर्श उपयोगकर्ता ढूँढना",
+    "Finding a perfect user to chat":
+        "चैट करने के लिए एक आदर्श उपयोगकर्ता ढूँढना",
     "Allow": "अनुमति दें",
     "Share location": "स्थान साझा करें",
     "More from": "से अधिक",
@@ -452,9 +493,11 @@ class Hindi{
     "Live chat": "सीधी बातचीत",
     "Subscribe channel to view": "देखने के लिए चैनल को सब्सक्राइब करें",
     "Subscribe using": "का उपयोग करके सदस्यता लें",
-    "You are subscribed to this channel now": "अब आपने इस चैनल की सदस्यता ले ली है",
+    "You are subscribed to this channel now":
+        "अब आपने इस चैनल की सदस्यता ले ली है",
     "Redeem": "भुनाना",
-    "Minimum withdrawal limit is {{cash}}\$": "न्यूनतम निकासी सीमा है {{cash}}\$",
+    "Minimum withdrawal limit is {{cash}}\$":
+        "न्यूनतम निकासी सीमा है {{cash}}\$",
     "Posted": "की तैनाती",
     "Live History": "सजीव इतिहास",
     "Started at": "इस समय पर शुरू किया",
@@ -465,12 +508,14 @@ class Hindi{
     "Verified on": "पर सत्यापित",
     "Request sent on": "अनुरोध भेजा गया",
     "We are reviewing your profile": "हम आपकी प्रोफ़ाइल की समीक्षा कर रहे हैं",
-    "Verified accounts have blue checkmark next to their names to show that we have confirmed you are a real person": "सत्यापित खातों में उनके नाम के आगे नीला चेकमार्क होता है जो दर्शाता है कि हमने पुष्टि कर दी है कि आप एक वास्तविक व्यक्ति हैं",
+    "Verified accounts have blue checkmark next to their names to show that we have confirmed you are a real person":
+        "सत्यापित खातों में उनके नाम के आगे नीला चेकमार्क होता है जो दर्शाता है कि हमने पुष्टि कर दी है कि आप एक वास्तविक व्यक्ति हैं",
     "Document type": "दस्तावेज़ प्रकार",
     "Upload document": "दस्तावेज़ अपलोड करें",
     "Please select a document type": "कृपया एक दस्तावेज़ प्रकार चुनें",
     "Please upload identity proof": "कृपया पहचान प्रमाण अपलोड करें",
-    "Profile verification request is sent, you will be updated soon": "प्रोफ़ाइल सत्यापन अनुरोध भेजा गया है, आपको जल्द ही अपडेट किया जाएगा",
+    "Profile verification request is sent, you will be updated soon":
+        "प्रोफ़ाइल सत्यापन अनुरोध भेजा गया है, आपको जल्द ही अपडेट किया जाएगा",
     "Status": "स्थिति",
     "In processing": "प्रक्रिया में है",
     "Cancelled": "रद्द कर दिया गया",
@@ -480,7 +525,8 @@ class Hindi{
     "Pan card": "पैन कार्ड",
     "Other": "अन्य",
     "Message to reviewer": "समीक्षक को संदेश",
-    "Upload both front and back side of document": "दस्तावेज़ के आगे और पीछे दोनों तरफ अपलोड करें",
+    "Upload both front and back side of document":
+        "दस्तावेज़ के आगे और पीछे दोनों तरफ अपलोड करें",
     "You can upload maximum 2 images": "आप अधिकतम 2 छवियाँ अपलोड कर सकते हैं",
     "Payment and coins": "भुगतान और सिक्के",
     "Change Language": "भाषा बदलें",
@@ -541,8 +587,10 @@ class Hindi{
     "Save E-Ticket": "ई-टिकट सहेजें",
     "Ticket Saved": "टिकट सहेजा गया",
     "Confirmed": "की पुष्टि",
-    "Placing order, please wait...": "ऑर्डर दे दिया गया है, कृपया प्रतीक्षा करें...",
-    "Do not close or refresh the app until the process is completed": "प्रक्रिया पूरी होने तक ऐप को बंद या रीफ्रेश न करें",
+    "Placing order, please wait...":
+        "ऑर्डर दे दिया गया है, कृपया प्रतीक्षा करें...",
+    "Do not close or refresh the app until the process is completed":
+        "प्रक्रिया पूरी होने तक ऐप को बंद या रीफ्रेश न करें",
     "Book more": "और बुक करें",
     "Your transaction is completed": "आपका लेनदेन पूरा हो गया है",
     "Error in booking..": "बुकिंग में त्रुटि..",
@@ -557,7 +605,8 @@ class Hindi{
     "Upcoming": "आगामी",
     "Free": "मुक्त",
     "Public group": "सार्वजनिक समूह",
-    "Anyone can view this group and can join this group, You can remove any member in future": "इस ग्रुप को कोई भी देख सकता है और इस ग्रुप में शामिल हो सकता है, आप भविष्य में किसी भी सदस्य को हटा सकते हैं",
+    "Anyone can view this group and can join this group, You can remove any member in future":
+        "इस ग्रुप को कोई भी देख सकता है और इस ग्रुप में शामिल हो सकता है, आप भविष्य में किसी भी सदस्य को हटा सकते हैं",
     "Join requests": "अनुरोधों में शामिल हों",
     "Join invitations": "निमंत्रण में शामिल हों",
     "Invites": "आमंत्रण",
@@ -584,42 +633,55 @@ class Hindi{
     "Month": "महीना",
     "Year": "वर्ष",
     "No dating profiles found": "कोई डेटिंग प्रोफ़ाइल नहीं मिली",
-    "Change your preferences and explore more": "अपनी प्राथमिकताएँ बदलें और और अधिक खोजें",
+    "Change your preferences and explore more":
+        "अपनी प्राथमिकताएँ बदलें और और अधिक खोजें",
     "No matching profiles found": "कोई मेल खाती प्रोफ़ाइल नहीं मिली",
-    "Explore more dating profiles and get matched": "अधिक डेटिंग प्रोफ़ाइल खोजें और मिलान करें",
+    "Explore more dating profiles and get matched":
+        "अधिक डेटिंग प्रोफ़ाइल खोजें और मिलान करें",
     "No profiles found": "कोई प्रोफ़ाइल नहीं मिली",
     "Explore more dating profiles": "अधिक डेटिंग प्रोफ़ाइल खोजें",
     "Set location": "स्थान निर्धारित करें",
     "Set your location services": "अपनी स्थान सेवाएँ सेट करें",
-    "We use your location to show you potential matches in your area": "हम आपके क्षेत्र में संभावित मिलान दिखाने के लिए आपके स्थान का उपयोग करते हैं",
+    "We use your location to show you potential matches in your area":
+        "हम आपके क्षेत्र में संभावित मिलान दिखाने के लिए आपके स्थान का उपयोग करते हैं",
     "Allow notifications": "सूचनाओं की अनुमति दें",
-    "We'll let you know when you get new matches and messages": "जब आपको नए मैच और संदेश मिलेंगे तो हम आपको बताएंगे",
+    "We'll let you know when you get new matches and messages":
+        "जब आपको नए मैच और संदेश मिलेंगे तो हम आपको बताएंगे",
     "Not now": "अभी नहीं",
     "Add name": "नाम जोड़ें",
     "What's your first name?": "आपका प्रथम नाम क्या है?",
     "Add photos": "तस्वीरें जोडो",
-    "Profile with more good photos are getting more matches, so add your best photos": "अधिक अच्छी फ़ोटो वाली प्रोफ़ाइल को अधिक मिलान मिल रहे हैं, इसलिए अपनी सर्वश्रेष्ठ फ़ोटो जोड़ें",
+    "Profile with more good photos are getting more matches, so add your best photos":
+        "अधिक अच्छी फ़ोटो वाली प्रोफ़ाइल को अधिक मिलान मिल रहे हैं, इसलिए अपनी सर्वश्रेष्ठ फ़ोटो जोड़ें",
     "When's your birthday?": "आपका जन्मदिन कब है?",
-    "Be accurate to specify this to get genuine matches": "वास्तविक मिलान प्राप्त करने के लिए इसे निर्दिष्ट करने में सटीक रहें",
+    "Be accurate to specify this to get genuine matches":
+        "वास्तविक मिलान प्राप्त करने के लिए इसे निर्दिष्ट करने में सटीक रहें",
     "Mention your gender": "अपने लिंग का उल्लेख करें",
     "Who would you like to date?": "आप किसे डेट करना चाहेंगे?",
-    "You can choose more than one answer and change any time": "आप एक से अधिक उत्तर चुन सकते हैं और किसी भी समय बदल सकते हैं",
-    "We need to know more about you.": "हमें आपके बारे में और जानने की जरूरत है.",
+    "You can choose more than one answer and change any time":
+        "आप एक से अधिक उत्तर चुन सकते हैं और किसी भी समय बदल सकते हैं",
+    "We need to know more about you.":
+        "हमें आपके बारे में और जानने की जरूरत है.",
     "Add Interests.": "रुचियाँ जोड़ें.",
     "Add your interests and habits": "अपनी रुचियाँ और आदतें जोड़ें",
     "Add Professional Details.": "व्यावसायिक विवरण जोड़ें.",
     "Enable Dating": "डेटिंग सक्षम करें",
-    "You need to enable dating profile and have to provide your profile information to start dating peoples": "लोगों के साथ डेटिंग शुरू करने के लिए आपको डेटिंग प्रोफ़ाइल सक्षम करनी होगी और अपनी प्रोफ़ाइल जानकारी प्रदान करनी होगी",
+    "You need to enable dating profile and have to provide your profile information to start dating peoples":
+        "लोगों के साथ डेटिंग शुरू करने के लिए आपको डेटिंग प्रोफ़ाइल सक्षम करनी होगी और अपनी प्रोफ़ाइल जानकारी प्रदान करनी होगी",
     "Follow friends to send post.": "पोस्ट भेजने के लिए दोस्तों को फॉलो करें।",
     "Choose profile category type": "प्रोफ़ाइल श्रेणी प्रकार चुनें",
-    "Category will help people find accounts like yours. You can change this": "श्रेणी लोगों को आपके जैसे खाते ढूंढने में सहायता करेगी. ",
-    "We will search user in your specified category": "हम आपकी निर्दिष्ट श्रेणी में उपयोगकर्ता को खोजेंगे",
+    "Category will help people find accounts like yours. You can change this":
+        "श्रेणी लोगों को आपके जैसे खाते ढूंढने में सहायता करेगी. ",
+    "We will search user in your specified category":
+        "हम आपकी निर्दिष्ट श्रेणी में उपयोगकर्ता को खोजेंगे",
     "Favourite": "पसंदीदा",
     "Subscribed": "सदस्यता लिया",
     "Install this cool app from": "इस शानदार ऐप को यहां से इंस्टॉल करें",
     "Account is deleted successfully": "खाता सफलतापूर्वक हटा दिया गया है",
-    "Are you sure to report this post?": "क्या आप निश्चित रूप से इस पोस्ट की रिपोर्ट करेंगे?",
-    "Are you sure to block this user?": "क्या आप निश्चित रूप से इस उपयोगकर्ता को ब्लॉक करना चाहते हैं?",
+    "Are you sure to report this post?":
+        "क्या आप निश्चित रूप से इस पोस्ट की रिपोर्ट करेंगे?",
+    "Are you sure to block this user?":
+        "क्या आप निश्चित रूप से इस उपयोगकर्ता को ब्लॉक करना चाहते हैं?",
     "Male": "पुरुष",
     "Female": "महिला",
     "Not specified": "निर्दिष्ट नहीं है",
@@ -633,8 +695,10 @@ class Hindi{
     "Select": "चुनना",
     "Dislike": "नापसंद",
     "Do you smoke?": "क्या आप धूम्रपान करते हैं?",
-    "Are you sure, you want to leave group?": "क्या आप वाकई समूह छोड़ना चाहते हैं?",
-    "Are you sure, you want to delete group?": "क्या आप वाकई समूह को हटाना चाहते हैं?",
+    "Are you sure, you want to leave group?":
+        "क्या आप वाकई समूह छोड़ना चाहते हैं?",
+    "Are you sure, you want to delete group?":
+        "क्या आप वाकई समूह को हटाना चाहते हैं?",
     "Today": "आज",
     "This week": "इस सप्ताह",
     "This month": "इस महीने",
@@ -684,7 +748,8 @@ class Hindi{
     "Boost Post": "पोस्ट को बढ़ावा दें",
     "Goal": "लक्ष्य",
     "Select a goal": "एक लक्ष्य चुनें",
-    "What results would you like from this ad?": "आप इस विज्ञापन से क्या परिणाम चाहेंगे?",
+    "What results would you like from this ad?":
+        "आप इस विज्ञापन से क्या परिणाम चाहेंगे?",
     "More profile visits": "अधिक प्रोफ़ाइल विज़िट",
     "More website visits": "अधिक वेबसाइट विज़िट",
     "More messages": "अधिक संदेश",
@@ -696,9 +761,11 @@ class Hindi{
     "Audience": "श्रोता",
     "Define your audience": "अपने दर्शकों को परिभाषित करें",
     "Automatic": "स्वचालित",
-    "Targets people similar to your followers": "आपके अनुयायियों के समान लोगों को लक्षित करता है",
+    "Targets people similar to your followers":
+        "आपके अनुयायियों के समान लोगों को लक्षित करता है",
     "Create your own": "अपना स्वयं का बनाएं",
-    "Manually enter your targeting options": "अपने लक्ष्यीकरण विकल्प मैन्युअल रूप से दर्ज करें",
+    "Manually enter your targeting options":
+        "अपने लक्ष्यीकरण विकल्प मैन्युअल रूप से दर्ज करें",
     "Create audience": "दर्शक बनाएँ",
     "Edit audience": "श्रोतागण संपादित करें",
     "Audience name": "श्रोता का नाम",
@@ -709,8 +776,10 @@ class Hindi{
     "Local": "स्थानीय",
     "Your current location": "आपका वर्तमान स्थान",
     "Radius": "RADIUS",
-    "We suggest adding a broad range of locations to cover the largest surrounding areas, including countries, countries/regions, and towns/cities.": "हम देशों, देशों/क्षेत्रों और कस्बों/शहरों सहित आसपास के सबसे बड़े क्षेत्रों को कवर करने के लिए स्थानों की एक विस्तृत श्रृंखला जोड़ने का सुझाव देते हैं।",
-    "We suggest adding a broad range of interests to cover the largest audience.": "हम सबसे बड़े दर्शकों को कवर करने के लिए रुचियों की एक विस्तृत श्रृंखला जोड़ने का सुझाव देते हैं।",
+    "We suggest adding a broad range of locations to cover the largest surrounding areas, including countries, countries/regions, and towns/cities.":
+        "हम देशों, देशों/क्षेत्रों और कस्बों/शहरों सहित आसपास के सबसे बड़े क्षेत्रों को कवर करने के लिए स्थानों की एक विस्तृत श्रृंखला जोड़ने का सुझाव देते हैं।",
+    "We suggest adding a broad range of interests to cover the largest audience.":
+        "हम सबसे बड़े दर्शकों को कवर करने के लिए रुचियों की एक विस्तृत श्रृंखला जोड़ने का सुझाव देते हैं।",
     "Profile Preferences": "प्रोफ़ाइल प्राथमिकताएँ",
     "Budget and duration": "बजट और अवधि",
     "Total spend": "कुल खर्च",
@@ -727,7 +796,8 @@ class Hindi{
     "Contact Us": "हमसे संपर्क करें",
     "Book Now": "अभी बुक करें",
     "Please enter an audience name": "कृपया एक दर्शक नाम दर्ज करें",
-    "Please enter the location of the target audience": "कृपया लक्षित दर्शकों का स्थान दर्ज करें",
+    "Please enter the location of the target audience":
+        "कृपया लक्षित दर्शकों का स्थान दर्ज करें",
     "Please enter the audience's interests": "कृपया दर्शकों की रुचि दर्ज करें",
     "Please select gender and age": "कृपया लिंग और आयु चुनें",
     "Thanks": "धन्यवाद",
@@ -770,7 +840,8 @@ class Hindi{
     "Please select experience.": "कृपया अनुभव चुनें.",
     "Please enter education.": "कृपया शिक्षा दर्ज करें.",
     "Please enter cover letter.": "कृपया कवर लेटर दर्ज करें.",
-    "Your have applied for this job successfully": "आपने इस नौकरी के लिए सफलतापूर्वक आवेदन कर दिया है",
+    "Your have applied for this job successfully":
+        "आपने इस नौकरी के लिए सफलतापूर्वक आवेदन कर दिया है",
     "Tap to edit": "संपादित करने के लिए टैप करें",
     "Shared in": "में साझा किया गया",
     "Comment is deleted successfully": "टिप्पणी सफलतापूर्वक हटा दी गई है",
@@ -780,16 +851,19 @@ class Hindi{
     "You reacted to their story": "आपने उनकी कहानी पर प्रतिक्रिया व्यक्त की",
     "You replied to their story": "आपने उनकी कहानी का उत्तर दिया",
     "Follow requests": "अनुरोधों का पालन करें",
-    "Accept reject the pending Follow requests": "लंबित अनुसरण अनुरोधों को स्वीकार करें, अस्वीकार करें",
+    "Accept reject the pending Follow requests":
+        "लंबित अनुसरण अनुरोधों को स्वीकार करें, अस्वीकार करें",
     "started following you": "ने आपको फॉलो करना शुरू किया",
     "sent you follow request": "आपको फ़ॉलो अनुरोध भेजा है",
     "commented on your post": "आपकी पोस्ट पर टिप्पणी की",
     "liked your post": "आपकी पोस्ट पसंद आयी",
     "Admin Added new competition": "एडमिन ने नई प्रतियोगिता जोड़ी",
     "Replied on your support request": "आपके समर्थन अनुरोध पर उत्तर दिया गया",
-    "Congratulations, Your verification request has been approved.": "बधाई हो, आपका सत्यापन अनुरोध स्वीकृत हो गया है।",
+    "Congratulations, Your verification request has been approved.":
+        "बधाई हो, आपका सत्यापन अनुरोध स्वीकृत हो गया है।",
     "Share online status": "ऑनलाइन स्थिति साझा करें",
-    "If you don't share your last seen and online, you won’t be able to see other people's last seen and online status also": "यदि आप अपना लास्ट सीन और ऑनलाइन साझा नहीं करते हैं, तो आप अन्य लोगों का लास्ट सीन और ऑनलाइन स्टेटस भी नहीं देख पाएंगे",
+    "If you don't share your last seen and online, you won’t be able to see other people's last seen and online status also":
+        "यदि आप अपना लास्ट सीन और ऑनलाइन साझा नहीं करते हैं, तो आप अन्य लोगों का लास्ट सीन और ऑनलाइन स्टेटस भी नहीं देख पाएंगे",
     "Copy link": "लिंक की प्रतिलिपि करें",
     "Created by SinghCoders": "सिंहकोडर्स द्वारा बनाया गया",
     "Banned users": "प्रतिबंधित उपयोगकर्ता",
@@ -801,14 +875,16 @@ class Hindi{
     "Remove from moderator": "मॉडरेटर से हटाएँ",
     "Ban for 60 minute": "60 मिनट के लिए बैन",
     "Permanent ban": "स्थायी प्रतिबंध",
-    "You are not allowed to join this live": "आपको इस लाइव में शामिल होने की अनुमति नहीं है",
+    "You are not allowed to join this live":
+        "आपको इस लाइव में शामिल होने की अनुमति नहीं है",
     "is a moderator now": "अब एक मॉडरेटर है",
     "is removed from moderators": "मॉडरेटर से हटा दिया गया है",
     "Copied": "कॉपी किया गया",
     "Add location": "स्थान जोड़ना",
     "added a new event :": "एक नया ईवेंट जोड़ा गया:",
     "added a new competition :": "एक नई प्रतियोगिता जोड़ी गई:",
-    "added a new fund raising campaign :": "एक नया धन जुटाने का अभियान जोड़ा गया:",
+    "added a new fund raising campaign :":
+        "एक नया धन जुटाने का अभियान जोड़ा गया:",
     "added a new job opening :": "एक नई नौकरी का उद्घाटन जोड़ा गया:",
     "added a new offer :": "एक नया प्रस्ताव जोड़ा गया:",
     "added a new product for sale :": "बिक्री के लिए एक नया उत्पाद जोड़ा गया:",
@@ -843,7 +919,8 @@ class Hindi{
     "Subscribe": "सदस्यता लें",
     "Are you sure to subscribe": "क्या आप निश्चित रूप से सदस्यता लेंगे?",
     "For subscribers only": "केवल ग्राहकों के लिए",
-    "Subscribe {{userName}} to view this content": "सदस्यता लें {{userName}} इस सामग्री को देखने के लिए",
+    "Subscribe {{userName}} to view this content":
+        "सदस्यता लें {{userName}} इस सामग्री को देखने के लिए",
     "My subscribers": "मेरे ग्राहक",
     "My subscriptions": "मेरी सदस्यताएँ",
     "Subscribed you": "आपकी सदस्यता ली",
@@ -854,12 +931,16 @@ class Hindi{
     "Collaborations": "सहयोग",
     "Collaboration request": "सहयोग अनुरोध",
     "No collaborator found": "कोई सहयोगी नहीं मिला",
-    "Search some user to add as collaborator": "सहयोगी के रूप में जोड़ने के लिए किसी उपयोगकर्ता को खोजें",
-    "Maximum 5 collaborators can be added in a post": "एक पोस्ट में अधिकतम 5 सहयोगी जोड़े जा सकते हैं",
-    "Invited you to collaborate on post": "आपको पोस्ट पर सहयोग करने के लिए आमंत्रित किया गया है",
+    "Search some user to add as collaborator":
+        "सहयोगी के रूप में जोड़ने के लिए किसी उपयोगकर्ता को खोजें",
+    "Maximum 5 collaborators can be added in a post":
+        "एक पोस्ट में अधिकतम 5 सहयोगी जोड़े जा सकते हैं",
+    "Invited you to collaborate on post":
+        "आपको पोस्ट पर सहयोग करने के लिए आमंत्रित किया गया है",
     "Withdraw collaboration": "सहयोग वापस लें",
     "Account is private": "खाता निजी है",
-    "Follow this account to view posts": "पोस्ट देखने के लिए इस खाते का अनुसरण करें",
+    "Follow this account to view posts":
+        "पोस्ट देखने के लिए इस खाते का अनुसरण करें",
     "Add account": "खाता जोड़ें",
     "Switch account": "खाता स्थानांतरित करें"
   };

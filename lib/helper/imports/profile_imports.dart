@@ -1,5 +1,6 @@
 export 'package:foap/screens/profile/follower_following_list.dart';
 export 'package:foap/screens/profile/manage_photos.dart';
+export 'package:foap/screens/profile/change_bio.dart';
 export 'package:foap/screens/profile/change_location.dart';
 export 'package:foap/screens/profile/change_password.dart';
 export 'package:foap/screens/profile/change_paypal_id.dart';

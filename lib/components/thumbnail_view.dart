@@ -29,70 +29,90 @@ class _MediaThumbnailViewState extends State<MediaThumbnailView> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: widget.size ?? storyCircleSize,
-        width: widget.size ?? storyCircleSize,
-        child: widget.media.type ==
-            2 // 1 for text, 2 for image, 3 for video
-            ? CachedNetworkImage(
-          imageUrl: widget.media.image!,
-          fit: BoxFit.cover,
-          placeholder: (context, url) => SizedBox(
-              height: 20,
-              width: 20,
-              child: const CircularProgressIndicator().p16),
-          errorWidget: (context, url, error) => const SizedBox(
-              height: 20, width: 20, child: Icon(Icons.error)),
-        ).round(40).p(1)
-            : FutureBuilder<ThumbnailResult>(
-          future: genThumbnail(widget.media.video!),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.hasData) {
-              final image = snapshot.data.userImage;
+            height: widget.size ?? storyCircleSize,
+            width: widget.size ?? storyCircleSize,
+            child: widget.media.type == 2
+                ? _networkThumbnail(widget.media.image ?? '')
+                : (widget.media.image?.trim().isNotEmpty == true
+                    ? Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          _networkThumbnail(widget.media.image ?? ''),
+                          const Center(
+                            child: Icon(
+                              Icons.play_circle_fill_rounded,
+                              color: Colors.white,
+                              size: 22,
+                            ),
+                          ),
+                        ],
+                      )
+                    : FutureBuilder<ThumbnailResult>(
+                        future: genThumbnail(widget.media.video ?? ''),
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          if (snapshot.hasData) {
+                            final image = snapshot.data.userImage;
 
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  image,
-                ],
-              );
-            } else if (snapshot.hasError) {
-              return Container(
-                padding: const EdgeInsets.all(8.0),
-                color: Colors.red,
-                child: Text(
-                  "Error:\n${snapshot.error.toString()}",
-                ),
-              );
-            } else {
-              return const CircularProgressIndicator().p16;
-            }
-          },
-        ))
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                image,
+                              ],
+                            );
+                          } else if (snapshot.hasError) {
+                            debugPrint(
+                                '[MediaThumbnailView] Thumbnail failed: ${widget.media.video} error=${snapshot.error}');
+                            return const SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: Icon(Icons.error_outline),
+                            );
+                          } else {
+                            return const CircularProgressIndicator().p16;
+                          }
+                        },
+                      )))
         .borderWithRadius(
-        value: 2,
-        radius: 40,
-        color: widget.borderColor ?? AppColorConstants.themeColor);
+            value: 2,
+            radius: 40,
+            color: widget.borderColor ?? AppColorConstants.themeColor);
+  }
+
+  Widget _networkThumbnail(String url) {
+    return CachedNetworkImage(
+      imageUrl: url,
+      fit: BoxFit.cover,
+      placeholder: (context, url) => SizedBox(
+          height: 20, width: 20, child: const CircularProgressIndicator().p16),
+      errorWidget: (context, url, error) =>
+          const SizedBox(height: 20, width: 20, child: Icon(Icons.error)),
+    ).round(40).p(1);
   }
 }
 
 Future<ThumbnailResult> genThumbnail(String path) async {
+  if (path.trim().isEmpty) {
+    throw ArgumentError('Empty video URL');
+  }
   //WidgetsFlutterBinding.ensureInitialized();
   Directory tempDirPath = await getTemporaryDirectory();
   Uint8List bytes;
   final Completer<ThumbnailResult> completer = Completer();
   final thumbnailPath = await VideoThumbnail.thumbnailFile(
-      video: path,
-      // headers: {
-      //   "USERHEADER1": "user defined header1",
-      //   "USERHEADER2": "user defined header2",
-      // },
-      thumbnailPath: tempDirPath.path,
-      imageFormat: ImageFormat.JPEG,
-      maxHeight: 50,
-      maxWidth: 50,
-      timeMs: 0,
-      quality: 50);
+          video: path,
+          // headers: {
+          //   "USERHEADER1": "user defined header1",
+          //   "USERHEADER2": "user defined header2",
+          // },
+          thumbnailPath: tempDirPath.path,
+          imageFormat: ImageFormat.JPEG,
+          maxHeight: 50,
+          maxWidth: 50,
+          timeMs: 0,
+          quality: 50)
+      .timeout(const Duration(seconds: 8));
 
   if (thumbnailPath != null) {
     final file = File(thumbnailPath);
@@ -111,6 +131,8 @@ Future<ThumbnailResult> genThumbnail(String path) async {
         width: info.image.width,
       ));
     }));
+  } else {
+    throw StateError('Unable to generate video thumbnail');
   }
 
   return completer.future;
