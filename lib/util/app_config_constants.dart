@@ -35,7 +35,7 @@ class AppConfigConstants {
 
   // Allow app login to continue with Firebase-only local session when backend
   // bridge is unreachable (useful while backend setup is pending).
-  static const allowFirebaseLoginWithoutBackendSession = true;
+  static const allowFirebaseLoginWithoutBackendSession = false;
 
   // Backend `users/login-social` provider used for Firebase-authenticated users.
   // Change this to match backend allow-list if needed (e.g. `google`).

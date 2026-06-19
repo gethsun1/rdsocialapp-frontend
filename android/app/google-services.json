@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "659874334588-m4mpcj9rq2mn8tiv0mj2ibj8jnmstshs.apps.googleusercontent.com",
+          "client_id": "659874334588-hgkbbpadhnm3sql3ul93f648gqa2qgh2.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.rbsocial",
-            "certificate_hash": "1553159f4801fbb1c81b5b910301165112146120"
+            "certificate_hash": "3435995220b584db114ca66899cad69fd8eeafa1"
           }
         },
         {
